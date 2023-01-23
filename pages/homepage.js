@@ -1,28 +1,24 @@
+import Devices from "../db.json";
 import styled from "styled-components";
 
 export default function Home({ devices }) {
-  console.log(devices);
   return (
-    <ul>
+    <StyledList>
       {devices.map((device) => (
-        <StyledCard key={device.id}>
+        <ul key={device.id}>
           <li>{device.image}</li>
-          <li>{device.device}</li>
-          <li>{device.device_category}</li>
+          <li>{device.decive}</li>
+          <li>{device.decive_category}</li>
           <li>{device.model}</li>
           <li>{device.power_consumption}</li>
-          {/* {console.log(device.powerConsumption)} */}
           <li>{device.power_consumption_standby}</li>
           <li>{device.average_usage_time}</li>
           <li>{device.location}</li>
-        </StyledCard>
+        </ul>
       ))}
-    </ul>
+    </StyledList>
   );
 }
-const StyledCard = styled.ul`
+const StyledList = styled.list`
   border: solid black 3px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
 `;
