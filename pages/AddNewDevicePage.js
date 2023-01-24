@@ -16,10 +16,12 @@ export default function AddNewDevice({ createDevice }) {
           id="device"
           name="device"
           type="text"
-          pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖ.]{1,30}"
+          placeholder=""
+          pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖ.]{1,40}"
+          required
         />
         <label htmlFor="category">Devices category:</label>
-        <select id="category" name="device_category" type="text">
+        <select id="category" name="device_category" type="text" required>
           <option value="">--Please choose an option--</option>
           <option value="Entertainment">Entertainment</option>
           <option value="Appliances">Appliances</option>
@@ -31,16 +33,36 @@ export default function AddNewDevice({ createDevice }) {
           id="model"
           name="model"
           type="text"
-          pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖ.]{1,40}"
+          pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖ.]{1,50}"
+          maxLength={50}
+          required
         />
         <label htmlFor="consumption">Power consumption:</label>
-        <input id="consumption" name="power_consumption" type="number" />
+        <input
+          id="consumption"
+          name="power_consumption"
+          type="number"
+          pattern="^[0-9]{1,}"
+          required
+        />
         <label htmlFor="standby">Power consumption Standby:</label>
-        <input id="standby" name="power_consumption_standby" type="number" />
+        <input
+          id="standby"
+          name="power_consumption_standby"
+          type="number"
+          pattern="^[0-9]{1,}"
+          required
+        />
         <label htmlFor="time">Average usage time:</label>
-        <input id="time" name="average_usage_time" type="number" max={24} />
+        <input
+          id="time"
+          name="average_usage_time"
+          type="number"
+          max={24}
+          required
+        />
         <label htmlFor="location">Location:</label>
-        <select id="location" name="location" type="text">
+        <select id="location" name="location" type="text" required>
           <option value="">--Please choose an option--</option>
           <option value="Livingroom">Livingroom</option>
           <option value="Bathroom">Bathroom</option>
