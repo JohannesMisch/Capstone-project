@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { EntertainmentIcon } from "@/components/Icons";
 import { AppliancesIcon } from "@/components/Icons";
 import { WorkIcon } from "@/components/Icons";
+import Card from "@/components/Card";
+
 const CATEGORY_MAP = {
   Entertainment: <EntertainmentIcon />,
   Appliances: <AppliancesIcon />,
@@ -12,24 +14,21 @@ export default function Home({ devices }) {
   return (
     <StyledList>
       {devices.map((device) => (
-        <StyledCard key={device.id}>
-          <section>
-            {CATEGORY_MAP[device.device_category]}
-            <p>Device:{device.device}</p>
-            <p>Device category: {device.device_category}</p>
-            <p>Model: {device.model}</p>
-            <p>Power consumption {device.power_consumption} W/h</p>
-            <p>
-              Power consumption Standby: {device.power_consumption_standby} W/h
-            </p>
-            <p>Average usage time:{device.average_usage_time}h</p>
-            <p>Location: {device.location}</p>
-          </section>
-        </StyledCard>
+        <Card
+          key={device.id}
+          deviceCategory={device.device_category}
+          name={device.device}
+          location={device.location}
+          model={device.model}
+          powerConsumption={device.power_consumption}
+          powerConsupmtionStandby={device.power_consumption_standby}
+          averageUsageTime={device.average_usage_time}
+        />
       ))}
     </StyledList>
   );
 }
+
 const StyledCard = styled.li`
   border: solid black 3px;
 `;
