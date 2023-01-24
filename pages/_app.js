@@ -1,11 +1,11 @@
 import GlobalStyle from "@/styles";
 import Head from "next/head";
 import useLocalStorageState from "use-local-storage-state";
-import Devices from "../db.json";
+import userDevices from "../db.json";
 
 export default function App({ Component, pageProps }) {
   const [devices, setDevices] = useLocalStorageState("devices", {
-    defaultValue: [...Devices],
+    defaultValue: [...userDevices],
   });
   function createDevice(device) {
     setDevices([...devices, device]);
