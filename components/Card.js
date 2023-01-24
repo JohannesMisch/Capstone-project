@@ -3,11 +3,13 @@ import styled from "styled-components";
 import { EntertainmentIcon } from "@/components/Icons";
 import { AppliancesIcon } from "@/components/Icons";
 import { WorkIcon } from "@/components/Icons";
+import { LightingIcon } from "@/components/Icons";
 
 const CATEGORY_MAP = {
   Entertainment: <EntertainmentIcon />,
   Appliances: <AppliancesIcon />,
   Work: <WorkIcon />,
+  Lighting: <LightingIcon />,
 };
 
 const Wrapper = styled.li`
@@ -32,11 +34,15 @@ export default function Card({
         <p>Device:{name}</p>
         {areDetailsDisplayed && (
           <ul>
-            <li>Location: {location}</li>
-            <li>Device category: {deviceCategory}</li>
-            <li>Model: {model}</li>
-            <li>Power consumption {powerConsumption} W/h</li>
-            <li>Power consumption Standby: {powerConsumptionStandby} W/h</li>
+            <StyledListItem>Location: {location}</StyledListItem>
+            <StyledListItem>Device category: {deviceCategory}</StyledListItem>
+            <StyledListItem>Model: {model}</StyledListItem>
+            <StyledListItem>
+              Power consumption {powerConsumption} W/h
+            </StyledListItem>
+            <StyledListItem>
+              Power consumption Standby: {powerConsumptionStandby} W/h
+            </StyledListItem>
           </ul>
         )}
         <p>Average usage time:{averageUsageTime}h</p>
@@ -47,3 +53,7 @@ export default function Card({
     </Wrapper>
   );
 }
+
+const StyledListItem = styled.li`
+  overflow-wrap: break-word;
+`;

@@ -2,13 +2,8 @@ import styled from "styled-components";
 import { EntertainmentIcon } from "@/components/Icons";
 import { AppliancesIcon } from "@/components/Icons";
 import { WorkIcon } from "@/components/Icons";
+import { LightingIcon } from "@/components/Icons";
 import Card from "@/components/Card";
-
-const CATEGORY_MAP = {
-  Entertainment: <EntertainmentIcon />,
-  Appliances: <AppliancesIcon />,
-  Work: <WorkIcon />,
-};
 
 export default function Home({ devices }) {
   return (
