@@ -19,7 +19,7 @@ export default function AddNewDevice({ createDevice }) {
           name="device"
           type="text"
           placeholder=""
-          pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖ.]{1,40}"
+          pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖß.]{1,40}"
           required
         />
         <label htmlFor="category">Devices category:</label>
@@ -35,7 +35,7 @@ export default function AddNewDevice({ createDevice }) {
           id="model"
           name="model"
           type="text"
-          pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖ.]{1,50}"
+          pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖß.]{1,50}"
           required
         />
         <label htmlFor="consumption">Power consumption:</label>
@@ -44,6 +44,7 @@ export default function AddNewDevice({ createDevice }) {
           name="power_consumption"
           type="number"
           pattern="^[0-9]{1,}"
+          min={0}
           required
         />
         <label htmlFor="standby">Power consumption Standby:</label>
@@ -52,6 +53,7 @@ export default function AddNewDevice({ createDevice }) {
           name="power_consumption_standby"
           type="number"
           pattern="^[0-9]{1,}"
+          min={0}
           required
         />
         <label htmlFor="time">Average usage time:</label>
@@ -59,6 +61,7 @@ export default function AddNewDevice({ createDevice }) {
           id="time"
           name="average_usage_time"
           type="number"
+          min={0}
           max={24}
           required
         />
