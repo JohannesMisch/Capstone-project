@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import Link from "next/link";
 export default function AddNewDevice({ createDevice }) {
   function handleSubmit(event) {
     event.preventDefault();
@@ -11,6 +11,7 @@ export default function AddNewDevice({ createDevice }) {
   }
   return (
     <>
+      <Link href="/">Home</Link>
       <StyledForm onSubmit={handleSubmit}>
         <label htmlFor="device">Device:</label>
         <input
