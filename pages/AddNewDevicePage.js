@@ -43,8 +43,7 @@ export default function AddNewDevice({ createDevice }) {
           id="consumption"
           name="power_consumption"
           type="number"
-          pattern="^[0-9]{1,}"
-          min={0}
+          pattern="^[0-9,.]{1,10}"
           required
         />
         <label htmlFor="standby">Power consumption Standby:</label>
@@ -52,19 +51,19 @@ export default function AddNewDevice({ createDevice }) {
           id="standby"
           name="power_consumption_standby"
           type="number"
-          pattern="^[0-9]{1,}"
-          min={0}
+          pattern="^[0-9,.]{1,10}"
           required
         />
         <label htmlFor="time">Average usage time:</label>
         <input
           id="time"
           name="average_usage_time"
-          type="number"
+          type="text"
           min={0}
           max={24}
           required
         />
+
         <label htmlFor="location">Location:</label>
         <select id="location" name="location" type="text" required>
           <option value="">--Please choose an option--</option>
