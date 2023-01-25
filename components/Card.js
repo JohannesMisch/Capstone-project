@@ -12,10 +12,6 @@ const CATEGORY_MAP = {
   Lighting: <LightingIcon />,
 };
 
-const Wrapper = styled.li`
-  border: solid black 3px;
-`;
-
 export default function Card({
   deviceCategory,
   name,
@@ -28,7 +24,7 @@ export default function Card({
   const [areDetailsDisplayed, setAreDetailsDisplayed] = useState(false);
 
   return (
-    <Wrapper>
+    <>
       <section>
         {CATEGORY_MAP[deviceCategory]}
         <p>Device:{name}</p>
@@ -50,7 +46,7 @@ export default function Card({
       <button onClick={() => setAreDetailsDisplayed(!areDetailsDisplayed)}>
         Details
       </button>
-    </Wrapper>
+    </>
   );
 }
 

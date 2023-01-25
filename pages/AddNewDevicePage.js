@@ -7,6 +7,7 @@ export default function AddNewDevice({ createDevice }) {
     const data = Object.fromEntries(formData);
 
     createDevice(data);
+    event.target.reset();
   }
   return (
     <>
@@ -34,7 +35,6 @@ export default function AddNewDevice({ createDevice }) {
           name="model"
           type="text"
           pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖ.]{1,50}"
-          maxLength={50}
           required
         />
         <label htmlFor="consumption">Power consumption:</label>
@@ -69,9 +69,7 @@ export default function AddNewDevice({ createDevice }) {
           <option value="Bedroom">Bedroom</option>
           <option value="Kitchen">Kitchen</option>
         </select>
-        <button className="form__button" type="submit">
-          Create
-        </button>
+        <button type="submit">Create</button>
       </StyledForm>
     </>
   );
