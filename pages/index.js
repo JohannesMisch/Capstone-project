@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function Home({ devices }) {
   return (
     <>
-      <Link href="/AddNewDevicePage">Add Device</Link>
+      <Link href="/addNewDevicePage">Add Device</Link>
       <StyledList>
         {devices.map((device) => (
           <Wrapper key={device.id}>
