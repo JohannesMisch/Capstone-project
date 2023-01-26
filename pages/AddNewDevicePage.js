@@ -7,6 +7,7 @@ export default function AddNewDevice({ createDevice }) {
     const data = Object.fromEntries(formData);
 
     createDevice(data);
+
     event.target.reset();
   }
   return (
@@ -37,24 +38,24 @@ export default function AddNewDevice({ createDevice }) {
           name="model"
           type="text"
           pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖß.]{1,50}"
-          title="Max 50 characters"
+          title="Max 50 characters, a-zA-Z0-9-_ äüöÄÜÖß. "
           required
         />
         <label htmlFor="consumption">Power consumption:</label>
         <input
           id="consumption"
           name="power_consumption"
-          type="number"
+          type="text"
           pattern="^[0-9,.]{1,10}"
-          title="Max 10 characters"
+          title="Max 10 characters and only Numbers"
           required
         />
         <label htmlFor="standby">Power consumption Standby:</label>
         <input
           id="standby"
           name="power_consumption_standby"
-          type="number"
-          title="Max 10 characters"
+          type="text"
+          title="Max 10 characters and only Numbers"
           pattern="^[0-9,.]{1,10}"
           required
         />

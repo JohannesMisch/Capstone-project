@@ -15,7 +15,7 @@ export default function Home({ devices }) {
               location={device.location}
               model={device.model}
               powerConsumption={device.power_consumption}
-              powerConsupmtionStandby={device.power_consumption_standby}
+              powerConsumptionStandby={device.power_consumption_standby}
               averageUsageTime={device.average_usage_time}
             />
           </Wrapper>
