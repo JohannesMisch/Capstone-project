@@ -21,6 +21,7 @@ export default function Home({ devices }) {
   return (
     <>
       <Link href="/addNewDevicePage">Add Device</Link>
+      <button onClick={() => setIsFiltered(true)}>Reset</button>
       <form onSubmit={handleSubmit}>
         <label htmlFor="searchInput">How do you want to sort your List?</label>
         <select id="searchInput" name="device_category" type="text" required>
@@ -31,7 +32,6 @@ export default function Home({ devices }) {
           <option value="Lighting">Lighting</option>
         </select>
         <button type="submit">Search</button>
-        <button onClick={() => setIsFiltered(true)}>Reset</button>
       </form>
       {isFiltered ? (
         <StyledList>
