@@ -9,11 +9,12 @@ export default function AddNewDevice({ createDevice }) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-
+    console.log(data);
     createDevice(data);
 
     event.target.reset();
   }
+
   return (
     <>
       <Link href="/">Home</Link>
@@ -74,7 +75,6 @@ export default function AddNewDevice({ createDevice }) {
             max={24}
             required
           />
-
           <label htmlFor="location">Location:</label>
           <select id="location" name="location" type="text" required>
             <option value="">--Please choose an option--</option>

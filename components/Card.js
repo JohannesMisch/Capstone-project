@@ -20,6 +20,8 @@ export default function Card({
   powerConsumption,
   powerConsumptionStandby,
   averageUsageTime,
+  id,
+  handleDelete,
 }) {
   const [areDetailsDisplayed, setAreDetailsDisplayed] = useState(false);
 
@@ -46,6 +48,7 @@ export default function Card({
       <button onClick={() => setAreDetailsDisplayed(!areDetailsDisplayed)}>
         Details
       </button>
+      <button onClick={() => handleDelete(id)}>ID</button>
     </>
   );
 }
