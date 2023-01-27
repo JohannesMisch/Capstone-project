@@ -4,14 +4,14 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function Home({ devices }) {
-  const [isFiltered, setIsFiltered] = useState(false);
+  const [isFiltered, setIsFiltered] = useState(true);
   const [isData, setIsData] = useState({ device_category: "" });
 
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    setIsFiltered(true);
+    setIsFiltered(false);
     setIsData(data);
   }
 
@@ -20,10 +20,10 @@ export default function Home({ devices }) {
   );
   return (
     <>
-      <button onClick={() => setIsFiltered(false)}>Reset</button>
+      <button onClick={() => setIsFiltered(true)}>Reset</button>
       <Link href="/addNewDevicePage">Add Device</Link>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="searchInput">How do you want to sort your List</label>
+        <label htmlFor="searchInput">How do you want to sort your List?</label>
         <select id="searchInput" name="device_category" type="text" required>
           <option value="">--Please choose a category--</option>
           <option value="Entertainment">Entertainment</option>
