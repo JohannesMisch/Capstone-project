@@ -25,7 +25,7 @@ export default function Home({ devices }) {
       <form onSubmit={handleSubmit}>
         <label htmlFor="searchInput">How do you want to sort your List</label>
         <select id="searchInput" name="device_category" type="text" required>
-          <option value="">--Please choose an option--</option>
+          <option value="">--Please choose a category--</option>
           <option value="Entertainment">Entertainment</option>
           <option value="Appliances">Appliances</option>
           <option value="Work">Work</option>
