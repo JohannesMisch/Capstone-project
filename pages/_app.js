@@ -17,7 +17,6 @@ export default function App({ Component, pageProps }) {
       ...oldDevices,
     ]);
   }
-  console.log(devices[0].device_category);
   return (
     <>
       <GlobalStyle />
