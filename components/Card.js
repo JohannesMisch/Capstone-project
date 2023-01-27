@@ -1,9 +1,11 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { EntertainmentIcon } from "@/components/Icons";
-import { AppliancesIcon } from "@/components/Icons";
-import { WorkIcon } from "@/components/Icons";
-import { LightingIcon } from "@/components/Icons";
+import {
+  EntertainmentIcon,
+  AppliancesIcon,
+  WorkIcon,
+  LightingIcon,
+} from "@/components/Icons";
 
 const CATEGORY_MAP = {
   Entertainment: <EntertainmentIcon />,
@@ -48,7 +50,7 @@ export default function Card({
       <button onClick={() => setAreDetailsDisplayed(!areDetailsDisplayed)}>
         Details
       </button>
-      <button onClick={() => handleDelete(id)}>ID</button>
+      <button onClick={() => handleDelete(id)}>Delete</button>
     </>
   );
 }
