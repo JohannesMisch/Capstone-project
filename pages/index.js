@@ -20,7 +20,7 @@ export default function Home({ devices }) {
   );
   return (
     <>
-      <Link href="/AddNewDevicePage">Add Device</Link>
+      <Link href="/add-device">Add Device</Link>
       <button onClick={() => setIsFiltered(true)}>Reset</button>
       <form onSubmit={handleSubmit}>
         <label htmlFor="searchInput">How do you want to sort your List?</label>
