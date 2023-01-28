@@ -50,7 +50,14 @@ export default function Card({
       <button onClick={() => setAreDetailsDisplayed(!areDetailsDisplayed)}>
         Details
       </button>
-      <button onClick={() => handleDelete(id)}>Delete</button>
+      <button
+        type="button"
+        onClick={() => {
+          handleDelete(id);
+        }}
+      >
+        Delete
+      </button>
     </>
   );
 }

@@ -7,6 +7,16 @@ import Card from "@/components/Card";
 export default function AddNewDevice({ createDevice, devices, handleDelete }) {
   const [toggleForm, setToggleForm] = useState(false);
   const sortedDevices = [...devices];
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData);
+    createDevice(data);
+    event.target.reset();
+  }
+
+
   return (
     <>
       <Link href="/">Home</Link>
