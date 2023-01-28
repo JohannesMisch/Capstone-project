@@ -67,6 +67,7 @@ export default function Home({ devices, handleDelete }) {
                 powerConsumption={device.power_consumption}
                 powerConsumptionStandby={device.power_consumption_standby}
                 averageUsageTime={device.average_usage_time}
+                handleDelete={handleDelete}
               />
             </Wrapper>
           ))}
