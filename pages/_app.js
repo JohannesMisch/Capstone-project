@@ -17,13 +17,22 @@ export default function App({ Component, pageProps }) {
       ...oldDevices,
     ]);
   }
+  function handleDelete(id) {
+    const filteredDelete = devices.filter((devices) => id !== devices.id);
+    setDevices(filteredDelete);
+  }
   return (
     <>
       <GlobalStyle />
       <Head>
         <title>Capstone Project</title>
       </Head>
-      <Component {...pageProps} devices={devices} createDevice={createDevice} />
+      <Component
+        {...pageProps}
+        devices={devices}
+        createDevice={createDevice}
+        handleDelete={handleDelete}
+      />
     </>
   );
 }

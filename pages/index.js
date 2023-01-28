@@ -3,7 +3,7 @@ import Card from "@/components/Card";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function Home({ devices }) {
+export default function Home({ devices, handleDelete }) {
   const [isFiltered, setIsFiltered] = useState(true);
   const [isData, setIsData] = useState({ device_category: "" });
 
@@ -13,6 +13,7 @@ export default function Home({ devices }) {
     const data = Object.fromEntries(formData);
     setIsFiltered(false);
     setIsData(data);
+    event.target.reset();
   }
 
   const filteredDevices = devices.filter(
@@ -21,7 +22,6 @@ export default function Home({ devices }) {
   return (
     <>
       <Link href="/add-device">Add Device</Link>
-      <button onClick={() => setIsFiltered(true)}>Reset</button>
       <form onSubmit={handleSubmit}>
         <label htmlFor="searchInput">How do you want to sort your List?</label>
         <select id="searchInput" name="device_category" type="text" required>
@@ -32,12 +32,16 @@ export default function Home({ devices }) {
           <option value="Lighting">Lighting</option>
         </select>
         <button type="submit">Search</button>
+        <button type="button" onClick={() => setIsFiltered(true)}>
+          Reset
+        </button>
       </form>
       {isFiltered ? (
         <StyledList>
           {devices.map((device) => (
             <Wrapper key={device.id}>
               <Card
+                id={device.id}
                 deviceCategory={device.device_category}
                 name={device.device}
                 location={device.location}
@@ -45,6 +49,7 @@ export default function Home({ devices }) {
                 powerConsumption={device.power_consumption}
                 powerConsumptionStandby={device.power_consumption_standby}
                 averageUsageTime={device.average_usage_time}
+                handleDelete={handleDelete}
               />
             </Wrapper>
           ))}
@@ -54,6 +59,7 @@ export default function Home({ devices }) {
           {filteredDevices.map((device) => (
             <Wrapper key={device.id}>
               <Card
+                id={device.id}
                 deviceCategory={device.device_category}
                 name={device.device}
                 location={device.location}
@@ -61,6 +67,7 @@ export default function Home({ devices }) {
                 powerConsumption={device.power_consumption}
                 powerConsumptionStandby={device.power_consumption_standby}
                 averageUsageTime={device.average_usage_time}
+                handleDelete={handleDelete}
               />
             </Wrapper>
           ))}
