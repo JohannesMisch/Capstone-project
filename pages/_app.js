@@ -12,14 +12,15 @@ export default function App({ Component, pageProps }) {
     setDevices((oldDevices) => [
       {
         ...newDevice,
+        device: newDevice.device.toUpperCase(),
         id: uuidv4(),
       },
       ...oldDevices,
     ]);
   }
   function handleDelete(id) {
-    const filteredDelete = devices.filter((devices) => id !== devices.id);
-    setDevices(filteredDelete);
+    const devicesAfterDelete = devices.filter((devices) => id !== devices.id);
+    setDevices(devicesAfterDelete);
   }
   return (
     <>

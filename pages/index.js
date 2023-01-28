@@ -16,7 +16,9 @@ export default function Home({ devices, handleDelete }) {
   }
 
   const filteredDevices = devices.filter(
-    (devices) => devices.device_category === isData.device_category
+    (devices) =>
+      devices.device_category === isData.device_category ||
+      devices.location === isData.location
   );
   return (
     <>
@@ -29,6 +31,11 @@ export default function Home({ devices, handleDelete }) {
           <option value="Appliances">Appliances</option>
           <option value="Work">Work</option>
           <option value="Lighting">Lighting</option>
+          <option value="">--Please choose an option--</option>
+          <option value="Livingroom">Livingroom</option>
+          <option value="Bathroom">Bathroom</option>
+          <option value="Bedroom">Bedroom</option>
+          <option value="Kitchen">Kitchen</option>
         </select>
         <button type="submit">Search</button>
         <button type="button" onClick={() => setIsFiltered(true)}>

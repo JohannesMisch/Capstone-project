@@ -1,91 +1,42 @@
 import styled from "styled-components";
 import Link from "next/link";
 import { useState } from "react";
+import AddForm from "@/components/AddDeviceForm";
+import Card from "@/components/Card";
 
-export default function AddNewDevice({ createDevice }) {
+export default function AddNewDevice({ createDevice, devices }) {
   const [toggleForm, setToggleForm] = useState(false);
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData);
-    console.log(data);
-    createDevice(data);
-
-    event.target.reset();
-  }
-
+  const sortedDevices = [...devices];
   return (
     <>
       <Link href="/">Home</Link>
-      {toggleForm && (
-        <StyledForm onSubmit={handleSubmit}>
-          <label htmlFor="device">Device:</label>
-          <input
-            id="device"
-            name="device"
-            type="text"
-            placeholder=""
-            pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖß.]{1,50}"
-            title="Max 50 characters"
-            required
-          />
-          <label htmlFor="category">Devices category:</label>
-          <select id="category" name="device_category" type="text" required>
-            <option value="">--Please choose an option--</option>
-            <option value="Entertainment">Entertainment</option>
-            <option value="Appliances">Appliances</option>
-            <option value="Work">Work</option>
-            <option value="Lighting">Lighting</option>
-          </select>
-          <label htmlFor="model">Model:</label>
-          <input
-            id="model"
-            name="model"
-            type="text"
-            pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖß.]{1,50}"
-            title="Max 50 characters, a-zA-Z0-9-_ äüöÄÜÖß. "
-            required
-          />
-          <label htmlFor="consumption">Power consumption:</label>
-          <input
-            id="consumption"
-            name="power_consumption"
-            type="text"
-            pattern="^[0-9,.]{1,10}"
-            title="Max 10 characters and only Numbers"
-            required
-          />
-          <label htmlFor="standby">Power consumption Standby:</label>
-          <input
-            id="standby"
-            name="power_consumption_standby"
-            type="text"
-            title="Max 10 characters and only Numbers"
-            pattern="^[0-9,.]{1,10}"
-            required
-          />
-          <label htmlFor="time">Average usage time:</label>
-          <input
-            id="time"
-            name="average_usage_time"
-            type="number"
-            title="Hello"
-            min={0}
-            max={24}
-            required
-          />
-          <label htmlFor="location">Location:</label>
-          <select id="location" name="location" type="text" required>
-            <option value="">--Please choose an option--</option>
-            <option value="Livingroom">Livingroom</option>
-            <option value="Bathroom">Bathroom</option>
-            <option value="Bedroom">Bedroom</option>
-            <option value="Kitchen">Kitchen</option>
-          </select>
-          <button type="submit">Create</button>
-        </StyledForm>
-      )}
+      <ul>
+        {sortedDevices
+          .sort((a, b) =>
+            a.device_category > b.device_category
+              ? 1
+              : a.device_category === b.device_category
+              ? a.device > b.device
+                ? 1
+                : -1
+              : -1
+          )
+          .map((sortedDevice) => (
+            <Wrapper key={sortedDevice.id}>
+              <Card
+                id={sortedDevice.id}
+                deviceCategory={sortedDevice.device_category}
+                name={sortedDevice.device}
+                location={sortedDevice.location}
+                model={sortedDevice.model}
+                powerConsumption={sortedDevice.power_consumption}
+                powerConsumptionStandby={sortedDevice.power_consumption_standby}
+                averageUsageTime={sortedDevice.average_usage_time}
+              />
+            </Wrapper>
+          ))}
+      </ul>
+      {toggleForm && <AddForm createDevice={createDevice} />}
       <StyledButton
         onClick={() => {
           setToggleForm(!toggleForm);
@@ -96,14 +47,13 @@ export default function AddNewDevice({ createDevice }) {
     </>
   );
 }
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  padding: 10px 50px;
-  gap: 10px;
-`;
+
 const StyledButton = styled.button`
+  z-index: 3;
   position: fixed;
   bottom: 20px;
   left: 20px;
+`;
+const Wrapper = styled.li`
+  border: solid black 3px;
 `;
