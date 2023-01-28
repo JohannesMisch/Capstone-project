@@ -13,6 +13,7 @@ export default function Home({ devices, handleDelete }) {
     const data = Object.fromEntries(formData);
     setIsFiltered(false);
     setIsData(data);
+    event.target.reset();
   }
 
   const filteredDevices = devices.filter(

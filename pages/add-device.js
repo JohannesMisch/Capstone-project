@@ -9,9 +9,7 @@ export default function AddNewDevice({ createDevice }) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    console.log(data);
     createDevice(data);
-
     event.target.reset();
   }
 
