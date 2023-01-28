@@ -13,6 +13,7 @@ export default function Home({ devices, handleDelete }) {
     const data = Object.fromEntries(formData);
     setIsFiltered(false);
     setIsData(data);
+    event.target.reset();
   }
 
   const filteredDevices = devices.filter(
@@ -73,6 +74,7 @@ export default function Home({ devices, handleDelete }) {
                 powerConsumption={device.power_consumption}
                 powerConsumptionStandby={device.power_consumption_standby}
                 averageUsageTime={device.average_usage_time}
+                handleDelete={handleDelete}
               />
             </Wrapper>
           ))}

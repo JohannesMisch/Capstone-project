@@ -4,13 +4,13 @@ import { useState } from "react";
 import AddForm from "@/components/AddDeviceForm";
 import Card from "@/components/Card";
 
-export default function AddNewDevice({ createDevice, devices }) {
+export default function AddNewDevice({ createDevice, devices, handleDelete }) {
   const [toggleForm, setToggleForm] = useState(false);
   const sortedDevices = [...devices];
   return (
     <>
       <Link href="/">Home</Link>
-      <ul>
+      <StyledList>
         {sortedDevices
           .sort((a, b) =>
             a.device_category > b.device_category
@@ -32,10 +32,11 @@ export default function AddNewDevice({ createDevice, devices }) {
                 powerConsumption={sortedDevice.power_consumption}
                 powerConsumptionStandby={sortedDevice.power_consumption_standby}
                 averageUsageTime={sortedDevice.average_usage_time}
+                handleDelete={handleDelete}
               />
             </Wrapper>
           ))}
-      </ul>
+      </StyledList>
       {toggleForm && <AddForm createDevice={createDevice} />}
       <StyledButton
         onClick={() => {
@@ -53,7 +54,17 @@ const StyledButton = styled.button`
   position: fixed;
   bottom: 20px;
   left: 20px;
+  background-color: red;
 `;
+
 const Wrapper = styled.li`
   border: solid black 3px;
+`;
+
+const StyledList = styled.ul`
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 10px;
 `;

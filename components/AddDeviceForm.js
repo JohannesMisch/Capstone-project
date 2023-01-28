@@ -10,7 +10,6 @@ export default function AddForm({ createDevice }) {
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
     createDevice(data);
-
     event.target.reset();
   }
 
@@ -80,7 +79,6 @@ export default function AddForm({ createDevice }) {
         <option value="Kitchen">Kitchen</option>
       </select>
       <button type="submit">Create</button>
-      <h2>Mina Approved! ... aber nur als Dummyfarbe neh?</h2>
     </StyledForm>
   );
 }
