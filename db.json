@@ -10,7 +10,7 @@
     "id": 0
   },
   {
-    "device": "Clothes dryer",
+    "device": "CLOTHES DRYER",
     "device_category": "Appliances",
     "model": "WTW84433",
     "power_consumption": 1420,
@@ -20,7 +20,7 @@
     "id": 1
   },
   {
-    "device": "MacBook Air",
+    "device": "MACBOOK AIR",
     "device_category": "Work",
     "model": "Mac14,2",
     "power_consumption": 50,
