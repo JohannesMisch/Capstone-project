@@ -31,7 +31,7 @@ export default function Card({
     <>
       <section>
         {CATEGORY_MAP[deviceCategory]}
-        <p>Device:{name.toUpperCase()}</p>
+        <p>Device:{name}</p>
         {areDetailsDisplayed && (
           <ul>
             <StyledListItem>Location: {location}</StyledListItem>

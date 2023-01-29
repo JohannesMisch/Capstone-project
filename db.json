@@ -1,32 +1,32 @@
 [
   {
-    "id": 0,
     "device": "TV",
     "device_category": "Entertainment",
     "model": "LG 55NANO796PC LED TV",
     "power_consumption": 95,
     "power_consumption_standby": 0.5,
     "average_usage_time": 4,
-    "location": "Livingroom"
+    "location": "Livingroom",
+    "id": 0
   },
   {
-    "id": 1,
-    "device": "Clothes dryer",
+    "device": "CLOTHES DRYER",
     "device_category": "Appliances",
     "model": "WTW84433",
     "power_consumption": 1420,
     "power_consumption_standby": 0.5,
     "average_usage_time": 0.5,
-    "location": "Bathroom"
+    "location": "Bathroom",
+    "id": 1
   },
   {
-    "id": 2,
-    "device": "MacBook Air",
+    "device": "MACBOOK AIR",
     "device_category": "Work",
     "model": "Mac14,2",
     "power_consumption": 50,
     "power_consumption_standby": 7,
     "average_usage_time": 9,
-    "location": "Livingroom"
+    "location": "Livingroom",
+    "id": 2
   }
 ]

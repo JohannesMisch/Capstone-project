@@ -17,7 +17,9 @@ export default function Home({ devices, handleDelete }) {
   }
 
   const filteredDevices = devices.filter(
-    (devices) => devices.device_category === isData.device_category
+    (devices) =>
+      devices.device_category === isData.device_category ||
+      devices.location === isData.location
   );
   return (
     <>
