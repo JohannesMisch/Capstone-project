@@ -16,7 +16,6 @@ export default function AddNewDevice({ createDevice, devices, handleDelete }) {
     event.target.reset();
   }
 
-
   return (
     <>
       <Link href="/">Home</Link>
@@ -65,6 +64,8 @@ const StyledButton = styled.button`
   bottom: 20px;
   left: 20px;
   background-color: red;
+  height: 40px;
+  width: 40px;
 `;
 
 const Wrapper = styled.li`
