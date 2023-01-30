@@ -3,22 +3,102 @@ import Link from "next/link";
 import { useState } from "react";
 import AddForm from "@/components/AddDeviceForm";
 import Card from "@/components/Card";
+import { Doughnut } from "react-chartjs-2";
 
 export default function AddNewDevice({ createDevice, devices, handleDelete }) {
   const [toggleForm, setToggleForm] = useState(false);
   const sortedDevices = [...devices];
+  const chartData = [...devices];
+  const sumUpAppliances = chartData.filter(
+    (Appliances) => Appliances.device_category === "Appliances"
+  );
+  const sumUpEntertainment = chartData.filter(
+    (Entertainment) => Entertainment.device_category === "Entertainment"
+  );
+  const sumUpWork = chartData.filter((Work) => Work.device_category === "Work");
+  const sumUpLighting = chartData.filter(
+    (Lighting) => Lighting.device_category === "Lighting"
+  );
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData);
-    createDevice(data);
-    event.target.reset();
-  }
+  let sumAllDevices = 0;
+  devices.forEach((object) => {
+    sumAllDevices =
+      sumAllDevices + object.power_consumption * object.average_usage_time;
+  });
+  console.log(sumAllDevices);
+
+  let sumEntertainment = 0;
+  sumUpEntertainment.forEach((object) => {
+    sumEntertainment =
+      sumEntertainment + object.power_consumption * object.average_usage_time;
+  });
+  console.log("Enter " + sumEntertainment);
+
+  let sumAppliances = 0;
+  sumUpAppliances.forEach((object) => {
+    sumAppliances =
+      sumAppliances + object.power_consumption * object.average_usage_time;
+  });
+  console.log("App " + sumAppliances);
+
+  let sumWork = 0;
+  sumUpWork.forEach((object) => {
+    sumWork = sumWork + object.power_consumption * object.average_usage_time;
+  });
+  console.log("Work " + sumWork);
+
+  let sumLighting = 0;
+  sumUpLighting.forEach((object) => {
+    sumLighting =
+      sumLighting + object.power_consumption * object.average_usage_time;
+  });
+  console.log("Lighting " + sumLighting);
+
+  // let chartArray = [
+  //   { category: "Entertainment", sumCategory: sumEntertainment },
+  //   { category: "Appliances", sumCategory: sumAppliances },
+  //   { category: "Work", sumCategory: sumWork },
+  //   { category: "Lighting", sumCategory: sumLighting },
+  // ];
+  const chartarray = {
+    label: "Entertainment",
+    datasets: [
+      {
+        label: "??",
+        data: sumEntertainment,
+        sumAppliances,
+        sumWork,
+        sumLighting,
+        borderWidth: 1,
+      },
+    ],
+  };
+  //  const [deviceData, setDeviceData] = useState([
+
+  //  ])
+
+  // const [deviceData, setDeviceData] = useState({
+  //   labels: "Entertainment","Appliances","Work","Lighting"
+  //   datasets: [
+  //     {
+  //       label: "??",
+  //       data: sumLighting,
+  //     },
+  //   ],
+  // });
+
+  // function handleSubmit(event) {
+  //   event.preventDefault();
+  //   const formData = new FormData(event.target);
+  //   const data = Object.fromEntries(formData);
+  //   createDevice(data);
+  //   event.target.reset();
+  // }
 
   return (
     <>
       <Link href="/">Home</Link>
+      <Doughnut chartData={chartarray} />
       <StyledList>
         {sortedDevices
           .sort((a, b) =>
