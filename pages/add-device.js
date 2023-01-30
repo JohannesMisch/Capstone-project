@@ -3,102 +3,54 @@ import Link from "next/link";
 import { useState } from "react";
 import AddForm from "@/components/AddDeviceForm";
 import Card from "@/components/Card";
-import { Doughnut } from "react-chartjs-2";
+import Doughnut from "@/components/DoughnutChart";
 
 export default function AddNewDevice({ createDevice, devices, handleDelete }) {
   const [toggleForm, setToggleForm] = useState(false);
   const sortedDevices = [...devices];
-  const chartData = [...devices];
-  const sumUpAppliances = chartData.filter(
-    (Appliances) => Appliances.device_category === "Appliances"
-  );
-  const sumUpEntertainment = chartData.filter(
-    (Entertainment) => Entertainment.device_category === "Entertainment"
-  );
-  const sumUpWork = chartData.filter((Work) => Work.device_category === "Work");
-  const sumUpLighting = chartData.filter(
-    (Lighting) => Lighting.device_category === "Lighting"
-  );
 
-  let sumAllDevices = 0;
-  devices.forEach((object) => {
-    sumAllDevices =
-      sumAllDevices + object.power_consumption * object.average_usage_time;
-  });
-  console.log(sumAllDevices);
+  function filterByCategory(category) {
+    return (device) => device.device_category === category;
+  }
 
-  let sumEntertainment = 0;
-  sumUpEntertainment.forEach((object) => {
-    sumEntertainment =
-      sumEntertainment + object.power_consumption * object.average_usage_time;
-  });
-  console.log("Enter " + sumEntertainment);
+  const calculateDailyPowerConsumption = (device) =>
+    device.power_consumption * device.average_usage_time;
+  const sum = (accumulator, currentValue) => accumulator + currentValue;
 
-  let sumAppliances = 0;
-  sumUpAppliances.forEach((object) => {
-    sumAppliances =
-      sumAppliances + object.power_consumption * object.average_usage_time;
-  });
-  console.log("App " + sumAppliances);
+  const sumUpAppliances = devices
+    .filter(filterByCategory("Appliances"))
+    .map(calculateDailyPowerConsumption)
+    .reduce(sum, 0);
 
-  let sumWork = 0;
-  sumUpWork.forEach((object) => {
-    sumWork = sumWork + object.power_consumption * object.average_usage_time;
-  });
-  console.log("Work " + sumWork);
+  const sumUpEntertainment = devices
+    .filter(filterByCategory("Entertainment"))
+    .map(calculateDailyPowerConsumption)
+    .reduce(sum, 0);
 
-  let sumLighting = 0;
-  sumUpLighting.forEach((object) => {
-    sumLighting =
-      sumLighting + object.power_consumption * object.average_usage_time;
-  });
-  console.log("Lighting " + sumLighting);
+  const sumUpWork = devices
+    .filter(filterByCategory("Work"))
+    .map(calculateDailyPowerConsumption)
+    .reduce(sum, 0);
 
-  // let chartArray = [
-  //   { category: "Entertainment", sumCategory: sumEntertainment },
-  //   { category: "Appliances", sumCategory: sumAppliances },
-  //   { category: "Work", sumCategory: sumWork },
-  //   { category: "Lighting", sumCategory: sumLighting },
-  // ];
-  const chartarray = {
-    label: "Entertainment",
+  const sumUpLighting = devices
+    .filter(filterByCategory("Lighting"))
+    .map(calculateDailyPowerConsumption)
+    .reduce(sum, 0);
+
+  const chartData = {
+    labels: ["Entertainment", "Appliances", "Work", "Lighting"],
     datasets: [
       {
-        label: "??",
-        data: sumEntertainment,
-        sumAppliances,
-        sumWork,
-        sumLighting,
+        label: "Power consumption",
+        data: [sumUpEntertainment, sumUpAppliances, sumUpWork, sumUpLighting],
         borderWidth: 1,
       },
     ],
   };
-  //  const [deviceData, setDeviceData] = useState([
-
-  //  ])
-
-  // const [deviceData, setDeviceData] = useState({
-  //   labels: "Entertainment","Appliances","Work","Lighting"
-  //   datasets: [
-  //     {
-  //       label: "??",
-  //       data: sumLighting,
-  //     },
-  //   ],
-  // });
-
-  // function handleSubmit(event) {
-  //   event.preventDefault();
-  //   const formData = new FormData(event.target);
-  //   const data = Object.fromEntries(formData);
-  //   createDevice(data);
-  //   event.target.reset();
-  // }
-
   return (
     <>
       <Link href="/">Home</Link>
-      <Doughnut chartData={chartarray} />
+      <Doughnut chartData={chartData} />
       <StyledList>
         {sortedDevices
           .sort((a, b) =>
