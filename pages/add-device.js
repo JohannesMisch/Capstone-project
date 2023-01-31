@@ -8,6 +8,7 @@ import Doughnut from "@/components/DoughnutChart";
 export default function AddNewDevice({ createDevice, devices, handleDelete }) {
   const [toggleForm, setToggleForm] = useState(false);
   const [overallCost, setOverallCost] = useState(0);
+
   const sortedDevices = [...devices];
 
   function handleSubmit(event) {
@@ -77,7 +78,12 @@ export default function AddNewDevice({ createDevice, devices, handleDelete }) {
     <>
       <Link href="/">Home</Link>
       <Doughnut chartData={chartData} />
-      <h2> {overallCost.toFixed(2)} $</h2>
+      <h2>
+        {new Intl.NumberFormat("de-DE", {
+          style: "currency",
+          currency: "EUR",
+        }).format(overallCost)}
+      </h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="price">Price for 1 kW/h</label>
         <input
