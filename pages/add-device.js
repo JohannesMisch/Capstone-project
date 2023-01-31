@@ -4,18 +4,21 @@ import { useState } from "react";
 import AddForm from "@/components/AddDeviceForm";
 import Card from "@/components/Card";
 import Doughnut from "@/components/DoughnutChart";
+import useLocalStorageState from "use-local-storage-state";
 
 export default function AddNewDevice({ createDevice, devices, handleDelete }) {
   const [toggleForm, setToggleForm] = useState(false);
-  const [overallCost, setOverallCost] = useState(0);
-
   const sortedDevices = [...devices];
 
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    setOverallCost((sumUpDevices / 1000) * data.price);
+    setChartData(
+      chartData,
+      (chartData[1].price = data.price),
+      (chartData[2].overallCost = (sumUpDevices / 1000) * data.price)
+    );
     event.target.reset();
   }
 
@@ -52,7 +55,7 @@ export default function AddNewDevice({ createDevice, devices, handleDelete }) {
     .map(calculateDailyPowerConsumption)
     .reduce(sum, 0);
 
-  const chartData = {
+  const chartDataPowerConsumption = {
     labels: ["Entertainment", "Appliances", "Work", "Lighting"],
     datasets: [
       {
@@ -74,15 +77,22 @@ export default function AddNewDevice({ createDevice, devices, handleDelete }) {
       },
     ],
   };
+  const [chartData, setChartData] = useLocalStorageState("chartData", {
+    defaultValue: [
+      { chartDataPowerConsumption },
+      { price: 0 },
+      { overallCost: 0 },
+    ],
+  });
   return (
     <>
       <Link href="/">Home</Link>
-      <Doughnut chartData={chartData} />
+      <Doughnut chartData={chartData[0].chartDataPowerConsumption} />
       <h2>
         {new Intl.NumberFormat("de-DE", {
           style: "currency",
           currency: "EUR",
-        }).format(overallCost)}
+        }).format(chartData[2].overallCost)}
       </h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="price">Price for 1 kW/h</label>
