@@ -22,7 +22,7 @@
   {
     "device": "MACBOOK AIR",
     "device_category": "Work",
-    "model": "Mac14,2",
+    "model": "Mac14",
     "power_consumption": 50,
     "power_consumption_standby": 7,
     "average_usage_time": 9,
@@ -52,7 +52,7 @@
   {
     "device": "MACBOOK",
     "device_category": "Work",
-    "model": "Mac14,2",
+    "model": "Mac14",
     "power_consumption": 60,
     "power_consumption_standby": 7,
     "average_usage_time": 9,

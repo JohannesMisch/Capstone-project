@@ -3,7 +3,7 @@ import Card from "@/components/Card";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function Home({ devices, handleDelete }) {
+export default function Home({ devices, handleDelete, setDevices }) {
   const [isFiltered, setIsFiltered] = useState(true);
   const [isData, setIsData] = useState({ device_category: "" });
 
@@ -56,6 +56,9 @@ export default function Home({ devices, handleDelete }) {
                 powerConsumptionStandby={device.power_consumption_standby}
                 averageUsageTime={device.average_usage_time}
                 handleDelete={handleDelete}
+                handleSubmit={handleSubmit}
+                setDevices={setDevices}
+                devices={devices}
               />
             </Wrapper>
           ))}
@@ -74,6 +77,9 @@ export default function Home({ devices, handleDelete }) {
                 powerConsumptionStandby={device.power_consumption_standby}
                 averageUsageTime={device.average_usage_time}
                 handleDelete={handleDelete}
+                handleSubmit={handleSubmit}
+                setDevices={setDevices}
+                devices={devices}
               />
             </Wrapper>
           ))}

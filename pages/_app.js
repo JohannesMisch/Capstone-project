@@ -33,6 +33,7 @@ export default function App({ Component, pageProps }) {
         devices={devices}
         createDevice={createDevice}
         handleDelete={handleDelete}
+        setDevices={setDevices}
       />
     </>
   );
