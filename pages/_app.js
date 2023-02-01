@@ -8,6 +8,7 @@ export default function App({ Component, pageProps }) {
   const [devices, setDevices] = useLocalStorageState("devices", {
     defaultValue: [...userDevices],
   });
+
   function createDevice(newDevice) {
     setDevices((oldDevices) => [
       {
@@ -18,10 +19,12 @@ export default function App({ Component, pageProps }) {
       ...oldDevices,
     ]);
   }
+
   function handleDelete(id) {
     const devicesAfterDelete = devices.filter((devices) => id !== devices.id);
     setDevices(devicesAfterDelete);
   }
+
   return (
     <>
       <GlobalStyle />
@@ -33,6 +36,7 @@ export default function App({ Component, pageProps }) {
         devices={devices}
         createDevice={createDevice}
         handleDelete={handleDelete}
+        setDevices={setDevices}
       />
     </>
   );

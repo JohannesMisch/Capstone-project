@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Link from "next/link";
 import { useState } from "react";
 
 export default function AddForm({ createDevice }) {
@@ -20,7 +19,6 @@ export default function AddForm({ createDevice }) {
         id="device"
         name="device"
         type="text"
-        placeholder=""
         pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖß.]{1,50}"
         title="Max 50 characters"
         required
@@ -85,7 +83,7 @@ export default function AddForm({ createDevice }) {
 const StyledForm = styled.form`
   background-color: coral;
   z-index: 2;
-  position: absolute;
+  position: fixed;
   height: 90%;
   width: 85%;
   top: 40px;

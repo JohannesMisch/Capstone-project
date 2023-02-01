@@ -6,7 +6,12 @@ import Card from "@/components/Card";
 import Doughnut from "@/components/DoughnutChart";
 import useLocalStorageState from "use-local-storage-state";
 
-export default function AddNewDevice({ createDevice, devices, handleDelete }) {
+export default function AddNewDevice({
+  createDevice,
+  devices,
+  handleDelete,
+  setDevices,
+}) {
   const [toggleForm, setToggleForm] = useState(false);
   const sortedDevices = [...devices];
 
@@ -131,6 +136,9 @@ export default function AddNewDevice({ createDevice, devices, handleDelete }) {
                 powerConsumptionStandby={sortedDevice.power_consumption_standby}
                 averageUsageTime={sortedDevice.average_usage_time}
                 handleDelete={handleDelete}
+                handleSubmit={handleSubmit}
+                setDevices={setDevices}
+                devices={devices}
               />
             </Wrapper>
           ))}
@@ -166,5 +174,5 @@ const StyledList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 20px 10px;
+  padding: 20px 10px 50px 10px;
 `;
