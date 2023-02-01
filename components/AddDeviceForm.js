@@ -19,7 +19,6 @@ export default function AddForm({ createDevice }) {
         id="device"
         name="device"
         type="text"
-        placeholder=""
         pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖß.]{1,50}"
         title="Max 50 characters"
         required
