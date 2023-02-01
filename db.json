@@ -7,7 +7,7 @@
     "power_consumption_standby": 0.5,
     "average_usage_time": 4,
     "location": "Livingroom",
-    "id": 0
+    "id": "0"
   },
   {
     "device": "CLOTHES DRYER",
@@ -17,7 +17,7 @@
     "power_consumption_standby": 0.5,
     "average_usage_time": 0.5,
     "location": "Bathroom",
-    "id": 1
+    "id": "1"
   },
   {
     "device": "MACBOOK AIR",
@@ -27,7 +27,7 @@
     "power_consumption_standby": 7,
     "average_usage_time": 9,
     "location": "Livingroom",
-    "id": 2
+    "id": "2"
   },
   {
     "device": "MONITOR",
@@ -37,7 +37,7 @@
     "power_consumption_standby": 6.5,
     "average_usage_time": 4,
     "location": "Livingroom",
-    "id": 3
+    "id": "3"
   },
   {
     "device": "WASHING MASHINE",
@@ -47,7 +47,7 @@
     "power_consumption_standby": 0.5,
     "average_usage_time": 0.5,
     "location": "Bathroom",
-    "id": 4
+    "id": "4"
   },
   {
     "device": "MACBOOK",
@@ -57,6 +57,6 @@
     "power_consumption_standby": 7,
     "average_usage_time": 9,
     "location": "Livingroom",
-    "id": 5
+    "id": "5"
   }
 ]
