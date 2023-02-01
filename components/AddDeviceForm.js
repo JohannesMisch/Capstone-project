@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import { useState } from "react";
 
 export default function AddForm({ createDevice }) {
@@ -85,7 +84,7 @@ export default function AddForm({ createDevice }) {
 const StyledForm = styled.form`
   background-color: coral;
   z-index: 2;
-  position: absolute;
+  position: fixed;
   height: 90%;
   width: 85%;
   top: 40px;

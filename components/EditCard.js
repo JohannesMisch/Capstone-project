@@ -36,10 +36,7 @@ export default function EditCard({
 
     setIsEdit(!isEdit);
     event.target.reset();
-    console.log(data);
-    console.log(id);
   }
-  console.log(devices);
 
   return (
     <>
