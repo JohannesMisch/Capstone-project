@@ -79,7 +79,7 @@ export default function Home({
 
   const usedCategories = ["Entertainment", "Appliances", "Work", "Lighting"];
 
-  const allTheFingData = usedCategories.map((category) =>
+  const allTheData = usedCategories.map((category) =>
     testmap(devices, category)
   );
   function testmap(devices, category) {
@@ -88,7 +88,7 @@ export default function Home({
       .map(calculateDailyPowerConsumption)
       .reduce(sum, 0);
   }
-  console.log(allTheFingData);
+  console.log(allTheData);
 
   const chartDataPowerConsumption = {
     labels: ["Entertainment", "Appliances", "Work", "Lighting"],
