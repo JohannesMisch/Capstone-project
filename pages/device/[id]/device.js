@@ -30,31 +30,6 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
     );
   }
 
-  // function handleSubmit(event) {
-  //   event.preventDefault();
-  //   const formData = new FormData(event.target);
-  //   const data = Object.fromEntries(formData);
-  //   setDevices(
-  //     devices.map((device) => {
-  //       if (device.id === id)
-  //         return {
-  //           ...device,
-  //           device: data.device,
-  //           device_category: data.device_category,
-  //           model: data.model,
-  //           power_consumption: data.power_consumption,
-  //           power_consumption_standby: data.power_consumption_standby,
-  //           average_usage_time: data.average_usage_time,
-  //           location: data.location,
-  //         };
-  //       return device;
-  //     })
-  //   );
-
-  //   setIsEdit(!isEdit);
-  //   event.target.reset();
-  // }
-
   return (
     <>
       {isEdit ? (

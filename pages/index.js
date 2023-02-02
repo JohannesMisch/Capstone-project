@@ -174,7 +174,7 @@ export default function Home({
                 setDevices={setDevices}
                 devices={devices}
               />
-              <Link href={`/device/${device.id}/device`}>Edit</Link>
+              <Link href={`/device/${device.id}/device`}>Details</Link>
             </Wrapper>
           ))}
         </StyledList>
@@ -196,6 +196,7 @@ export default function Home({
                 setDevices={setDevices}
                 devices={devices}
               />
+              <Link href={`/device/${device.id}/device`}>Details</Link>
             </Wrapper>
           ))}
         </StyledList>
