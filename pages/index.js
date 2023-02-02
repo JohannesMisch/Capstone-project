@@ -77,6 +77,19 @@ export default function Home({
     .map(calculateDailyPowerConsumption)
     .reduce(sum, 0);
 
+  const usedCategories = ["Entertainment", "Appliances", "Work", "Lighting"];
+
+  const allTheFingData = usedCategories.map((category) =>
+    testmap(devices, category)
+  );
+  function testmap(devices, category) {
+    devices
+      .filter(filterByCategory(category))
+      .map(calculateDailyPowerConsumption)
+      .reduce(sum, 0);
+  }
+  console.log(allTheFingData);
+
   const chartDataPowerConsumption = {
     labels: ["Entertainment", "Appliances", "Work", "Lighting"],
     datasets: [
