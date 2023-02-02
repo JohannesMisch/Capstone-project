@@ -138,8 +138,6 @@ export default function Home({
       >
         {toggleForm ? "-" : "+"}
       </StyledButton>
-
-      <Link href="/add-device">Add Device</Link>
       <form onSubmit={handleSubmit}>
         <label htmlFor="searchInput">How do you want to sort your List?</label>
         <select id="searchInput" name="device_category" type="text" required>
