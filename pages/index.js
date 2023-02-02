@@ -109,7 +109,9 @@ export default function Home({
 
   return (
     <>
-      <Doughnut chartData={chartData[0].chartDataPowerConsumption} />
+      <ChartContainer>
+        <Doughnut chartData={chartData[0].chartDataPowerConsumption} />
+      </ChartContainer>
       <h2>
         {new Intl.NumberFormat("de-DE", {
           style: "currency",
@@ -229,4 +231,8 @@ const StyledList = styled.ul`
   flex-direction: column;
   gap: 10px;
   padding: 20px 10px 50px 10px;
+`;
+const ChartContainer = styled.div`
+  height: 50%;
+  max-width: 500px;
 `;
