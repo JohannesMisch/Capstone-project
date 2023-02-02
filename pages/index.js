@@ -15,7 +15,7 @@ export default function Home({
   const [isFiltered, setIsFiltered] = useState(true);
   const [isData, setIsData] = useState({ device_category: "" });
 
-  function handleSubmit(event) {
+  function handleSubmitFilter(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
@@ -138,7 +138,7 @@ export default function Home({
       >
         {toggleForm ? "-" : "+"}
       </StyledButton>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmitFilter}>
         <label htmlFor="searchInput">How do you want to sort your List?</label>
         <select id="searchInput" name="device_category" type="text" required>
           <option value="">--Please choose a category--</option>
