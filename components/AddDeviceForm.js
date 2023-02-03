@@ -9,6 +9,7 @@ export default function AddForm({ createDevice }) {
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
     createDevice(data);
+    console.log(data);
     event.target.reset();
   }
 
@@ -26,10 +27,12 @@ export default function AddForm({ createDevice }) {
       <label htmlFor="category">Devices category:</label>
       <select id="category" name="device_category" type="text" required>
         <option value="">--Please choose an option--</option>
-        <option value="Entertainment">Entertainment</option>
         <option value="Appliances">Appliances</option>
-        <option value="Work">Work</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Domestic_appliances">Home appliances</option>
         <option value="Lighting">Lighting</option>
+        <option value="Others">Others</option>
+        <option value="Work">Work</option>
       </select>
       <label htmlFor="model">Model:</label>
       <input
@@ -58,7 +61,7 @@ export default function AddForm({ createDevice }) {
         pattern="^[0-9,.]{1,10}"
         required
       />
-      <label htmlFor="time">Average usage time:</label>
+      <label htmlFor="time">Average usage time per day:</label>
       <input
         id="time"
         name="average_usage_time"
@@ -71,10 +74,13 @@ export default function AddForm({ createDevice }) {
       <label htmlFor="location">Location:</label>
       <select id="location" name="location" type="text" required>
         <option value="">--Please choose an option--</option>
-        <option value="Livingroom">Livingroom</option>
-        <option value="Bathroom">Bathroom</option>
         <option value="Bedroom">Bedroom</option>
+        <option value="Bathroom">Bathroom</option>
+        <option value="Basement">Basement</option>
+        <option value="Childsroom">Childsroom</option>
+        <option value="Home Office">Home Office</option>
         <option value="Kitchen">Kitchen</option>
+        <option value="Livingroom">Livingroom</option>
       </select>
       <button type="submit">Create</button>
     </StyledForm>
