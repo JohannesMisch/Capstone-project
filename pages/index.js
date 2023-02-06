@@ -14,6 +14,12 @@ export default function Home({
 }) {
   const [isFiltered, setIsFiltered] = useState(true);
   const [isData, setIsData] = useState({ device_category: "" });
+  const [price, setPrice] = useLocalStorageState("Price", {
+    defaultValue: 0,
+  });
+  // const [switchChart, setSwitchChart] = useLocalStorageState("switchChart", {
+  //   defaultValue: 0,
+  // });
 
   function handleSubmitFilter(event) {
     event.preventDefault();
@@ -40,27 +46,35 @@ export default function Home({
     event.target.reset();
   }
 
-  function filterByCategory(category) {
-    return (device) => device.device_category === category;
-  }
+  // function filterByCategory(category) {
+  //   return (device) => device.device_category === category;
+  // }
+
+  // const calculateDailyPowerConsumption = (device) =>
+  //   device.power_consumption * device.average_usage_time;
+
+  // const sum = (accumulator, currentValue) => accumulator + currentValue;
+
+  // const usedCategories = ["Entertainment", "Appliances", "Work", "Lighting"];
+
+  // const allTheData = usedCategories.map((category) =>
+  //   testmap(devices, category)
+  // );
+  // function testmap(devices, category) {
+  //   return devices
+  //     .filter(filterByCategory(category))
+  //     .map(calculateDailyPowerConsumption)
+  //     .reduce(sum, 0);
+  // }
 
   const calculateDailyPowerConsumption = (device) =>
-    device.power_consumption * device.average_usage_time;
+    (device.power_consumption * device.average_usage_time * price) / 1000;
 
   const sum = (accumulator, currentValue) => accumulator + currentValue;
 
-  const usedCategories = ["Entertainment", "Appliances", "Work", "Lighting"];
-
-  const allTheData = usedCategories.map((category) =>
-    testmap(devices, category)
-  );
-  function testmap(devices, category) {
-    return devices
-      .filter(filterByCategory(category))
-      .map(calculateDailyPowerConsumption)
-      .reduce(sum, 0);
-  }
-  console.log(allTheData);
+  const sumUpDevices = devices
+    .map(calculateDailyPowerConsumption)
+    .reduce(sum, 0);
 
   function calculateSums(devices) {
     return devices.reduce(
@@ -68,56 +82,143 @@ export default function Home({
         accumulator.categories[device.device_category] =
           accumulator.categories[device.device_category] ??
           0 + device.power_consumption * device.average_usage_time;
+        //--------------------------------------------------------------categories
+        accumulator.categoriesStandby[device.device_category] =
+          accumulator.categoriesStandby[device.device_category] ??
+          0 +
+            device.power_consumption_standby * (24 - device.average_usage_time);
+        //--------------------------------------------------------------categoriesStandby
+        accumulator.categoriesOverall[device.device_category] =
+          accumulator.categoriesOverall[device.device_category] ??
+          0 +
+            (device.power_consumption * device.average_usage_time +
+              device.power_consumption_standby *
+                (24 - device.average_usage_time));
+        //--------------------------------------------------------------categoriesOverall
         accumulator.location[device.location] =
           accumulator.location[device.location] ??
           0 + device.power_consumption * device.average_usage_time;
+        //--------------------------------------------------------------location
+        accumulator.locationStandby[device.location] =
+          accumulator.locationStandby[device.location] ??
+          0 +
+            device.power_consumption_standby * (24 - device.average_usage_time);
+        //---------------------------------------------------------------locationStandby
+        accumulator.locationOverall[device.location] =
+          accumulator.locationOverall[device.location] ??
+          0 +
+            (device.power_consumption * device.average_usage_time +
+              device.power_consumption_standby *
+                (24 - device.average_usage_time));
+        //--------------------------------------------------------------locationOverall
         return accumulator;
       },
-      { categories: {}, location: {} }
+      {
+        categories: {},
+        categoriesStandby: {},
+        categoriesOverall: {},
+        location: {},
+        locationStandby: {},
+        locationOverall: {},
+      }
     );
   }
+
   const sums = calculateSums(devices);
-  console.log(calculateSums(devices));
-  // [["Entertainment", 2838],["Appliances", 389] ...]
 
-  // {Entertainment: 2838,  Appliances:389, Work: 2893 , Lighting:383}
+  console.log(sums);
+  function createChartData(object) {
+    return {
+      labels: Object.keys(object),
+      datasets: [
+        {
+          label: "Power consumption",
+          data: Object.values(object),
+          backgroundColor: [
+            "hsl(180,30%,50%)",
+            "rgba(54, 162, 235, 0.5)",
+            "rgba(255, 206, 86, 0.5)",
+            "rgba(75, 192, 192, 0.5)",
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+          ],
+          borderWidth: 1,
+        },
+      ],
+    };
+  }
+  const [activeChartData, setActiveChartData] = useState(true);
+  const [selectedChart, setSelectedChart] = useState(null);
 
-  const chartDataPowerConsumption = {
-    labels: Object.keys(sums.categories),
-    datasets: [
-      {
-        label: "Power consumption",
-        data: Object.values(sums.categories),
-        backgroundColor: [
-          "hsl(180,30%,50%)",
-          "rgba(54, 162, 235, 0.5)",
-          "rgba(255, 206, 86, 0.5)",
-          "rgba(75, 192, 192, 0.5)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-  const [price, setPrice] = useLocalStorageState("Price", {
-    defaultValue: 0,
-  });
+  function createChartDataForSelectedChart() {
+    switch (selectedChart) {
+      case "Category":
+        return createChartData(sums.categoriesOverall);
+      case "Location":
+        return createChartData(sums.locationOverall);
+      case "CategoryActive":
+        return createChartData(sums.categories);
+      case "CategoryStandby":
+        return createChartData(sums.categoriesStandby);
+      case "LocationActive":
+        return createChartData(sums.location);
+      case "LocationStandby":
+        return createChartData(sums.locationStandby);
+      default:
+        return createChartData(sums.categories);
+    }
+  }
 
   return (
     <>
+      <button
+        onClick={() => {
+          setSelectedChart("Category");
+          setActiveChartData(true);
+        }}
+      >
+        Category
+      </button>
+      <button
+        onClick={() => {
+          setSelectedChart("Location");
+          setActiveChartData(false);
+        }}
+      >
+        Location
+      </button>
+      {activeChartData ? (
+        <>
+          <button onClick={() => setSelectedChart("CategoryActive")}>
+            CategoryActive
+          </button>
+          <button onClick={() => setSelectedChart("CategoryStandby")}>
+            CategoryStandby
+          </button>
+        </>
+      ) : (
+        <>
+          <button onClick={() => setSelectedChart("LocationActive")}>
+            LocationActive
+          </button>
+          <button onClick={() => setSelectedChart("LocationStandby")}>
+            LocationStandby
+          </button>
+        </>
+      )}
       <ChartContainer>
-        <Doughnut chartData={chartDataPowerConsumption} />
+        <Doughnut chartData={createChartDataForSelectedChart()} />
       </ChartContainer>
       <h2>
+        Overall cost{" "}
         {new Intl.NumberFormat("de-DE", {
           style: "currency",
           currency: "EUR",
-        }).format(999)}
+        }).format(sumUpDevices)}
       </h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="price">Price per 1 kW/h</label>
