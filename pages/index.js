@@ -14,6 +14,12 @@ export default function Home({
 }) {
   const [isFiltered, setIsFiltered] = useState(true);
   const [isData, setIsData] = useState({ device_category: "" });
+  const [price, setPrice] = useLocalStorageState("Price", {
+    defaultValue: 0,
+  });
+  const [activeChartData, setActiveChartData] = useState(true);
+  const [selectedChart, setSelectedChart] = useState(null);
+  const [toggleForm, setToggleForm] = useState(false);
 
   function handleSubmitFilter(event) {
     event.preventDefault();
@@ -30,26 +36,16 @@ export default function Home({
       devices.location === isData.device_category
   );
 
-  const [toggleForm, setToggleForm] = useState(false);
-
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    setChartData(
-      chartData,
-      (chartData[1].price = data.price),
-      (chartData[2].overallCost = (sumUpDevices / 1000) * data.price)
-    );
+    setPrice(data.price);
     event.target.reset();
   }
 
-  function filterByCategory(category) {
-    return (device) => device.device_category === category;
-  }
-
   const calculateDailyPowerConsumption = (device) =>
-    device.power_consumption * device.average_usage_time;
+    (device.power_consumption * device.average_usage_time * price) / 1000;
 
   const sum = (accumulator, currentValue) => accumulator + currentValue;
 
@@ -57,69 +53,145 @@ export default function Home({
     .map(calculateDailyPowerConsumption)
     .reduce(sum, 0);
 
-  const sumUpAppliances = devices
-    .filter(filterByCategory("Appliances"))
-    .map(calculateDailyPowerConsumption)
-    .reduce(sum, 0);
-
-  const sumUpEntertainment = devices
-    .filter(filterByCategory("Entertainment"))
-    .map(calculateDailyPowerConsumption)
-    .reduce(sum, 0);
-
-  const sumUpWork = devices
-    .filter(filterByCategory("Work"))
-    .map(calculateDailyPowerConsumption)
-    .reduce(sum, 0);
-
-  const sumUpLighting = devices
-    .filter(filterByCategory("Lighting"))
-    .map(calculateDailyPowerConsumption)
-    .reduce(sum, 0);
-
-  const chartDataPowerConsumption = {
-    labels: ["Entertainment", "Appliances", "Work", "Lighting"],
-    datasets: [
-      {
-        label: "Power consumption",
-        data: [sumUpEntertainment, sumUpAppliances, sumUpWork, sumUpLighting],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.5)",
-          "rgba(54, 162, 235, 0.5)",
-          "rgba(255, 206, 86, 0.5)",
-          "rgba(75, 192, 192, 0.5)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-        ],
-        borderWidth: 1,
+  function calculateSums(devices) {
+    return devices.reduce(
+      (accumulator, device) => {
+        //--------------------------------------------------------------categories
+        accumulator.categories[device.device_category] =
+          (accumulator.categories[device.device_category] ?? 0) +
+          device.power_consumption * device.average_usage_time;
+        //--------------------------------------------------------------categoriesStandby
+        accumulator.categoriesStandby[device.device_category] =
+          (accumulator.categoriesStandby[device.device_category] ?? 0) +
+          device.power_consumption_standby * (24 - device.average_usage_time);
+        //--------------------------------------------------------------categoriesOverall
+        accumulator.categoriesOverall[device.device_category] =
+          (accumulator.categoriesOverall[device.device_category] ?? 0) +
+          (device.power_consumption * device.average_usage_time +
+            device.power_consumption_standby *
+              (24 - device.average_usage_time));
+        //--------------------------------------------------------------location
+        accumulator.location[device.location] =
+          (accumulator.location[device.location] ?? 0) +
+          device.power_consumption * device.average_usage_time;
+        //---------------------------------------------------------------locationStandby
+        accumulator.locationStandby[device.location] =
+          (accumulator.locationStandby[device.location] ?? 0) +
+          device.power_consumption_standby * (24 - device.average_usage_time);
+        //--------------------------------------------------------------locationOverall
+        accumulator.locationOverall[device.location] =
+          (accumulator.locationOverall[device.location] ?? 0) +
+          (device.power_consumption * device.average_usage_time +
+            device.power_consumption_standby *
+              (24 - device.average_usage_time));
+        return accumulator;
       },
-    ],
-  };
-  const [chartData, setChartData] = useLocalStorageState("chartData", {
-    defaultValue: [
-      { chartDataPowerConsumption },
-      { price: 0 },
-      { overallCost: 0 },
-    ],
-  });
+      {
+        categories: {},
+        categoriesStandby: {},
+        categoriesOverall: {},
+        location: {},
+        locationStandby: {},
+        locationOverall: {},
+      }
+    );
+  }
+
+  const sums = calculateSums(devices);
+
+  function createChartData(object) {
+    return {
+      labels: Object.keys(object),
+      datasets: [
+        {
+          label: "Power consumption",
+          data: Object.values(object),
+          backgroundColor: [
+            "hsl(180,30%,50%)",
+            "rgba(54, 162, 235, 0.5)",
+            "rgba(255, 206, 86, 0.5)",
+            "rgba(75, 192, 192, 0.5)",
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+          ],
+          borderWidth: 1,
+        },
+      ],
+    };
+  }
+
+  function createChartDataForSelectedChart() {
+    switch (selectedChart) {
+      case "Category":
+        return createChartData(sums.categoriesOverall);
+      case "Location":
+        return createChartData(sums.locationOverall);
+      case "CategoryActive":
+        return createChartData(sums.categories);
+      case "CategoryStandby":
+        return createChartData(sums.categoriesStandby);
+      case "LocationActive":
+        return createChartData(sums.location);
+      case "LocationStandby":
+        return createChartData(sums.locationStandby);
+      default:
+        return createChartData(sums.categories);
+    }
+  }
 
   return (
     <>
+      <button
+        onClick={() => {
+          setSelectedChart("Category");
+          setActiveChartData(true);
+        }}
+      >
+        Category
+      </button>
+      <button
+        onClick={() => {
+          setSelectedChart("Location");
+          setActiveChartData(false);
+        }}
+      >
+        Location
+      </button>
+      {activeChartData ? (
+        <>
+          <button onClick={() => setSelectedChart("CategoryActive")}>
+            CategoryActive
+          </button>
+          <button onClick={() => setSelectedChart("CategoryStandby")}>
+            CategoryStandby
+          </button>
+        </>
+      ) : (
+        <>
+          <button onClick={() => setSelectedChart("LocationActive")}>
+            LocationActive
+          </button>
+          <button onClick={() => setSelectedChart("LocationStandby")}>
+            LocationStandby
+          </button>
+        </>
+      )}
       <ChartContainer>
-        <Doughnut chartData={chartData[0].chartDataPowerConsumption} />
+        <Doughnut chartData={createChartDataForSelectedChart()} />
       </ChartContainer>
       <h2>
+        Overall cost{" "}
         {new Intl.NumberFormat("de-DE", {
           style: "currency",
           currency: "EUR",
-        }).format(chartData[2].overallCost)}
+        }).format(sumUpDevices)}
       </h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="price">Price for 1 kW/h</label>
+        <label htmlFor="price">Price per 1 kW/h</label>
         <input
           id="price"
           name="price"
