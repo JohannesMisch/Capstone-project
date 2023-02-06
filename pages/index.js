@@ -19,6 +19,7 @@ export default function Home({
   });
   const [activeChartData, setActiveChartData] = useState(true);
   const [selectedChart, setSelectedChart] = useState(null);
+  const [toggleForm, setToggleForm] = useState(false);
 
   function handleSubmitFilter(event) {
     event.preventDefault();
@@ -34,8 +35,6 @@ export default function Home({
       devices.device_category === isData.device_category ||
       devices.location === isData.device_category
   );
-
-  const [toggleForm, setToggleForm] = useState(false);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -57,34 +56,34 @@ export default function Home({
   function calculateSums(devices) {
     return devices.reduce(
       (accumulator, device) => {
+        //--------------------------------------------------------------categories
         accumulator.categories[device.device_category] =
           (accumulator.categories[device.device_category] ?? 0) +
           device.power_consumption * device.average_usage_time;
-        //--------------------------------------------------------------categories
+        //--------------------------------------------------------------categoriesStandby
         accumulator.categoriesStandby[device.device_category] =
           (accumulator.categoriesStandby[device.device_category] ?? 0) +
           device.power_consumption_standby * (24 - device.average_usage_time);
-        //--------------------------------------------------------------categoriesStandby
+        //--------------------------------------------------------------categoriesOverall
         accumulator.categoriesOverall[device.device_category] =
           (accumulator.categoriesOverall[device.device_category] ?? 0) +
           (device.power_consumption * device.average_usage_time +
             device.power_consumption_standby *
               (24 - device.average_usage_time));
-        //--------------------------------------------------------------categoriesOverall
+        //--------------------------------------------------------------location
         accumulator.location[device.location] =
           (accumulator.location[device.location] ?? 0) +
           device.power_consumption * device.average_usage_time;
-        //--------------------------------------------------------------location
+        //---------------------------------------------------------------locationStandby
         accumulator.locationStandby[device.location] =
           (accumulator.locationStandby[device.location] ?? 0) +
           device.power_consumption_standby * (24 - device.average_usage_time);
-        //---------------------------------------------------------------locationStandby
+        //--------------------------------------------------------------locationOverall
         accumulator.locationOverall[device.location] =
           (accumulator.locationOverall[device.location] ?? 0) +
           (device.power_consumption * device.average_usage_time +
             device.power_consumption_standby *
               (24 - device.average_usage_time));
-        //--------------------------------------------------------------locationOverall
         return accumulator;
       },
       {
@@ -100,7 +99,6 @@ export default function Home({
 
   const sums = calculateSums(devices);
 
-  console.log(sums);
   function createChartData(object) {
     return {
       labels: Object.keys(object),
