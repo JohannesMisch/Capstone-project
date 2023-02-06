@@ -17,9 +17,8 @@ export default function Home({
   const [price, setPrice] = useLocalStorageState("Price", {
     defaultValue: 0,
   });
-  // const [switchChart, setSwitchChart] = useLocalStorageState("switchChart", {
-  //   defaultValue: 0,
-  // });
+  const [activeChartData, setActiveChartData] = useState(true);
+  const [selectedChart, setSelectedChart] = useState(null);
 
   function handleSubmitFilter(event) {
     event.preventDefault();
@@ -46,27 +45,6 @@ export default function Home({
     event.target.reset();
   }
 
-  // function filterByCategory(category) {
-  //   return (device) => device.device_category === category;
-  // }
-
-  // const calculateDailyPowerConsumption = (device) =>
-  //   device.power_consumption * device.average_usage_time;
-
-  // const sum = (accumulator, currentValue) => accumulator + currentValue;
-
-  // const usedCategories = ["Entertainment", "Appliances", "Work", "Lighting"];
-
-  // const allTheData = usedCategories.map((category) =>
-  //   testmap(devices, category)
-  // );
-  // function testmap(devices, category) {
-  //   return devices
-  //     .filter(filterByCategory(category))
-  //     .map(calculateDailyPowerConsumption)
-  //     .reduce(sum, 0);
-  // }
-
   const calculateDailyPowerConsumption = (device) =>
     (device.power_consumption * device.average_usage_time * price) / 1000;
 
@@ -80,36 +58,32 @@ export default function Home({
     return devices.reduce(
       (accumulator, device) => {
         accumulator.categories[device.device_category] =
-          accumulator.categories[device.device_category] ??
-          0 + device.power_consumption * device.average_usage_time;
+          (accumulator.categories[device.device_category] ?? 0) +
+          device.power_consumption * device.average_usage_time;
         //--------------------------------------------------------------categories
         accumulator.categoriesStandby[device.device_category] =
-          accumulator.categoriesStandby[device.device_category] ??
-          0 +
-            device.power_consumption_standby * (24 - device.average_usage_time);
+          (accumulator.categoriesStandby[device.device_category] ?? 0) +
+          device.power_consumption_standby * (24 - device.average_usage_time);
         //--------------------------------------------------------------categoriesStandby
         accumulator.categoriesOverall[device.device_category] =
-          accumulator.categoriesOverall[device.device_category] ??
-          0 +
-            (device.power_consumption * device.average_usage_time +
-              device.power_consumption_standby *
-                (24 - device.average_usage_time));
+          (accumulator.categoriesOverall[device.device_category] ?? 0) +
+          (device.power_consumption * device.average_usage_time +
+            device.power_consumption_standby *
+              (24 - device.average_usage_time));
         //--------------------------------------------------------------categoriesOverall
         accumulator.location[device.location] =
-          accumulator.location[device.location] ??
-          0 + device.power_consumption * device.average_usage_time;
+          (accumulator.location[device.location] ?? 0) +
+          device.power_consumption * device.average_usage_time;
         //--------------------------------------------------------------location
         accumulator.locationStandby[device.location] =
-          accumulator.locationStandby[device.location] ??
-          0 +
-            device.power_consumption_standby * (24 - device.average_usage_time);
+          (accumulator.locationStandby[device.location] ?? 0) +
+          device.power_consumption_standby * (24 - device.average_usage_time);
         //---------------------------------------------------------------locationStandby
         accumulator.locationOverall[device.location] =
-          accumulator.locationOverall[device.location] ??
-          0 +
-            (device.power_consumption * device.average_usage_time +
-              device.power_consumption_standby *
-                (24 - device.average_usage_time));
+          (accumulator.locationOverall[device.location] ?? 0) +
+          (device.power_consumption * device.average_usage_time +
+            device.power_consumption_standby *
+              (24 - device.average_usage_time));
         //--------------------------------------------------------------locationOverall
         return accumulator;
       },
@@ -151,8 +125,6 @@ export default function Home({
       ],
     };
   }
-  const [activeChartData, setActiveChartData] = useState(true);
-  const [selectedChart, setSelectedChart] = useState(null);
 
   function createChartDataForSelectedChart() {
     switch (selectedChart) {
