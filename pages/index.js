@@ -5,7 +5,7 @@ import { useState } from "react";
 import AddForm from "@/components/AddDeviceForm";
 import Doughnut from "@/components/DoughnutChart";
 import useLocalStorageState from "use-local-storage-state";
-import SearchBar from "@/components/Sreachbar";
+import SearchBar from "@/components/Searchbar";
 
 export default function Home({
   devices,
@@ -16,15 +16,15 @@ export default function Home({
   const [isFiltered, setIsFiltered] = useState(true);
   const [isData, setIsData] = useState({ device_category: "" });
   const [price, setPrice] = useLocalStorageState("Price", {
-    defaultValue: 0,
+    defaultValue: 1,
   });
   const [activeChartData, setActiveChartData] = useState(true);
   const [selectedChart, setSelectedChart] = useState(null);
   const [toggleForm, setToggleForm] = useState(false);
-  const [filter, setFilter] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   function handleSearch(event) {
-    setFilter(event.target.value.toLowerCase());
+    setSearchTerm(event.target.value.toLowerCase());
   }
 
   function handleSubmitFilter(event) {
@@ -44,10 +44,10 @@ export default function Home({
 
   const filteredBySearch = devices.filter(
     (filterDevice) =>
-      filterDevice.device.toLowerCase().includes(filter) ||
-      filterDevice.device_category.toLowerCase().includes(filter) ||
-      filterDevice.model.toLowerCase().includes(filter) ||
-      filterDevice.location.includes(filter)
+      filterDevice.device.toLowerCase().includes(searchTerm) ||
+      filterDevice.device_category.toLowerCase().includes(searchTerm) ||
+      filterDevice.model.toLowerCase().includes(searchTerm) ||
+      filterDevice.location.includes(searchTerm)
   );
 
   function handleSubmit(event) {
@@ -59,7 +59,10 @@ export default function Home({
   }
 
   const calculateDailyPowerConsumption = (device) =>
-    (device.power_consumption * device.average_usage_time * price) / 1000;
+    ((device.power_consumption_standby * (24 - device.average_usage_time) +
+      device.power_consumption * device.average_usage_time) *
+      price) /
+    1000;
 
   const sum = (accumulator, currentValue) => accumulator + currentValue;
 
@@ -73,31 +76,43 @@ export default function Home({
         //--------------------------------------------------------------categories
         accumulator.categories[device.device_category] =
           (accumulator.categories[device.device_category] ?? 0) +
-          device.power_consumption * device.average_usage_time;
+          ((device.power_consumption * device.average_usage_time) / 1000) *
+            price;
         //--------------------------------------------------------------categoriesStandby
         accumulator.categoriesStandby[device.device_category] =
           (accumulator.categoriesStandby[device.device_category] ?? 0) +
-          device.power_consumption_standby * (24 - device.average_usage_time);
+          ((device.power_consumption_standby *
+            (24 - device.average_usage_time)) /
+            1000) *
+            price;
         //--------------------------------------------------------------categoriesOverall
         accumulator.categoriesOverall[device.device_category] =
           (accumulator.categoriesOverall[device.device_category] ?? 0) +
-          (device.power_consumption * device.average_usage_time +
+          ((device.power_consumption * device.average_usage_time +
             device.power_consumption_standby *
-              (24 - device.average_usage_time));
+              (24 - device.average_usage_time)) /
+            1000) *
+            price;
         //--------------------------------------------------------------location
         accumulator.location[device.location] =
           (accumulator.location[device.location] ?? 0) +
-          device.power_consumption * device.average_usage_time;
+          ((device.power_consumption * device.average_usage_time) / 1000) *
+            price;
         //---------------------------------------------------------------locationStandby
         accumulator.locationStandby[device.location] =
           (accumulator.locationStandby[device.location] ?? 0) +
-          device.power_consumption_standby * (24 - device.average_usage_time);
+          ((device.power_consumption_standby *
+            (24 - device.average_usage_time)) /
+            1000) *
+            price;
         //--------------------------------------------------------------locationOverall
         accumulator.locationOverall[device.location] =
           (accumulator.locationOverall[device.location] ?? 0) +
-          (device.power_consumption * device.average_usage_time +
+          ((device.power_consumption * device.average_usage_time +
             device.power_consumption_standby *
-              (24 - device.average_usage_time));
+              (24 - device.average_usage_time)) /
+            1000) *
+            price;
         return accumulator;
       },
       {
@@ -252,6 +267,7 @@ export default function Home({
             {filteredBySearch.map((device) => (
               <Wrapper key={device.id}>
                 <Card
+                  price={price}
                   id={device.id}
                   deviceCategory={device.device_category}
                   name={device.device}
@@ -265,7 +281,7 @@ export default function Home({
                   setDevices={setDevices}
                   devices={devices}
                 />
-                <Link href={`/device/${device.id}/device`}>Details</Link>
+                <Link href={`/device/${device.id}`}>Details</Link>
               </Wrapper>
             ))}
           </StyledList>
@@ -275,6 +291,7 @@ export default function Home({
           {filteredDevices.map((device) => (
             <Wrapper key={device.id}>
               <Card
+                price={price}
                 id={device.id}
                 deviceCategory={device.device_category}
                 name={device.device}

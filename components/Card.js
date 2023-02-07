@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import {
   EntertainmentIcon,
@@ -6,8 +5,6 @@ import {
   WorkIcon,
   LightingIcon,
 } from "@/components/Icons";
-import EditCard from "./EditCard";
-import Link from "next/link";
 
 const CATEGORY_MAP = {
   Entertainment: <EntertainmentIcon />,
@@ -16,18 +13,30 @@ const CATEGORY_MAP = {
   Lighting: <LightingIcon />,
 };
 
-export default function Card({ deviceCategory, name, averageUsageTime }) {
-  const [areDetailsDisplayed, setAreDetailsDisplayed] = useState(false);
-
+export default function Card({
+  deviceCategory,
+  name,
+  averageUsageTime,
+  powerConsumption,
+  powerConsumptionStandby,
+  price,
+}) {
+  const devicePowerConsumption =
+    ((averageUsageTime * powerConsumption +
+      (24 - averageUsageTime) * powerConsumptionStandby) /
+      1000) *
+    price;
   return (
     <section>
       {CATEGORY_MAP[deviceCategory]}
       <p>Device:{name}</p>
       <p>Average usage time:{averageUsageTime}h</p>
+      <p>
+        {new Intl.NumberFormat("de-DE", {
+          style: "currency",
+          currency: "EUR",
+        }).format(devicePowerConsumption)}
+      </p>
     </section>
   );
 }
-
-const StyledListItem = styled.li`
-  overflow-wrap: break-word;
-`;

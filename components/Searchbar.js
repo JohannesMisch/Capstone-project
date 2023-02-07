@@ -1,6 +1,6 @@
 export default function SearchBar({ handleSearch }) {
   return (
-    <section>
+    <div>
       <label htmlFor="search">Search</label>
       <input
         onChange={handleSearch}
@@ -9,6 +9,6 @@ export default function SearchBar({ handleSearch }) {
         id="search"
         maxLength={60}
       />
-    </section>
+    </div>
   );
 }
