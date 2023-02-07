@@ -5,6 +5,7 @@ import { useState } from "react";
 import AddForm from "@/components/AddDeviceForm";
 import Doughnut from "@/components/DoughnutChart";
 import useLocalStorageState from "use-local-storage-state";
+import SearchBar from "@/components/Sreachbar";
 
 export default function Home({
   devices,
@@ -20,6 +21,11 @@ export default function Home({
   const [activeChartData, setActiveChartData] = useState(true);
   const [selectedChart, setSelectedChart] = useState(null);
   const [toggleForm, setToggleForm] = useState(false);
+  const [filter, setFilter] = useState("");
+
+  function handleSearch(event) {
+    setFilter(event.target.value.toLowerCase());
+  }
 
   function handleSubmitFilter(event) {
     event.preventDefault();
@@ -34,6 +40,14 @@ export default function Home({
     (devices) =>
       devices.device_category === isData.device_category ||
       devices.location === isData.device_category
+  );
+
+  const filteredBySearch = devices.filter(
+    (filterDevice) =>
+      filterDevice.device.toLowerCase().includes(filter) ||
+      filterDevice.device_category.toLowerCase().includes(filter) ||
+      filterDevice.model.toLowerCase().includes(filter) ||
+      filterDevice.location.includes(filter)
   );
 
   function handleSubmit(event) {
@@ -190,6 +204,7 @@ export default function Home({
           currency: "EUR",
         }).format(sumUpDevices)}
       </h2>
+
       <form onSubmit={handleSubmit}>
         <label htmlFor="price">Price per 1 kW/h</label>
         <input
@@ -231,27 +246,30 @@ export default function Home({
         </button>
       </form>
       {isFiltered ? (
-        <StyledList>
-          {devices.map((device) => (
-            <Wrapper key={device.id}>
-              <Card
-                id={device.id}
-                deviceCategory={device.device_category}
-                name={device.device}
-                location={device.location}
-                model={device.model}
-                powerConsumption={device.power_consumption}
-                powerConsumptionStandby={device.power_consumption_standby}
-                averageUsageTime={device.average_usage_time}
-                handleDelete={handleDelete}
-                handleSubmit={handleSubmit}
-                setDevices={setDevices}
-                devices={devices}
-              />
-              <Link href={`/device/${device.id}/device`}>Details</Link>
-            </Wrapper>
-          ))}
-        </StyledList>
+        <>
+          <SearchBar devices={devices} handleSearch={handleSearch} />
+          <StyledList>
+            {filteredBySearch.map((device) => (
+              <Wrapper key={device.id}>
+                <Card
+                  id={device.id}
+                  deviceCategory={device.device_category}
+                  name={device.device}
+                  location={device.location}
+                  model={device.model}
+                  powerConsumption={device.power_consumption}
+                  powerConsumptionStandby={device.power_consumption_standby}
+                  averageUsageTime={device.average_usage_time}
+                  handleDelete={handleDelete}
+                  handleSubmit={handleSubmit}
+                  setDevices={setDevices}
+                  devices={devices}
+                />
+                <Link href={`/device/${device.id}/device`}>Details</Link>
+              </Wrapper>
+            ))}
+          </StyledList>
+        </>
       ) : (
         <StyledList>
           {filteredDevices.map((device) => (

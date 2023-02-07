@@ -9,6 +9,7 @@ import {
   WorkIcon,
   LightingIcon,
 } from "@/components/Icons";
+import Modal from "@/components/Modal";
 
 const CATEGORY_MAP = {
   Entertainment: <EntertainmentIcon />,
@@ -17,6 +18,7 @@ const CATEGORY_MAP = {
   Lighting: <LightingIcon />,
 };
 export default function DetailsCard({ setDevices, devices, handleDelete }) {
+  const [showModalDelete, setShowModalDelete] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const currentDevice = devices.find((device) => device.id === id);
@@ -59,11 +61,19 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
           <button
             type="button"
             onClick={() => {
-              handleDelete(id);
+              setShowModalDelete(!showModalDelete);
             }}
           >
             Delete
           </button>
+          <button onClick={() => setShowModalDelete(true)}>Modal</button>
+          <StyledModal
+            id={id}
+            currentDevice={currentDevice}
+            showModalDelete={showModalDelete}
+            handleDelete={handleDelete}
+            onClose={() => setShowModalDelete(false)}
+          />
           <button onClick={() => setIsEdit(!isEdit)}>Edit</button>
           <Link href="/">Back to the overview</Link>;
         </>
@@ -114,4 +124,7 @@ const StyledList = styled.ul`
 `;
 const StyledListItem = styled.li`
   overflow-wrap: break-word;
+`;
+const StyledModal = styled(Modal)`
+  z-index: 100;
 `;
