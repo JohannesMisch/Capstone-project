@@ -1,13 +1,7 @@
 import styled from "styled-components";
 import { router } from "next/router";
 
-export default function Modal({
-  showDeleteModal,
-  onClose,
-  handleDelete,
-  id,
-  currentDevice,
-}) {
+export default function Modal({ onClose, handleDelete, id, currentDevice }) {
   return (
     <Overlay>
       <ModalContainer>
@@ -27,6 +21,7 @@ export default function Modal({
     </Overlay>
   );
 }
+
 const Overlay = styled.div`
   z-index: 99;
   background-color: rgba(0, 0, 0, 0.5);
