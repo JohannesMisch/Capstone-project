@@ -9,6 +9,7 @@ import {
   WorkIcon,
   LightingIcon,
 } from "@/components/Icons";
+import Modal from "@/components/Modal";
 
 const CATEGORY_MAP = {
   Entertainment: <EntertainmentIcon />,
@@ -17,6 +18,7 @@ const CATEGORY_MAP = {
   Lighting: <LightingIcon />,
 };
 export default function DetailsCard({ setDevices, devices, handleDelete }) {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const currentDevice = devices.find((device) => device.id === id);
@@ -56,14 +58,23 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
             </ul>
             <p>Average usage time:{currentDevice.average_usage_time}h</p>
           </section>
-          <button
+          {/* <button
             type="button"
             onClick={() => {
-              handleDelete(id);
+              setShowModalDelete(!showModalDelete);
             }}
           >
             Delete
-          </button>
+          </button> */}
+          <button onClick={() => setShowDeleteModal(true)}>Delete</button>
+          {showDeleteModal && (
+            <Modal
+              id={id}
+              currentDevice={currentDevice}
+              handleDelete={handleDelete}
+              onClose={() => setShowDeleteModal(false)}
+            />
+          )}
           <button onClick={() => setIsEdit(!isEdit)}>Edit</button>
           <Link href="/">Back to the overview</Link>;
         </>
@@ -87,31 +98,6 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
   );
 }
 
-const StyledCard = styled.li`
-  border: solid black 3px;
-`;
-
-const StyledButton = styled.button`
-  z-index: 3;
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  background-color: red;
-  height: 40px;
-  width: 40px;
-`;
-
-const Wrapper = styled.li`
-  border: solid black 3px;
-`;
-
-const StyledList = styled.ul`
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 20px 10px 50px 10px;
-`;
 const StyledListItem = styled.li`
   overflow-wrap: break-word;
 `;

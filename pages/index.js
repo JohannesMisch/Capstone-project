@@ -5,6 +5,7 @@ import { useState } from "react";
 import AddForm from "@/components/AddDeviceForm";
 import Doughnut from "@/components/DoughnutChart";
 import useLocalStorageState from "use-local-storage-state";
+import SearchBar from "@/components/Searchbar";
 
 export default function Home({
   devices,
@@ -15,11 +16,16 @@ export default function Home({
   const [isFiltered, setIsFiltered] = useState(true);
   const [isData, setIsData] = useState({ device_category: "" });
   const [price, setPrice] = useLocalStorageState("Price", {
-    defaultValue: 0,
+    defaultValue: 1,
   });
   const [activeChartData, setActiveChartData] = useState(true);
   const [selectedChart, setSelectedChart] = useState(null);
   const [toggleForm, setToggleForm] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  function handleSearch(event) {
+    setSearchTerm(event.target.value.toLowerCase());
+  }
 
   function handleSubmitFilter(event) {
     event.preventDefault();
@@ -36,6 +42,14 @@ export default function Home({
       devices.location === isData.device_category
   );
 
+  const filteredBySearch = devices.filter(
+    (filterDevice) =>
+      filterDevice.device.toLowerCase().includes(searchTerm) ||
+      filterDevice.device_category.toLowerCase().includes(searchTerm) ||
+      filterDevice.model.toLowerCase().includes(searchTerm) ||
+      filterDevice.location.includes(searchTerm)
+  );
+
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -45,7 +59,10 @@ export default function Home({
   }
 
   const calculateDailyPowerConsumption = (device) =>
-    (device.power_consumption * device.average_usage_time * price) / 1000;
+    ((device.power_consumption_standby * (24 - device.average_usage_time) +
+      device.power_consumption * device.average_usage_time) *
+      price) /
+    1000;
 
   const sum = (accumulator, currentValue) => accumulator + currentValue;
 
@@ -59,31 +76,43 @@ export default function Home({
         //--------------------------------------------------------------categories
         accumulator.categories[device.device_category] =
           (accumulator.categories[device.device_category] ?? 0) +
-          device.power_consumption * device.average_usage_time;
+          ((device.power_consumption * device.average_usage_time) / 1000) *
+            price;
         //--------------------------------------------------------------categoriesStandby
         accumulator.categoriesStandby[device.device_category] =
           (accumulator.categoriesStandby[device.device_category] ?? 0) +
-          device.power_consumption_standby * (24 - device.average_usage_time);
+          ((device.power_consumption_standby *
+            (24 - device.average_usage_time)) /
+            1000) *
+            price;
         //--------------------------------------------------------------categoriesOverall
         accumulator.categoriesOverall[device.device_category] =
           (accumulator.categoriesOverall[device.device_category] ?? 0) +
-          (device.power_consumption * device.average_usage_time +
+          ((device.power_consumption * device.average_usage_time +
             device.power_consumption_standby *
-              (24 - device.average_usage_time));
+              (24 - device.average_usage_time)) /
+            1000) *
+            price;
         //--------------------------------------------------------------location
         accumulator.location[device.location] =
           (accumulator.location[device.location] ?? 0) +
-          device.power_consumption * device.average_usage_time;
+          ((device.power_consumption * device.average_usage_time) / 1000) *
+            price;
         //---------------------------------------------------------------locationStandby
         accumulator.locationStandby[device.location] =
           (accumulator.locationStandby[device.location] ?? 0) +
-          device.power_consumption_standby * (24 - device.average_usage_time);
+          ((device.power_consumption_standby *
+            (24 - device.average_usage_time)) /
+            1000) *
+            price;
         //--------------------------------------------------------------locationOverall
         accumulator.locationOverall[device.location] =
           (accumulator.locationOverall[device.location] ?? 0) +
-          (device.power_consumption * device.average_usage_time +
+          ((device.power_consumption * device.average_usage_time +
             device.power_consumption_standby *
-              (24 - device.average_usage_time));
+              (24 - device.average_usage_time)) /
+            1000) *
+            price;
         return accumulator;
       },
       {
@@ -190,6 +219,7 @@ export default function Home({
           currency: "EUR",
         }).format(sumUpDevices)}
       </h2>
+
       <form onSubmit={handleSubmit}>
         <label htmlFor="price">Price per 1 kW/h</label>
         <input
@@ -231,32 +261,37 @@ export default function Home({
         </button>
       </form>
       {isFiltered ? (
-        <StyledList>
-          {devices.map((device) => (
-            <Wrapper key={device.id}>
-              <Card
-                id={device.id}
-                deviceCategory={device.device_category}
-                name={device.device}
-                location={device.location}
-                model={device.model}
-                powerConsumption={device.power_consumption}
-                powerConsumptionStandby={device.power_consumption_standby}
-                averageUsageTime={device.average_usage_time}
-                handleDelete={handleDelete}
-                handleSubmit={handleSubmit}
-                setDevices={setDevices}
-                devices={devices}
-              />
-              <Link href={`/device/${device.id}/device`}>Details</Link>
-            </Wrapper>
-          ))}
-        </StyledList>
+        <>
+          <SearchBar devices={devices} handleSearch={handleSearch} />
+          <StyledList>
+            {filteredBySearch.map((device) => (
+              <Wrapper key={device.id}>
+                <Card
+                  price={price}
+                  id={device.id}
+                  deviceCategory={device.device_category}
+                  name={device.device}
+                  location={device.location}
+                  model={device.model}
+                  powerConsumption={device.power_consumption}
+                  powerConsumptionStandby={device.power_consumption_standby}
+                  averageUsageTime={device.average_usage_time}
+                  handleDelete={handleDelete}
+                  handleSubmit={handleSubmit}
+                  setDevices={setDevices}
+                  devices={devices}
+                />
+                <Link href={`/device/${device.id}`}>Details</Link>
+              </Wrapper>
+            ))}
+          </StyledList>
+        </>
       ) : (
         <StyledList>
           {filteredDevices.map((device) => (
             <Wrapper key={device.id}>
               <Card
+                price={price}
                 id={device.id}
                 deviceCategory={device.device_category}
                 name={device.device}

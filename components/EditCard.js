@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import dynamic from "next/dynamic";
+
 export default function EditCard({
   deviceCategory,
   name,
@@ -114,7 +116,7 @@ export default function EditCard({
           id="time"
           name="average_usage_time"
           type="number"
-          title="Hello"
+          title="Hello there"
           min={0}
           max={24}
           defaultValue={averageUsageTime}
@@ -123,6 +125,7 @@ export default function EditCard({
         <button type="button" onClick={() => setIsEdit(!isEdit)}>
           Cancel
         </button>
+
         <button>Save</button>
       </StyledForm>
     </>
