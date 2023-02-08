@@ -174,41 +174,51 @@ export default function Home({
 
   return (
     <>
-      <button
-        onClick={() => {
-          setSelectedChart("Category");
-          setActiveChartData(true);
-        }}
-      >
-        Category
-      </button>
-      <button
-        onClick={() => {
-          setSelectedChart("Location");
-          setActiveChartData(false);
-        }}
-      >
-        Location
-      </button>
-      {activeChartData ? (
-        <>
-          <button onClick={() => setSelectedChart("CategoryActive")}>
-            CategoryActive
-          </button>
-          <button onClick={() => setSelectedChart("CategoryStandby")}>
-            CategoryStandby
-          </button>
-        </>
-      ) : (
-        <>
-          <button onClick={() => setSelectedChart("LocationActive")}>
-            LocationActive
-          </button>
-          <button onClick={() => setSelectedChart("LocationStandby")}>
-            LocationStandby
-          </button>
-        </>
-      )}
+      <ButtonContainer>
+        <StyledChartButton
+          onClick={() => {
+            setSelectedChart("Category");
+            setActiveChartData(true);
+          }}
+        >
+          Category
+        </StyledChartButton>
+        <StyledChartButton
+          onClick={() => {
+            setSelectedChart("Location");
+            setActiveChartData(false);
+          }}
+        >
+          Location
+        </StyledChartButton>
+        {activeChartData ? (
+          <>
+            <StyledChartButton
+              onClick={() => setSelectedChart("CategoryActive")}
+            >
+              CategoryActive
+            </StyledChartButton>
+            <StyledChartButton
+              onClick={() => setSelectedChart("CategoryStandby")}
+            >
+              CategoryStandby
+            </StyledChartButton>
+          </>
+        ) : (
+          <>
+            <StyledChartButton
+              onClick={() => setSelectedChart("LocationActive")}
+            >
+              LocationActive
+            </StyledChartButton>
+            <StyledChartButton
+              onClick={() => setSelectedChart("LocationStandby")}
+            >
+              LocationStandby
+            </StyledChartButton>
+          </>
+        )}
+      </ButtonContainer>
       <ChartContainer>
         <Doughnut chartData={createChartDataForSelectedChart()} />
       </ChartContainer>
@@ -235,13 +245,13 @@ export default function Home({
         <button>send it</button>
       </form>
       {toggleForm && <AddForm createDevice={createDevice} />}
-      <StyledButton
+      <StyledFormButton
         onClick={() => {
           setToggleForm(!toggleForm);
         }}
       >
         {toggleForm ? "-" : "+"}
-      </StyledButton>
+      </StyledFormButton>
       <form onSubmit={handleSubmitFilter}>
         <label htmlFor="searchInput">How do you want to sort your List?</label>
         <select id="searchInput" name="device_category" type="text" required>
@@ -281,7 +291,7 @@ export default function Home({
                   setDevices={setDevices}
                   devices={devices}
                 />
-                <Link href={`/device/${device.id}`}>Details</Link>
+                <StyledLink href={`/device/${device.id}`}>Details</StyledLink>
               </Wrapper>
             ))}
           </StyledList>
@@ -305,7 +315,9 @@ export default function Home({
                 setDevices={setDevices}
                 devices={devices}
               />
-              <Link href={`/device/${device.id}/device`}>Details</Link>
+              <StyledLink href={`/device/${device.id}/device`}>
+                Details
+              </StyledLink>
             </Wrapper>
           ))}
         </StyledList>
@@ -318,18 +330,23 @@ const StyledCard = styled.li`
   border: solid black 3px;
 `;
 
-const StyledButton = styled.button`
+const StyledFormButton = styled.button`
   z-index: 3;
   position: fixed;
   bottom: 20px;
   left: 20px;
-  background-color: red;
+  background-color: green;
+  border-radius: 50px;
   height: 40px;
   width: 40px;
 `;
-
+const ChartContainer = styled.div`
+  height: 50%;
+  max-width: 500px;
+`;
 const Wrapper = styled.li`
   border: solid black 3px;
+  border-radius: 20px;
 `;
 
 const StyledList = styled.ul`
@@ -339,7 +356,14 @@ const StyledList = styled.ul`
   gap: 10px;
   padding: 20px 10px 50px 10px;
 `;
-const ChartContainer = styled.div`
-  height: 50%;
-  max-width: 500px;
+const StyledLink = styled(Link)`
+  padding: 10px;
+  border: solid black 3px;
+  border-radius: 20px;
 `;
+
+const ButtonContainer = styled.div`
+  display: flex;
+`;
+
+const StyledChartButton = styled.button``;

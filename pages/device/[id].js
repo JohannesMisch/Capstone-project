@@ -58,14 +58,6 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
             </ul>
             <p>Average usage time:{currentDevice.average_usage_time}h</p>
           </section>
-          {/* <button
-            type="button"
-            onClick={() => {
-              setShowModalDelete(!showModalDelete);
-            }}
-          >
-            Delete
-          </button> */}
           <button onClick={() => setShowDeleteModal(true)}>Delete</button>
           {showDeleteModal && (
             <Modal

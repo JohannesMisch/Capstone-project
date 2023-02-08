@@ -27,9 +27,9 @@ export default function Card({
       1000) *
     price;
   return (
-    <section>
+    <CardContent>
       {CATEGORY_MAP[deviceCategory]}
-      <p>Device:{name}</p>
+      <p>{name}</p>
       <p>Average usage time:{averageUsageTime}h</p>
       <p>
         {new Intl.NumberFormat("de-DE", {
@@ -37,6 +37,12 @@ export default function Card({
           currency: "EUR",
         }).format(devicePowerConsumption)}
       </p>
-    </section>
+    </CardContent>
   );
 }
+const CardContent = styled.section`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`;
