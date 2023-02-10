@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Link from "next/link";
 import {
   EntertainmentIcon,
   AppliancesIcon,
@@ -20,6 +21,7 @@ export default function Card({
   powerConsumption,
   powerConsumptionStandby,
   price,
+  id,
 }) {
   const devicePowerConsumption =
     ((averageUsageTime * powerConsumption +
@@ -28,21 +30,67 @@ export default function Card({
     price;
   return (
     <CardContent>
-      {CATEGORY_MAP[deviceCategory]}
-      <p>{name}</p>
-      <p>Average usage time:{averageUsageTime}h</p>
-      <p>
+      <StyledName>{name}</StyledName>
+      <StyledSVG>{CATEGORY_MAP[deviceCategory]}</StyledSVG>
+      <StyledTime>Average usage time:{averageUsageTime}h</StyledTime>
+      <StyledCost>
         {new Intl.NumberFormat("de-DE", {
           style: "currency",
           currency: "EUR",
         }).format(devicePowerConsumption)}
-      </p>
+      </StyledCost>
+      <StyledLink href={`/device/${id}`}>Details</StyledLink>
     </CardContent>
   );
 }
 const CardContent = styled.section`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
+  padding: 5%;
+  display: grid;
+  grid-template-columns: 1.5fr 2fr;
+  grid-template-rows: repeat(3, 1fr);
+`;
+const StyledName = styled.p`
+  margin: 0;
+  grid-column-start: 1;
+  grid-column-end: 1;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  text-align: center;
+`;
+const StyledSVG = styled.p`
+  margin: 0;
+  grid-column-start: 1;
+  grid-column-end: 1;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  justify-self: center;
+`;
+const StyledTime = styled.p`
+  margin: 0;
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 1;
+  justify-self: center;
+`;
+const StyledCost = styled.p`
+  margin: 0;
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 2;
+  justify-self: center;
+`;
+const StyledLink = styled(Link)`
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 3;
+  grid-row-end: 3;
+  text-decoration: none;
+  background-color: gray;
+  padding: 5px;
+  width: 100%;
+  text-align: center;
+  border-radius: 5px;
+  color: white;
 `;

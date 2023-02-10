@@ -142,12 +142,14 @@ export default function Home({
             "rgba(75, 192, 192, 0.5)",
           ],
           borderColor: [
-            "rgba(255, 99, 132, 1)",
-            "rgba(54, 162, 235, 1)",
-            "rgba(255, 206, 86, 1)",
-            "rgba(75, 192, 192, 1)",
+            "hsl(180,30%,50%)",
+            "rgba(54, 162, 235, 0.5)",
+            "rgba(255, 206, 86, 0.5)",
+            "rgba(75, 192, 192, 0.5)",
           ],
-          borderWidth: 1,
+          borderWidth: 3,
+          cutout: "85%",
+          offset: 0,
         },
       ],
     };
@@ -173,7 +175,7 @@ export default function Home({
   }
 
   return (
-    <>
+    <StyledBackground>
       <ButtonContainer>
         <StyledChartButton
           onClick={() => {
@@ -291,7 +293,6 @@ export default function Home({
                   setDevices={setDevices}
                   devices={devices}
                 />
-                <StyledLink href={`/device/${device.id}`}>Details</StyledLink>
               </Wrapper>
             ))}
           </StyledList>
@@ -315,19 +316,22 @@ export default function Home({
                 setDevices={setDevices}
                 devices={devices}
               />
-              <StyledLink href={`/device/${device.id}/device`}>
-                Details
-              </StyledLink>
             </Wrapper>
           ))}
         </StyledList>
       )}
-    </>
+    </StyledBackground>
   );
 }
-
-const StyledCard = styled.li`
-  border: solid black 3px;
+const StyledBackground = styled.div`
+  margin: 0;
+  background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #f9fef5 450px,
+    #dfefc0 650px,
+    #daf1b2 100%
+  );
 `;
 
 const StyledFormButton = styled.button`
@@ -345,7 +349,8 @@ const ChartContainer = styled.div`
   max-width: 500px;
 `;
 const Wrapper = styled.li`
-  border: solid black 3px;
+  background-color: white;
+  border: solid white 3px;
   border-radius: 20px;
 `;
 
@@ -353,13 +358,9 @@ const StyledList = styled.ul`
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   padding: 20px 10px 50px 10px;
-`;
-const StyledLink = styled(Link)`
-  padding: 10px;
-  border: solid black 3px;
-  border-radius: 20px;
+  margin: 0;
 `;
 
 const ButtonContainer = styled.div`

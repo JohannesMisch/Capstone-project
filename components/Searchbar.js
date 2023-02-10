@@ -1,14 +1,26 @@
+import styled from "styled-components";
+
 export default function SearchBar({ handleSearch }) {
   return (
-    <div>
-      <label htmlFor="search">Search</label>
-      <input
+    <StyledSearchContainer>
+      <StyledInput
         onChange={handleSearch}
+        placeholder="Search"
         type="text"
         name="search"
         id="search"
         maxLength={60}
       />
-    </div>
+    </StyledSearchContainer>
   );
 }
+const StyledInput = styled.input`
+  border: 1px solid black;
+  border-radius: 5px;
+  height: 22px;
+  width: 90%;
+  background-color: white;
+`;
+const StyledSearchContainer = styled.div`
+  display: flex;
+`;

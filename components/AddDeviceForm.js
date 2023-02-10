@@ -86,7 +86,7 @@ export default function AddForm({ createDevice }) {
   );
 }
 const StyledForm = styled.form`
-  background-color: coral;
+  background-color: white;
   z-index: 2;
   position: fixed;
   height: 90%;
