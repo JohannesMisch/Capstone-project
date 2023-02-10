@@ -45,7 +45,7 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
                 Device category: {currentDevice.device_category}
               </StyledListItem>
               <StyledListItem>
-                Power consumption {currentDevice.power_consumption} W/h
+                Power consumption: {currentDevice.power_consumption} W/h
               </StyledListItem>
               <StyledListItem>
                 Power consumption Standby:{" "}
@@ -56,9 +56,14 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
                 Location: {currentDevice.location}
               </StyledListItem>
             </ul>
-            <p>Average usage time:{currentDevice.average_usage_time}h</p>
+            <p>
+              Average usage time per day:{" "}
+              {currentDevice.average_usage_time_hour}h{" "}
+              {currentDevice.average_usage_time_min}min
+            </p>
+            <button onClick={() => setShowDeleteModal(true)}>Delete</button>
+            <button onClick={() => setIsEdit(!isEdit)}>Edit</button>
           </section>
-          <button onClick={() => setShowDeleteModal(true)}>Delete</button>
           {showDeleteModal && (
             <Modal
               id={id}
@@ -67,7 +72,6 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
               onClose={() => setShowDeleteModal(false)}
             />
           )}
-          <button onClick={() => setIsEdit(!isEdit)}>Edit</button>
           <Link href="/">Back to the overview</Link>;
         </>
       ) : (
@@ -78,7 +82,8 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
           model={currentDevice.model}
           powerConsumption={currentDevice.power_consumption}
           powerConsumptionStandby={currentDevice.power_consumption_standby}
-          averageUsageTime={currentDevice.average_usage_time}
+          averageUsageTimeHour={currentDevice.average_usage_time_hour}
+          averageUsageTimeMin={currentDevice.average_usage_time_min}
           id={id}
           setIsEdit={setIsEdit}
           isEdit={isEdit}

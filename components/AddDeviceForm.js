@@ -63,13 +63,24 @@ export default function AddForm({ createDevice }) {
       <label htmlFor="time">Average usage time per day:</label>
       <input
         id="time"
-        name="average_usage_time"
+        name="average_usage_time_hour"
         type="number"
-        title="Hello"
+        placeholder="Hour"
         min={0}
         max={24}
+        defaultValue={0}
         required
       />
+      <input
+        id="time"
+        name="average_usage_time_min"
+        type="number"
+        placeholder="Min"
+        min={0}
+        max={60}
+        required
+      />
+
       <label htmlFor="location">Location:</label>
       <select id="location" name="location" type="text" required>
         <option value="">--Please choose an option--</option>

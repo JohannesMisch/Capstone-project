@@ -8,7 +8,8 @@ export default function EditCard({
   model,
   powerConsumption,
   powerConsumptionStandby,
-  averageUsageTime,
+  averageUsageTimeHour,
+  averageUsageTimeMin,
   setIsEdit,
   isEdit,
   setDevices,
@@ -114,12 +115,22 @@ export default function EditCard({
         <label htmlFor="time">Average usage time:</label>
         <input
           id="time"
-          name="average_usage_time"
+          name="average_usage_time_hour"
           type="number"
           title="Hello there"
           min={0}
           max={24}
-          defaultValue={averageUsageTime}
+          defaultValue={averageUsageTimeHour}
+          required
+        />
+        <input
+          id="time"
+          name="average_usage_time_hour_min"
+          type="number"
+          title="Hello there"
+          min={0}
+          max={24}
+          defaultValue={averageUsageTimeMin}
           required
         />
         <button type="button" onClick={() => setIsEdit(!isEdit)}>

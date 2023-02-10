@@ -36,18 +36,18 @@ export default function Home({
     event.target.reset();
   }
 
-  const filteredDevices = devices.filter(
-    (devices) =>
-      devices.device_category === isData.device_category ||
-      devices.location === isData.device_category
-  );
+  // const filteredDevices = devices.filter(
+  //   (devices) =>
+  //     devices.device_category === isData.device_category ||
+  //     devices.location === isData.device_category
+  // );
 
   const filteredBySearch = devices.filter(
     (filterDevice) =>
       filterDevice.device.toLowerCase().includes(searchTerm) ||
       filterDevice.device_category.toLowerCase().includes(searchTerm) ||
       filterDevice.model.toLowerCase().includes(searchTerm) ||
-      filterDevice.location.includes(searchTerm)
+      filterDevice.location.toLowerCase().includes(searchTerm)
   );
 
   function handleSubmit(event) {
@@ -59,8 +59,11 @@ export default function Home({
   }
 
   const calculateDailyPowerConsumption = (device) =>
-    ((device.power_consumption_standby * (24 - device.average_usage_time) +
-      device.power_consumption * device.average_usage_time) *
+    ((device.power_consumption_standby *
+      (24 -
+        (device.average_usage_time_hour + device.average_usage_time_min / 60)) +
+      device.power_consumption *
+        (device.average_usage_time_hour + device.average_usage_time_min / 60)) *
       price) /
     1000;
 
@@ -76,41 +79,59 @@ export default function Home({
         //--------------------------------------------------------------categories
         accumulator.categories[device.device_category] =
           (accumulator.categories[device.device_category] ?? 0) +
-          ((device.power_consumption * device.average_usage_time) / 1000) *
+          ((device.power_consumption *
+            (device.average_usage_time_hour +
+              device.average_usage_time_min / 60)) /
+            1000) *
             price;
         //--------------------------------------------------------------categoriesStandby
         accumulator.categoriesStandby[device.device_category] =
           (accumulator.categoriesStandby[device.device_category] ?? 0) +
           ((device.power_consumption_standby *
-            (24 - device.average_usage_time)) /
+            (24 -
+              (device.average_usage_time_hour +
+                device.average_usage_time_min / 60))) /
             1000) *
             price;
         //--------------------------------------------------------------categoriesOverall
         accumulator.categoriesOverall[device.device_category] =
           (accumulator.categoriesOverall[device.device_category] ?? 0) +
-          ((device.power_consumption * device.average_usage_time +
+          ((device.power_consumption *
+            (device.average_usage_time_hour +
+              device.average_usage_time_min / 60) +
             device.power_consumption_standby *
-              (24 - device.average_usage_time)) /
+              (24 -
+                (device.average_usage_time_hour +
+                  device.average_usage_time_min / 60))) /
             1000) *
             price;
         //--------------------------------------------------------------location
         accumulator.location[device.location] =
           (accumulator.location[device.location] ?? 0) +
-          ((device.power_consumption * device.average_usage_time) / 1000) *
+          ((device.power_consumption *
+            (device.average_usage_time_hour +
+              device.average_usage_time_min / 60)) /
+            1000) *
             price;
         //---------------------------------------------------------------locationStandby
         accumulator.locationStandby[device.location] =
           (accumulator.locationStandby[device.location] ?? 0) +
           ((device.power_consumption_standby *
-            (24 - device.average_usage_time)) /
+            (24 -
+              (device.average_usage_time_hour +
+                device.average_usage_time_min / 60))) /
             1000) *
             price;
         //--------------------------------------------------------------locationOverall
         accumulator.locationOverall[device.location] =
           (accumulator.locationOverall[device.location] ?? 0) +
-          ((device.power_consumption * device.average_usage_time +
+          ((device.power_consumption *
+            (device.average_usage_time_hour +
+              device.average_usage_time_min / 60) +
             device.power_consumption_standby *
-              (24 - device.average_usage_time)) /
+              (24 -
+                (device.average_usage_time_hour +
+                  device.average_usage_time_min / 60))) /
             1000) *
             price;
         return accumulator;
@@ -133,8 +154,8 @@ export default function Home({
       labels: Object.keys(object),
       datasets: [
         {
-          label: "Power consumption",
-          data: Object.values(object),
+          label: "Cost",
+          data: Object.values(object).map((item) => Number(item).toFixed(2)),
           backgroundColor: [
             "hsl(180,30%,50%)",
             "rgba(54, 162, 235, 0.5)",
@@ -222,7 +243,7 @@ export default function Home({
         )}
       </ButtonContainer>
       <ChartContainer>
-        <Doughnut chartData={createChartDataForSelectedChart()} />
+        <Doughnut data={createChartDataForSelectedChart()} />
       </ChartContainer>
       <h2>
         Overall cost{" "}
@@ -254,7 +275,7 @@ export default function Home({
       >
         {toggleForm ? "-" : "+"}
       </StyledFormButton>
-      <form onSubmit={handleSubmitFilter}>
+      {/* <form onSubmit={handleSubmitFilter}>
         <label htmlFor="searchInput">How do you want to sort your List?</label>
         <select id="searchInput" name="device_category" type="text" required>
           <option value="">--Please choose a category--</option>
@@ -271,7 +292,7 @@ export default function Home({
         <button type="button" onClick={() => setIsFiltered(true)}>
           Reset
         </button>
-      </form>
+      </form> */}
       {isFiltered ? (
         <>
           <SearchBar devices={devices} handleSearch={handleSearch} />
@@ -287,7 +308,8 @@ export default function Home({
                   model={device.model}
                   powerConsumption={device.power_consumption}
                   powerConsumptionStandby={device.power_consumption_standby}
-                  averageUsageTime={device.average_usage_time}
+                  averageUsageTimeHour={device.average_usage_time_hour}
+                  averageUsageTimeMin={device.average_usage_time_min}
                   handleDelete={handleDelete}
                   handleSubmit={handleSubmit}
                   setDevices={setDevices}
@@ -310,7 +332,8 @@ export default function Home({
                 model={device.model}
                 powerConsumption={device.power_consumption}
                 powerConsumptionStandby={device.power_consumption_standby}
-                averageUsageTime={device.average_usage_time}
+                averageUsageTimeHour={device.average_usage_time_hour}
+                averageUsageTimeMin={device.average_usage_time_min}
                 handleDelete={handleDelete}
                 handleSubmit={handleSubmit}
                 setDevices={setDevices}
@@ -328,7 +351,7 @@ const StyledBackground = styled.div`
   background: linear-gradient(
     to bottom,
     #ffffff 0%,
-    #f9fef5 450px,
+    #f9fef5 390px,
     #dfefc0 650px,
     #daf1b2 100%
   );
@@ -345,13 +368,16 @@ const StyledFormButton = styled.button`
   width: 40px;
 `;
 const ChartContainer = styled.div`
-  height: 50%;
+  margin: auto;
+  height: 80%;
+  width: 80%;
   max-width: 500px;
 `;
 const Wrapper = styled.li`
   background-color: white;
   border: solid white 3px;
   border-radius: 20px;
+  box-shadow: 8px 13px 13px 2px rgba(0, 0, 0, 0.37);
 `;
 
 const StyledList = styled.ul`

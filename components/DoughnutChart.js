@@ -3,17 +3,33 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-export default function DoughnutChart({ chartData }) {
+export default function DoughnutChart({ data }) {
   const options = {
     maintainAspectRatio: true,
     plugins: {
       legend: {
-        display: false,
+        display: true,
       },
-      outlabels: {
+      datalabels: {
         display: true,
       },
     },
   };
-  return <Doughnut data={chartData} options={options} />;
+  const textCenter = {
+    id: "textCenter",
+    beforeDatasetDarw(chart, args, pluginOptions) {
+      const { ctx, data } = chart;
+
+      ctx.save();
+      ctx.font = "bold 30px sans-serif";
+      ctx.fillStyle = "red";
+      ctx.fillText(
+        "text",
+        chart.getDatasetMeta(0).data[0].x,
+        chart.getDatasetMeta(0).data[0].y
+      );
+    },
+  };
+
+  return <Doughnut data={data} options={options} plugins={[textCenter]} />;
 }

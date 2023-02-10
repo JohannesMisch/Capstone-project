@@ -17,22 +17,29 @@ const CATEGORY_MAP = {
 export default function Card({
   deviceCategory,
   name,
-  averageUsageTime,
+  averageUsageTimeHour,
+  averageUsageTimeMin,
   powerConsumption,
   powerConsumptionStandby,
   price,
   id,
 }) {
   const devicePowerConsumption =
-    ((averageUsageTime * powerConsumption +
-      (24 - averageUsageTime) * powerConsumptionStandby) /
+    (((averageUsageTimeHour + averageUsageTimeMin / 60) * powerConsumption +
+      (24 - (averageUsageTimeHour + averageUsageTimeMin / 60)) *
+        powerConsumptionStandby) /
       1000) *
     price;
+  console.log(averageUsageTimeHour);
+  console.log(averageUsageTimeMin);
   return (
     <CardContent>
       <StyledName>{name}</StyledName>
       <StyledSVG>{CATEGORY_MAP[deviceCategory]}</StyledSVG>
-      <StyledTime>Average usage time:{averageUsageTime}h</StyledTime>
+      <StyledTime>
+        Average usage time per day:{averageUsageTimeHour}h {averageUsageTimeMin}
+        min
+      </StyledTime>
       <StyledCost>
         {new Intl.NumberFormat("de-DE", {
           style: "currency",
