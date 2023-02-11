@@ -98,6 +98,7 @@ export default function AddForm({ createDevice }) {
 }
 const StyledForm = styled.form`
   background-color: white;
+  border-radius: 10px;
   z-index: 2;
   position: fixed;
   height: 90%;
@@ -109,4 +110,5 @@ const StyledForm = styled.form`
   flex-direction: column;
   padding: 10px 50px;
   gap: 10px;
+  box-shadow: 10px 13px 13px 5px rgba(0, 0, 0, 0.55);
 `;

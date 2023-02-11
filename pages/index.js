@@ -6,6 +6,7 @@ import AddForm from "@/components/AddDeviceForm";
 import Doughnut from "@/components/DoughnutChart";
 import useLocalStorageState from "use-local-storage-state";
 import SearchBar from "@/components/Searchbar";
+import { MinusIcon, PlusIcon } from "@/components/Icons";
 
 export default function Home({
   devices,
@@ -169,8 +170,8 @@ export default function Home({
             "rgba(75, 192, 192, 0.5)",
           ],
           borderWidth: 3,
-          cutout: "85%",
-          offset: 0,
+          cutout: "65%",
+          offset: 15,
         },
       ],
     };
@@ -198,50 +199,55 @@ export default function Home({
   return (
     <StyledBackground>
       <ButtonContainer>
-        <StyledChartButton
+        <StyledChartButtonCategory
           onClick={() => {
             setSelectedChart("Category");
             setActiveChartData(true);
           }}
         >
-          Category
-        </StyledChartButton>
-        <StyledChartButton
+          CATEGORY
+        </StyledChartButtonCategory>
+        <StyledChartButtonLocation
           onClick={() => {
             setSelectedChart("Location");
             setActiveChartData(false);
           }}
         >
-          Location
-        </StyledChartButton>
+          LOCATION
+        </StyledChartButtonLocation>
         {activeChartData ? (
           <>
-            <StyledChartButton
+            <StyledChartButtonInUse
               onClick={() => setSelectedChart("CategoryActive")}
             >
-              CategoryActive
-            </StyledChartButton>
-            <StyledChartButton
+              IN USE
+            </StyledChartButtonInUse>
+            <StyledChartButtonStandby
               onClick={() => setSelectedChart("CategoryStandby")}
             >
-              CategoryStandby
-            </StyledChartButton>
+              STANDBY
+            </StyledChartButtonStandby>
           </>
         ) : (
           <>
-            <StyledChartButton
+            <StyledChartButtonInUse
               onClick={() => setSelectedChart("LocationActive")}
             >
-              LocationActive
-            </StyledChartButton>
-            <StyledChartButton
+              IN USE
+            </StyledChartButtonInUse>
+            <StyledChartButtonStandby
               onClick={() => setSelectedChart("LocationStandby")}
             >
-              LocationStandby
-            </StyledChartButton>
+              STANDBY
+            </StyledChartButtonStandby>
           </>
         )}
+        <StyledChartButtonEuro>EURO</StyledChartButtonEuro>
+        <StyledChartButtonKWH>kWh</StyledChartButtonKWH>
+        <StyledChartButtonPerDay>PER DAY</StyledChartButtonPerDay>
+        <StyledChartButtonPerYear>PER YEAR</StyledChartButtonPerYear>
       </ButtonContainer>
+
       <ChartContainer>
         <Doughnut data={createChartDataForSelectedChart()} />
       </ChartContainer>
@@ -273,7 +279,7 @@ export default function Home({
           setToggleForm(!toggleForm);
         }}
       >
-        {toggleForm ? "-" : "+"}
+        {toggleForm ? <MinusIcon /> : <PlusIcon />}
       </StyledFormButton>
       {/* <form onSubmit={handleSubmitFilter}>
         <label htmlFor="searchInput">How do you want to sort your List?</label>
@@ -351,9 +357,9 @@ const StyledBackground = styled.div`
   background: linear-gradient(
     to bottom,
     #ffffff 0%,
-    #f9fef5 390px,
+    #f9fef5 350px,
     #dfefc0 650px,
-    #daf1b2 100%
+    #e7f4ce 100%
   );
 `;
 
@@ -362,7 +368,7 @@ const StyledFormButton = styled.button`
   position: fixed;
   bottom: 20px;
   left: 20px;
-  background-color: green;
+  background-color: #737373;
   border-radius: 50px;
   height: 40px;
   width: 40px;
@@ -377,20 +383,157 @@ const Wrapper = styled.li`
   background-color: white;
   border: solid white 3px;
   border-radius: 20px;
-  box-shadow: 8px 13px 13px 2px rgba(0, 0, 0, 0.37);
+  width: 90%;
+  box-shadow: 5px 8px 8px 2px rgba(0, 0, 0, 0.37);
 `;
 
 const StyledList = styled.ul`
   list-style: none;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 20px;
   padding: 20px 10px 50px 10px;
   margin: 0;
 `;
 
 const ButtonContainer = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 0.5fr 0.75fr 0.75fr 0.5fr 0.75fr 0.75fr 0.5fr;
+  grid-template-rows: 1fr 0.5fr 0.2fr 0.5fr 1fr;
+  grid-template-areas:
+    ". . . . . . ."
+    ". Category Location . IN-USE STANDBY ."
+    ". . . . . . ."
+    ". EURO kWh . PER-DAY PER-YEAR ."
+    ". . . . . . .";
 `;
 
-const StyledChartButton = styled.button``;
+const StyledChartButtonCategory = styled.button`
+  grid-area: Category;
+  background-color: #e7f4ce;
+  position: relative;
+  outline: none;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  height: 25px;
+  width: 100%;
+  opacity: 1;
+  text-decoration: none;
+  color: #737373;
+`;
+const StyledChartButtonLocation = styled.button`
+  grid-area: Location;
+  background-color: #e7f4ce;
+  position: relative;
+  outline: none;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  height: 25px;
+  width: 100%;
+  opacity: 1;
+  text-decoration: none;
+  color: #737373;
+`;
+const StyledChartButtonInUse = styled.button`
+  grid-area: IN-USE;
+  background-color: #e7f4ce;
+  position: relative;
+  outline: none;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  height: 25px;
+  width: 100%;
+  opacity: 1;
+  text-decoration: none;
+  color: #737373;
+`;
+const StyledChartButtonStandby = styled.button`
+  grid-area: STANDBY;
+  background-color: #e7f4ce;
+  position: relative;
+  outline: none;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  height: 25px;
+  width: 100%;
+  opacity: 1;
+  text-decoration: none;
+  color: #737373;
+`;
+const StyledChartButtonEuro = styled.button`
+  grid-area: EURO;
+  background-color: #e7f4ce;
+  position: relative;
+  outline: none;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  height: 25px;
+  width: 100%;
+  opacity: 1;
+  text-decoration: none;
+  color: #737373;
+`;
+const StyledChartButtonKWH = styled.button`
+  grid-area: kWh;
+  background-color: #e7f4ce;
+  position: relative;
+  outline: none;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  height: 25px;
+  width: 100%;
+  opacity: 1;
+  text-decoration: none;
+  color: #737373;
+`;
+const StyledChartButtonPerDay = styled.button`
+  grid-area: PER-DAY;
+  background-color: #e7f4ce;
+  position: relative;
+  outline: none;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  height: 25px;
+  width: 100%;
+  opacity: 1;
+  text-decoration: none;
+  color: #737373;
+`;
+const StyledChartButtonPerYear = styled.button`
+  grid-area: PER-YEAR;
+  background-color: #e7f4ce;
+  position: relative;
+  outline: none;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  height: 25px;
+  width: 100%;
+  opacity: 1;
+  text-decoration: none;
+  color: #737373;
+`;
