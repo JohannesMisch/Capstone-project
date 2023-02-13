@@ -6,7 +6,13 @@ import AddForm from "@/components/AddDeviceForm";
 import Doughnut from "@/components/DoughnutChart";
 import useLocalStorageState from "use-local-storage-state";
 import SearchBar from "@/components/Searchbar";
-import { MinusIcon, PlusIcon } from "@/components/Icons";
+import {
+  MinusIcon,
+  PlusIcon,
+  OptionIcon,
+  SearchIcon,
+  XIcon,
+} from "@/components/Icons";
 
 export default function Home({
   devices,
@@ -24,16 +30,20 @@ export default function Home({
   const [toggleForm, setToggleForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [isEuroClicked, setIsEuroClicked] = useState(true);
+  const [isPerDayClicked, setIsPerDayClicked] = useState(true);
+  const [isClicked, setIsClicked] = useState("");
+  const [isOptionClicked, setIsOptionClicked] = useState(false);
+
   function handleSearch(event) {
     setSearchTerm(event.target.value.toLowerCase());
   }
-
-  function handleSubmitFilter(event) {
+  function handlePriceSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    setIsFiltered(false);
-    setIsData(data);
+    setPrice(data.price);
+    setIsOptionClicked(false);
     event.target.reset();
   }
 
@@ -44,14 +54,6 @@ export default function Home({
       filterDevice.model.toLowerCase().includes(searchTerm) ||
       filterDevice.location.toLowerCase().includes(searchTerm)
   );
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData);
-    setPrice(data.price);
-    event.target.reset();
-  }
 
   const calculateDailyPowerConsumption = (device) =>
     ((device.power_consumption_standby *
@@ -68,7 +70,13 @@ export default function Home({
     .map(calculateDailyPowerConsumption)
     .reduce(sum, 0);
 
-  function calculateSums(devices) {
+  function calculateSums(devices, priceInput) {
+    let priceCalc = 0;
+    if (priceInput !== undefined) {
+      priceCalc = priceInput;
+    } else {
+      priceCalc = 1;
+    }
     return devices.reduce(
       (accumulator, device) => {
         //--------------------------------------------------------------categories
@@ -78,7 +86,7 @@ export default function Home({
             (device.average_usage_time_hour +
               device.average_usage_time_min / 60)) /
             1000) *
-            price;
+            priceCalc;
         //--------------------------------------------------------------categoriesStandby
         accumulator.categoriesStandby[device.device_category] =
           (accumulator.categoriesStandby[device.device_category] ?? 0) +
@@ -87,7 +95,7 @@ export default function Home({
               (device.average_usage_time_hour +
                 device.average_usage_time_min / 60))) /
             1000) *
-            price;
+            priceCalc;
         //--------------------------------------------------------------categoriesOverall
         accumulator.categoriesOverall[device.device_category] =
           (accumulator.categoriesOverall[device.device_category] ?? 0) +
@@ -99,7 +107,7 @@ export default function Home({
                 (device.average_usage_time_hour +
                   device.average_usage_time_min / 60))) /
             1000) *
-            price;
+            priceCalc;
         //--------------------------------------------------------------location
         accumulator.location[device.location] =
           (accumulator.location[device.location] ?? 0) +
@@ -107,7 +115,7 @@ export default function Home({
             (device.average_usage_time_hour +
               device.average_usage_time_min / 60)) /
             1000) *
-            price;
+            priceCalc;
         //---------------------------------------------------------------locationStandby
         accumulator.locationStandby[device.location] =
           (accumulator.locationStandby[device.location] ?? 0) +
@@ -116,7 +124,7 @@ export default function Home({
               (device.average_usage_time_hour +
                 device.average_usage_time_min / 60))) /
             1000) *
-            price;
+            priceCalc;
         //--------------------------------------------------------------locationOverall
         accumulator.locationOverall[device.location] =
           (accumulator.locationOverall[device.location] ?? 0) +
@@ -128,7 +136,7 @@ export default function Home({
                 (device.average_usage_time_hour +
                   device.average_usage_time_min / 60))) /
             1000) *
-            price;
+            priceCalc;
         return accumulator;
       },
       {
@@ -142,8 +150,13 @@ export default function Home({
     );
   }
 
-  const sums = calculateSums(devices);
-
+  let sums = calculateSums(devices, price);
+  function euro() {
+    return (sums = calculateSums(devices, price));
+  }
+  function kWh() {
+    return (sums = calculateSums(devices));
+  }
   function createChartData(object) {
     return {
       labels: Object.keys(object),
@@ -192,6 +205,35 @@ export default function Home({
 
   return (
     <StyledBackground>
+      <StyledOptionButton onClick={() => setIsOptionClicked(!isOptionClicked)}>
+        <OptionIcon />
+      </StyledOptionButton>
+      {isOptionClicked && (
+        <StyledPriceForm onSubmit={handlePriceSubmit}>
+          <StyledHeader>ADD YOUR PRICE OD ELECTRICITY</StyledHeader>
+          <label htmlFor="price">PRICE IN CENT PER kWh</label>
+          <Styledinput
+            id="price"
+            name="price"
+            type="number"
+            placeholder="Cent"
+            min={1}
+            max={100}
+            step="0.01"
+            title=" 4 digits, the first digit needs to be a number,[0-9.,] "
+            required
+          />
+          <StyledCancelButtonPrice
+            type="button"
+            onClick={() => setIsOptionClicked(false)}
+          >
+            <XIcon />
+          </StyledCancelButtonPrice>
+          <StyledSavePriceButton type="Submit">
+            SAVE CHANGES
+          </StyledSavePriceButton>
+        </StyledPriceForm>
+      )}
       <ButtonContainer>
         <StyledChartButtonCategory
           onClick={() => {
@@ -236,8 +278,20 @@ export default function Home({
             </StyledChartButtonStandby>
           </>
         )}
-        <StyledChartButtonEuro>EURO</StyledChartButtonEuro>
-        <StyledChartButtonKWH>kWh</StyledChartButtonKWH>
+        <StyledChartButtonEuro
+          onClick={() => {
+            setIsEuroClicked(true), euro();
+          }}
+        >
+          EURO
+        </StyledChartButtonEuro>
+        <StyledChartButtonKWH
+          onClick={() => {
+            setIsEuroClicked(), kWh();
+          }}
+        >
+          kWh
+        </StyledChartButtonKWH>
         <StyledChartButtonPerDay>PER DAY</StyledChartButtonPerDay>
         <StyledChartButtonPerYear>PER YEAR</StyledChartButtonPerYear>
       </ButtonContainer>
@@ -252,21 +306,6 @@ export default function Home({
           currency: "EUR",
         }).format(sumUpDevices)}
       </h2>
-
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="price">Price per 1 kW/h</label>
-        <input
-          id="price"
-          name="price"
-          type="number"
-          min={1}
-          max={100}
-          step="0.01"
-          title=" 4 digits, the first digit needs to be a number,[0-9.,] "
-          required
-        />
-        <button>send it</button>
-      </form>
       {toggleForm && <AddForm createDevice={createDevice} />}
       <StyledFormButton
         onClick={() => {
@@ -294,7 +333,6 @@ export default function Home({
                   averageUsageTimeHour={device.average_usage_time_hour}
                   averageUsageTimeMin={device.average_usage_time_min}
                   handleDelete={handleDelete}
-                  handleSubmit={handleSubmit}
                   setDevices={setDevices}
                   devices={devices}
                 />
@@ -330,6 +368,7 @@ export default function Home({
   );
 }
 const StyledBackground = styled.div`
+  position: relative;
   margin: 0;
   background: linear-gradient(
     to bottom,
@@ -338,6 +377,65 @@ const StyledBackground = styled.div`
     #dfefc0 650px,
     #e7f4ce 100%
   );
+`;
+const StyledOptionButton = styled.button`
+  position: fixed;
+  z-index: 10;
+  right: 10px;
+  top: 8px;
+  background-color: transparent;
+  border: transparent;
+`;
+
+const StyledHeader = styled.h2`
+  text-decoration: none;
+  font-size: 16px;
+  text-align: center;
+`;
+
+const StyledPriceForm = styled.form`
+  background-color: white;
+  border-radius: 10px;
+  z-index: 2;
+  position: fixed;
+  height: 35%;
+  width: 85%;
+  top: 40px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  display: flex;
+  flex-direction: column;
+  padding: 10px 50px;
+  gap: 10px;
+  box-shadow: 10px 13px 13px 5px rgba(0, 0, 0, 0.55);
+`;
+
+const Styledinput = styled.input`
+  border-radius: 50px;
+  text-align: 10px;
+`;
+
+const StyledCancelButtonPrice = styled.button`
+  padding: 0;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #737373;
+  border-radius: 50px;
+  height: 25px;
+  width: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StyledSavePriceButton = styled.button`
+  background-color: #737373;
+  border-radius: 50px;
+  cursor: pointer;
+  height: 25px;
+  width: 100%;
+  color: white;
 `;
 
 const StyledFormButton = styled.button`
@@ -376,7 +474,7 @@ const StyledList = styled.ul`
 
 const ButtonContainer = styled.div`
   display: grid;
-  grid-template-columns: 0.5fr 0.75fr 0.75fr 0.5fr 0.75fr 0.75fr 0.5fr;
+  grid-template-columns: 0.1fr 1fr 1fr 0.1fr 1fr 1fr 0.1fr;
   grid-template-rows: 2fr 0.5fr 0.2fr 0.5fr 1fr;
   grid-template-areas:
     ". . . . . . ."
@@ -389,128 +487,83 @@ const ButtonContainer = styled.div`
 const StyledChartButtonCategory = styled.button`
   grid-area: Category;
   background-color: #e7f4ce;
-  position: relative;
-  outline: none;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border: #737373 1px solid;
+  border-right: none;
   cursor: pointer;
   height: 25px;
   width: 100%;
-  opacity: 1;
-  text-decoration: none;
   color: #737373;
 `;
 const StyledChartButtonLocation = styled.button`
   grid-area: Location;
   background-color: #e7f4ce;
-  position: relative;
-  outline: none;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border: #737373 1px solid;
+  border-left: none;
   cursor: pointer;
   height: 25px;
   width: 100%;
-  opacity: 1;
-  text-decoration: none;
   color: #737373;
 `;
 const StyledChartButtonInUse = styled.button`
   grid-area: IN-USE;
   background-color: #e7f4ce;
-  position: relative;
-  outline: none;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border: #737373 1px solid;
+  border-right: none;
   cursor: pointer;
   height: 25px;
   width: 100%;
-  opacity: 1;
-  text-decoration: none;
+  white-space: nowrap;
   color: #737373;
 `;
 const StyledChartButtonStandby = styled.button`
   grid-area: STANDBY;
   background-color: #e7f4ce;
-  position: relative;
-  outline: none;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border: #737373 1px solid;
+  border-left: none;
   cursor: pointer;
   height: 25px;
   width: 100%;
-  opacity: 1;
-  text-decoration: none;
   color: #737373;
 `;
 const StyledChartButtonEuro = styled.button`
   grid-area: EURO;
   background-color: #e7f4ce;
-  position: relative;
-  outline: none;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border: #737373 1px solid;
+  border-right: none;
   cursor: pointer;
   height: 25px;
   width: 100%;
-  opacity: 1;
-  text-decoration: none;
   color: #737373;
 `;
 const StyledChartButtonKWH = styled.button`
   grid-area: kWh;
   background-color: #e7f4ce;
-  position: relative;
-  outline: none;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border: #737373 1px solid;
+  border-left: none;
   cursor: pointer;
   height: 25px;
   width: 100%;
-  opacity: 1;
-  text-decoration: none;
   color: #737373;
 `;
 const StyledChartButtonPerDay = styled.button`
   grid-area: PER-DAY;
   background-color: #e7f4ce;
-  position: relative;
-  outline: none;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border: #737373 1px solid;
+  border-right: none;
   cursor: pointer;
   height: 25px;
   width: 100%;
-  opacity: 1;
-  text-decoration: none;
+  white-space: nowrap;
   color: #737373;
 `;
 const StyledChartButtonPerYear = styled.button`
   grid-area: PER-YEAR;
   background-color: #e7f4ce;
-  position: relative;
-  outline: none;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  white-space: nowrap;
+  border: #737373 1px solid;
+  border-left: none;
   cursor: pointer;
   height: 25px;
   width: 100%;
-  opacity: 1;
-  text-decoration: none;
   color: #737373;
 `;

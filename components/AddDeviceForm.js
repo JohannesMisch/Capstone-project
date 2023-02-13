@@ -65,7 +65,7 @@ export default function AddForm({ createDevice }) {
 
       <StyledLable htmlFor="time">Average usage time per day</StyledLable>
       <StyledDiv>
-        <StyledTimeinput
+        <StyledTimeInput
           id="time"
           name="average_usage_time_hour"
           type="number"
@@ -76,7 +76,7 @@ export default function AddForm({ createDevice }) {
           required
         />
         <StyledTime>h</StyledTime>
-        <StyledTimeinput
+        <StyledTimeInput
           id="time"
           name="average_usage_time_min"
           type="number"
@@ -124,6 +124,7 @@ const StyledForm = styled.form`
 const StyledLable = styled.label`
   display: block;
 `;
+
 const StyledHeader = styled.h2`
   text-align: center;
   font-size: 20px;
@@ -142,13 +143,14 @@ const StyledDiv = styled.div`
   gap: 5px;
   height: 22px;
 `;
+
 const StyledTime = styled.p`
   margin: 0;
   padding: 4px 10px 4px 0px;
   height: 25px;
 `;
 
-const StyledTimeinput = styled.input`
+const StyledTimeInput = styled.input`
   border-radius: 50px;
   width: 30%;
   text-align: center;

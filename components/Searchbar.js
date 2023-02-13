@@ -4,11 +4,12 @@ import { SearchIcon } from "./Icons";
 export default function SearchBar({ handleSearch }) {
   return (
     <StyledSearchContainer>
-      <StyledSearchIcon />
+      <StyledIconContainer>
+        <SearchIcon />
+      </StyledIconContainer>
       <StyledInput
         onChange={handleSearch}
         aria-label="Searchbar"
-        placeholder="Search"
         type="text"
         name="search"
         id="search"
@@ -22,14 +23,14 @@ const StyledInput = styled.input`
   border-radius: 50px;
   height: 28px;
   width: 85%;
-
   background-color: transparent;
 `;
 const StyledSearchContainer = styled.div`
-  text-align: center;
   position: relative;
+  text-align: center;
 `;
-const StyledSearchIcon = styled(SearchIcon)`
+const StyledIconContainer = styled.div`
   position: absolute;
-  right: 50px;
+  left: 33px;
+  top: 4px;
 `;

@@ -23,6 +23,7 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
   const { id } = router.query;
   const currentDevice = devices.find((device) => device.id === id);
   const [isEdit, setIsEdit] = useState(true);
+
   if (!currentDevice) {
     return (
       <>

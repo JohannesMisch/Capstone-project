@@ -30,8 +30,7 @@ export default function Card({
         powerConsumptionStandby) /
       1000) *
     price;
-  console.log(averageUsageTimeHour);
-  console.log(averageUsageTimeMin);
+
   return (
     <CardContent>
       <StyledName>{name}</StyledName>
