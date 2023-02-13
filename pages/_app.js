@@ -48,4 +48,7 @@ const StyledHeadline = styled.h1`
   background-color: #e7f4ce;
   margin: 0;
   height: 40px;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
 `;

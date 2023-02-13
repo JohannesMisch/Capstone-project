@@ -37,12 +37,6 @@ export default function Home({
     event.target.reset();
   }
 
-  // const filteredDevices = devices.filter(
-  //   (devices) =>
-  //     devices.device_category === isData.device_category ||
-  //     devices.location === isData.device_category
-  // );
-
   const filteredBySearch = devices.filter(
     (filterDevice) =>
       filterDevice.device.toLowerCase().includes(searchTerm) ||
@@ -281,24 +275,7 @@ export default function Home({
       >
         {toggleForm ? <MinusIcon /> : <PlusIcon />}
       </StyledFormButton>
-      {/* <form onSubmit={handleSubmitFilter}>
-        <label htmlFor="searchInput">How do you want to sort your List?</label>
-        <select id="searchInput" name="device_category" type="text" required>
-          <option value="">--Please choose a category--</option>
-          <option value="Entertainment">Entertainment</option>
-          <option value="Appliances">Appliances</option>
-          <option value="Work">Work</option>
-          <option value="Lighting">Lighting</option>
-          <option value="Livingroom">Livingroom</option>
-          <option value="Bathroom">Bathroom</option>
-          <option value="Bedroom">Bedroom</option>
-          <option value="Kitchen">Kitchen</option>
-        </select>
-        <button type="submit">Search</button>
-        <button type="button" onClick={() => setIsFiltered(true)}>
-          Reset
-        </button>
-      </form> */}
+
       {isFiltered ? (
         <>
           <SearchBar devices={devices} handleSearch={handleSearch} />
@@ -400,7 +377,7 @@ const StyledList = styled.ul`
 const ButtonContainer = styled.div`
   display: grid;
   grid-template-columns: 0.5fr 0.75fr 0.75fr 0.5fr 0.75fr 0.75fr 0.5fr;
-  grid-template-rows: 1fr 0.5fr 0.2fr 0.5fr 1fr;
+  grid-template-rows: 2fr 0.5fr 0.2fr 0.5fr 1fr;
   grid-template-areas:
     ". . . . . . ."
     ". Category Location . IN-USE STANDBY ."

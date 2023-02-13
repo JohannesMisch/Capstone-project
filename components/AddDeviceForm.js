@@ -14,8 +14,10 @@ export default function AddForm({ createDevice }) {
 
   return (
     <StyledForm onSubmit={handleSubmit}>
-      <label htmlFor="device">Device:</label>
-      <input
+      <StyledHeader>Create New Device</StyledHeader>
+
+      <StyledLable htmlFor="device">Name</StyledLable>
+      <Styledinput
         id="device"
         name="device"
         type="text"
@@ -23,8 +25,8 @@ export default function AddForm({ createDevice }) {
         title="Max 50 characters"
         required
       />
-      <label htmlFor="category">Devices category:</label>
-      <select id="category" name="device_category" type="text" required>
+      <StyledLable htmlFor="category">Devices category</StyledLable>
+      <StyledSelect id="category" name="device_category" type="text" required>
         <option value="">--Please choose an option--</option>
         <option value="Appliances">Appliances</option>
         <option value="Entertainment">Entertainment</option>
@@ -32,9 +34,9 @@ export default function AddForm({ createDevice }) {
         <option value="Lighting">Lighting</option>
         <option value="Others">Others</option>
         <option value="Work">Work</option>
-      </select>
-      <label htmlFor="model">Model:</label>
-      <input
+      </StyledSelect>
+      <StyledLable htmlFor="model">Model</StyledLable>
+      <Styledinput
         id="model"
         name="model"
         type="text"
@@ -42,8 +44,8 @@ export default function AddForm({ createDevice }) {
         title="Max 50 characters, a-zA-Z0-9-_ äüöÄÜÖß. "
         required
       />
-      <label htmlFor="consumption">Power consumption:</label>
-      <input
+      <StyledLable htmlFor="consumption">Power consumption</StyledLable>
+      <Styledinput
         id="consumption"
         name="power_consumption"
         type="text"
@@ -51,8 +53,8 @@ export default function AddForm({ createDevice }) {
         title="Max 10 characters and only Numbers"
         required
       />
-      <label htmlFor="standby">Power consumption Standby:</label>
-      <input
+      <StyledLable htmlFor="standby">Power consumption Standby</StyledLable>
+      <Styledinput
         id="standby"
         name="power_consumption_standby"
         type="text"
@@ -60,29 +62,34 @@ export default function AddForm({ createDevice }) {
         pattern="^[0-9,.]{1,10}"
         required
       />
-      <label htmlFor="time">Average usage time per day:</label>
-      <input
-        id="time"
-        name="average_usage_time_hour"
-        type="number"
-        placeholder="Hour"
-        min={0}
-        max={24}
-        defaultValue={0}
-        required
-      />
-      <input
-        id="time"
-        name="average_usage_time_min"
-        type="number"
-        placeholder="Min"
-        min={0}
-        max={60}
-        required
-      />
 
-      <label htmlFor="location">Location:</label>
-      <select id="location" name="location" type="text" required>
+      <StyledLable htmlFor="time">Average usage time per day</StyledLable>
+      <StyledDiv>
+        <StyledTimeinput
+          id="time"
+          name="average_usage_time_hour"
+          type="number"
+          placeholder="0"
+          min={0}
+          max={24}
+          defaultValue={0}
+          required
+        />
+        <StyledTime>h</StyledTime>
+        <StyledTimeinput
+          id="time"
+          name="average_usage_time_min"
+          type="number"
+          placeholder="0"
+          min={0}
+          max={60}
+          defaultValue={0}
+          required
+        />
+        <StyledTime>min</StyledTime>
+      </StyledDiv>
+      <StyledLable htmlFor="location">Location:</StyledLable>
+      <StyledSelect id="location" name="location" type="text" required>
         <option value="">--Please choose an option--</option>
         <option value="Bedroom">Bedroom</option>
         <option value="Bathroom">Bathroom</option>
@@ -91,11 +98,12 @@ export default function AddForm({ createDevice }) {
         <option value="Home Office">Home Office</option>
         <option value="Kitchen">Kitchen</option>
         <option value="Livingroom">Livingroom</option>
-      </select>
-      <button type="submit">Create</button>
+      </StyledSelect>
+      <StyledAddDeviceButton type="submit">Create</StyledAddDeviceButton>
     </StyledForm>
   );
 }
+
 const StyledForm = styled.form`
   background-color: white;
   border-radius: 10px;
@@ -111,4 +119,53 @@ const StyledForm = styled.form`
   padding: 10px 50px;
   gap: 10px;
   box-shadow: 10px 13px 13px 5px rgba(0, 0, 0, 0.55);
+`;
+
+const StyledLable = styled.label`
+  display: block;
+`;
+const StyledHeader = styled.h2`
+  text-align: center;
+  font-size: 20px;
+`;
+
+const Styledinput = styled.input`
+  border-radius: 50px;
+`;
+
+const StyledSelect = styled.select`
+  border-radius: 50px;
+`;
+
+const StyledDiv = styled.div`
+  display: flex;
+  gap: 5px;
+  height: 22px;
+`;
+const StyledTime = styled.p`
+  margin: 0;
+  padding: 4px 10px 4px 0px;
+  height: 25px;
+`;
+
+const StyledTimeinput = styled.input`
+  border-radius: 50px;
+  width: 30%;
+  text-align: center;
+`;
+const StyledAddDeviceButton = styled.button`
+  grid-area: IN-USE;
+  background-color: #737373;
+  position: relative;
+  outline: none;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  height: 25px;
+  width: 100%;
+  opacity: 1;
+  text-decoration: none;
+  color: white;
 `;
