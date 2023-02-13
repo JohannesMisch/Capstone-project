@@ -15,90 +15,102 @@ export default function AddForm({ createDevice }) {
   return (
     <StyledForm onSubmit={handleSubmit}>
       <StyledHeader>Create New Device</StyledHeader>
-
-      <StyledLable htmlFor="device">Name</StyledLable>
-      <Styledinput
-        id="device"
-        name="device"
-        type="text"
-        pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖß.]{1,50}"
-        title="Max 50 characters"
-        required
-      />
-      <StyledLable htmlFor="category">Devices category</StyledLable>
-      <StyledSelect id="category" name="device_category" type="text" required>
-        <option value="">--Please choose an option--</option>
-        <option value="Appliances">Appliances</option>
-        <option value="Entertainment">Entertainment</option>
-        <option value="Domestic_appliances">Home appliances</option>
-        <option value="Lighting">Lighting</option>
-        <option value="Others">Others</option>
-        <option value="Work">Work</option>
-      </StyledSelect>
-      <StyledLable htmlFor="model">Model</StyledLable>
-      <Styledinput
-        id="model"
-        name="model"
-        type="text"
-        pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖß.]{1,50}"
-        title="Max 50 characters, a-zA-Z0-9-_ äüöÄÜÖß. "
-        required
-      />
-      <StyledLable htmlFor="consumption">Power consumption</StyledLable>
-      <Styledinput
-        id="consumption"
-        name="power_consumption"
-        type="text"
-        pattern="^[0-9,.]{1,10}"
-        title="Max 10 characters and only Numbers"
-        required
-      />
-      <StyledLable htmlFor="standby">Power consumption Standby</StyledLable>
-      <Styledinput
-        id="standby"
-        name="power_consumption_standby"
-        type="text"
-        title="Max 10 characters and only Numbers"
-        pattern="^[0-9,.]{1,10}"
-        required
-      />
-
-      <StyledLable htmlFor="time">Average usage time per day</StyledLable>
-      <StyledDiv>
-        <StyledTimeInput
-          id="time"
-          name="average_usage_time_hour"
-          type="number"
-          placeholder="0"
-          min={0}
-          max={24}
-          defaultValue={0}
+      <div>
+        <StyledLable htmlFor="device">Name</StyledLable>
+        <Styledinput
+          id="device"
+          name="device"
+          type="text"
+          pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖß.]{1,50}"
+          title="Max 50 characters"
           required
         />
-        <StyledTime>h</StyledTime>
-        <StyledTimeInput
-          id="time"
-          name="average_usage_time_min"
-          type="number"
-          placeholder="0"
-          min={0}
-          max={60}
-          defaultValue={0}
+      </div>
+      <div>
+        <StyledLable htmlFor="category">Devices category</StyledLable>
+        <StyledSelect id="category" name="device_category" type="text" required>
+          <option value="">--Please choose an option--</option>
+          <option value="Appliances">Appliances</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Domestic_appliances">Home appliances</option>
+          <option value="Lighting">Lighting</option>
+          <option value="Others">Others</option>
+          <option value="Work">Work</option>
+        </StyledSelect>
+      </div>
+      <div>
+        <StyledLable htmlFor="model">Model</StyledLable>
+        <Styledinput
+          id="model"
+          name="model"
+          type="text"
+          pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖß.]{1,50}"
+          title="Max 50 characters, a-zA-Z0-9-_ äüöÄÜÖß. "
           required
         />
-        <StyledTime>min</StyledTime>
-      </StyledDiv>
-      <StyledLable htmlFor="location">Location:</StyledLable>
-      <StyledSelect id="location" name="location" type="text" required>
-        <option value="">--Please choose an option--</option>
-        <option value="Bedroom">Bedroom</option>
-        <option value="Bathroom">Bathroom</option>
-        <option value="Basement">Basement</option>
-        <option value="Childsroom">Childsroom</option>
-        <option value="Home Office">Home Office</option>
-        <option value="Kitchen">Kitchen</option>
-        <option value="Livingroom">Livingroom</option>
-      </StyledSelect>
+      </div>
+      <div>
+        <StyledLable htmlFor="consumption">Power consumption</StyledLable>
+        <Styledinput
+          id="consumption"
+          name="power_consumption"
+          type="text"
+          pattern="^[0-9,.]{1,10}"
+          title="Max 10 characters and only Numbers"
+          required
+        />
+      </div>
+      <div>
+        <StyledLable htmlFor="standby">Power consumption Standby</StyledLable>
+        <Styledinput
+          id="standby"
+          name="power_consumption_standby"
+          type="text"
+          title="Max 10 characters and only Numbers"
+          pattern="^[0-9,.]{1,10}"
+          required
+        />
+      </div>
+      <div>
+        <StyledLable htmlFor="time">Average usage time per day</StyledLable>
+        <StyledDiv>
+          <StyledTimeInput
+            id="time"
+            name="average_usage_time_hour"
+            type="number"
+            placeholder="0"
+            min={0}
+            max={24}
+            defaultValue={0}
+            required
+          />
+          <StyledTime>h</StyledTime>
+          <StyledTimeInput
+            id="time"
+            name="average_usage_time_min"
+            type="number"
+            placeholder="0"
+            min={0}
+            max={60}
+            defaultValue={0}
+            required
+          />
+          <StyledTime>min</StyledTime>
+        </StyledDiv>
+      </div>
+      <div>
+        <StyledLable htmlFor="location">Location:</StyledLable>
+        <StyledSelect id="location" name="location" type="text" required>
+          <option value="">--Please choose an option--</option>
+          <option value="Bedroom">Bedroom</option>
+          <option value="Bathroom">Bathroom</option>
+          <option value="Basement">Basement</option>
+          <option value="Childsroom">Childsroom</option>
+          <option value="Home Office">Home Office</option>
+          <option value="Kitchen">Kitchen</option>
+          <option value="Livingroom">Livingroom</option>
+        </StyledSelect>
+      </div>
       <StyledAddDeviceButton type="submit">Create</StyledAddDeviceButton>
     </StyledForm>
   );
@@ -117,7 +129,7 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   padding: 10px 50px;
-  gap: 10px;
+  gap: 15px;
   box-shadow: 10px 13px 13px 5px rgba(0, 0, 0, 0.55);
 `;
 
@@ -132,10 +144,12 @@ const StyledHeader = styled.h2`
 
 const Styledinput = styled.input`
   border-radius: 50px;
+  width: 100%;
 `;
 
 const StyledSelect = styled.select`
   border-radius: 50px;
+  width: 100%;
 `;
 
 const StyledDiv = styled.div`
