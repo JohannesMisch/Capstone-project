@@ -42,7 +42,7 @@ export default function Home({
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    setPrice(data.price);
+    setPrice(data.price / 100);
     setIsOptionClicked(false);
     event.target.reset();
   }
@@ -70,13 +70,16 @@ export default function Home({
     .map(calculateDailyPowerConsumption)
     .reduce(sum, 0);
 
-  function calculateSums(devices, priceInput) {
-    let priceCalc = 0;
-    if (priceInput !== undefined) {
+  function calculateSums(devices, priceInput, days) {
+    let priceCalc = 1;
+    let daysCalc = 1;
+    if (priceInput !== 1) {
       priceCalc = priceInput;
-    } else {
-      priceCalc = 1;
     }
+    if (days !== undefined) {
+      daysCalc = days;
+    }
+
     return devices.reduce(
       (accumulator, device) => {
         //--------------------------------------------------------------categories
@@ -86,7 +89,8 @@ export default function Home({
             (device.average_usage_time_hour +
               device.average_usage_time_min / 60)) /
             1000) *
-            priceCalc;
+            priceCalc *
+            daysCalc;
         //--------------------------------------------------------------categoriesStandby
         accumulator.categoriesStandby[device.device_category] =
           (accumulator.categoriesStandby[device.device_category] ?? 0) +
@@ -95,7 +99,8 @@ export default function Home({
               (device.average_usage_time_hour +
                 device.average_usage_time_min / 60))) /
             1000) *
-            priceCalc;
+            priceCalc *
+            daysCalc;
         //--------------------------------------------------------------categoriesOverall
         accumulator.categoriesOverall[device.device_category] =
           (accumulator.categoriesOverall[device.device_category] ?? 0) +
@@ -107,7 +112,8 @@ export default function Home({
                 (device.average_usage_time_hour +
                   device.average_usage_time_min / 60))) /
             1000) *
-            priceCalc;
+            priceCalc *
+            daysCalc;
         //--------------------------------------------------------------location
         accumulator.location[device.location] =
           (accumulator.location[device.location] ?? 0) +
@@ -115,7 +121,8 @@ export default function Home({
             (device.average_usage_time_hour +
               device.average_usage_time_min / 60)) /
             1000) *
-            priceCalc;
+            priceCalc *
+            daysCalc;
         //---------------------------------------------------------------locationStandby
         accumulator.locationStandby[device.location] =
           (accumulator.locationStandby[device.location] ?? 0) +
@@ -124,7 +131,8 @@ export default function Home({
               (device.average_usage_time_hour +
                 device.average_usage_time_min / 60))) /
             1000) *
-            priceCalc;
+            priceCalc *
+            daysCalc;
         //--------------------------------------------------------------locationOverall
         accumulator.locationOverall[device.location] =
           (accumulator.locationOverall[device.location] ?? 0) +
@@ -136,7 +144,8 @@ export default function Home({
                 (device.average_usage_time_hour +
                   device.average_usage_time_min / 60))) /
             1000) *
-            priceCalc;
+            priceCalc *
+            daysCalc;
         return accumulator;
       },
       {
@@ -149,14 +158,42 @@ export default function Home({
       }
     );
   }
+  const [sums, setSums] = useLocalStorageState("sums", {
+    defaultValue: calculateSums(devices, price, 1),
+  });
+  console.log(sums);
+  function euro(devices, price) {
+    if (isPerDayClicked) {
+      setSums(calculateSums(devices, price, 1));
+    } else {
+      setSums(calculateSums(devices, price, 365));
+    }
+  }
 
-  let sums = calculateSums(devices, price);
-  function euro() {
-    return (sums = calculateSums(devices, price));
+  function kWh(devices) {
+    if (isPerDayClicked) {
+      setSums(calculateSums(devices, 1, 1));
+    } else {
+      setSums(calculateSums(devices, 1, 365));
+    }
   }
-  function kWh() {
-    return (sums = calculateSums(devices));
+
+  function perDay() {
+    if (isEuroClicked) {
+      setSums(calculateSums(devices, price, 1));
+    } else {
+      setSums(calculateSums(devices, 1, 1));
+    }
   }
+
+  function perYear() {
+    if (isEuroClicked) {
+      setSums(calculateSums(devices, price, 365));
+    } else {
+      setSums(calculateSums(devices, 1, 365));
+    }
+  }
+
   function createChartData(object) {
     return {
       labels: Object.keys(object),
@@ -184,6 +221,19 @@ export default function Home({
     };
   }
 
+  // function handleDisplaySum(SumsPlus) {
+  //   return SumsPlus.reduce(
+  //     (accumulator, object) => {
+  //       accumulator.sum[object];
+  //       return accumulator;
+  //     },
+  //     {
+  //       sum: {},
+  //     }
+  //   );
+  // }
+  // const displaySum = handleDisplaySum(sums.categoriesOverall);
+  console.log(sums.categoriesOverall);
   function createChartDataForSelectedChart() {
     switch (selectedChart) {
       case "Category":
@@ -280,20 +330,32 @@ export default function Home({
         )}
         <StyledChartButtonEuro
           onClick={() => {
-            setIsEuroClicked(true), euro();
+            setIsEuroClicked(true), euro(devices, price);
           }}
         >
           EURO
         </StyledChartButtonEuro>
         <StyledChartButtonKWH
           onClick={() => {
-            setIsEuroClicked(), kWh();
+            setIsEuroClicked(false), kWh(devices);
           }}
         >
           kWh
         </StyledChartButtonKWH>
-        <StyledChartButtonPerDay>PER DAY</StyledChartButtonPerDay>
-        <StyledChartButtonPerYear>PER YEAR</StyledChartButtonPerYear>
+        <StyledChartButtonPerDay
+          onClick={() => {
+            setIsPerDayClicked(true), perDay();
+          }}
+        >
+          PER DAY
+        </StyledChartButtonPerDay>
+        <StyledChartButtonPerYear
+          onClick={() => {
+            setIsPerDayClicked(false), perYear();
+          }}
+        >
+          PER YEAR
+        </StyledChartButtonPerYear>
       </ButtonContainer>
 
       <ChartContainer>
