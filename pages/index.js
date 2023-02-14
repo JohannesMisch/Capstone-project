@@ -286,7 +286,7 @@ export default function Home({
       </StyledOptionButton>
       {isOptionClicked && (
         <StyledPriceForm onSubmit={handlePriceSubmit}>
-          <StyledHeader>ADD YOUR PRICE OD ELECTRICITY</StyledHeader>
+          <StyledHeader>ADD YOUR PRICE OF ELECTRICITY</StyledHeader>
           <label htmlFor="price">PRICE IN CENT PER kWh</label>
           <Styledinput
             id="price"
@@ -482,7 +482,7 @@ const StyledOptionButton = styled.button`
 `;
 
 const StyledHeader = styled.h2`
-  text-decoration: none;
+  font-style: none;
   font-size: 16px;
   text-align: center;
 `;
@@ -515,6 +515,7 @@ const StyledCancelButtonPrice = styled.button`
   top: 10px;
   right: 10px;
   background-color: #737373;
+  border: transparent;
   border-radius: 50px;
   height: 25px;
   width: 25px;

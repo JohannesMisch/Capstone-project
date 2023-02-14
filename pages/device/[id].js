@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import EditCard from "@/components/EditCard";
 import Link from "next/link";
 import { useState } from "react";
 import {
@@ -8,6 +7,7 @@ import {
   AppliancesIcon,
   WorkIcon,
   LightingIcon,
+  XIcon,
 } from "@/components/Icons";
 import Modal from "@/components/Modal";
 
@@ -32,7 +32,7 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
       </>
     );
   }
-
+  console.log(devices);
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -155,11 +155,15 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
           />
           <StyledTime>min</StyledTime>
         </StyledDiv>
-        <StyledButtom type="button" onClick={() => setIsEdit(!isEdit)}>
-          Cancel
-        </StyledButtom>
-        <Link href="/">Back to the overview</Link>;
-        <StyledButtom>Save</StyledButtom>
+        <StyledButtonContainer>
+          <StyledButton type="button" onClick={() => setShowDeleteModal(true)}>
+            Delete
+          </StyledButton>
+          <StyledLink href="/">
+            <XIcon />
+          </StyledLink>
+          <StyledButton type="Submit">Save</StyledButton>
+        </StyledButtonContainer>
       </StyledForm>
       {showDeleteModal && (
         <Modal
@@ -210,21 +214,36 @@ const StyledTimeInput = styled.input`
   width: 30%;
   text-align: center;
 `;
-const StyledButtom = styled.button`
-  grid-area: Location;
+const StyledButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+const StyledButton = styled.button`
+  margin-top: 40px;
   background-color: #737373;
-  position: relative;
-  outline: none;
   border-radius: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   height: 25px;
-  width: 100%;
-  opacity: 1;
-  text-decoration: none;
+  width: 48%;
   color: white;
+`;
+
+const StyledLink = styled(Link)`
+  background-color: #737373;
+  border: 1px solid rgba(54, 54, 54, 0.6);
+  position: absolute;
+  top: 55px;
+  right: 15px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  height: 25px;
+  width: 25px;
 `;
 
 //   return (
@@ -282,7 +301,3 @@ const StyledButtom = styled.button`
 //     </>
 //   );
 // }
-
-const StyledListItem = styled.li`
-  overflow-wrap: break-word;
-`;
