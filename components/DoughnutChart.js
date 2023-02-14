@@ -12,6 +12,7 @@ export default function DoughnutChart({ data }) {
       },
       datalabels: {
         display: true,
+        color: "white",
       },
     },
   };

@@ -20,6 +20,7 @@ export default function SearchBar({ handleSearch }) {
 }
 const StyledInput = styled.input`
   border: 1px solid black;
+  text-indent: 25px;
   border-radius: 50px;
   height: 28px;
   width: 85%;

@@ -20,8 +20,6 @@ export default function Home({
   setDevices,
   createDevice,
 }) {
-  const [isFiltered, setIsFiltered] = useState(true);
-  const [isData, setIsData] = useState({ device_category: "" });
   const [price, setPrice] = useLocalStorageState("Price", {
     defaultValue: 1,
   });
@@ -30,9 +28,27 @@ export default function Home({
   const [toggleForm, setToggleForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [isEuroClicked, setIsEuroClicked] = useState(true);
-  const [isPerDayClicked, setIsPerDayClicked] = useState(true);
-  const [isClicked, setIsClicked] = useState("");
+  const [isEuroClicked, setIsEuroClicked] = useLocalStorageState(
+    "isEuroClicked",
+    {
+      defaultValue: true,
+    }
+  );
+  const [isPerDayClicked, setIsPerDayClicked] = useLocalStorageState(
+    "isPerDayClicked",
+    {
+      defaultValue: true,
+    }
+  );
+  const [isClicked, setIsClicked] = useLocalStorageState("isClicked", {
+    defaultValue: true,
+  });
+  const [isInUse, setIsInUse] = useLocalStorageState("isInUse", {
+    defaultValue: "",
+  });
+  const [isStandby, setIsStandby] = useLocalStorageState("isStandby", {
+    defaultValue: "",
+  });
   const [isOptionClicked, setIsOptionClicked] = useState(false);
 
   function handleSearch(event) {
@@ -202,20 +218,16 @@ export default function Home({
           label: "Cost",
           data: Object.values(object).map((item) => Number(item).toFixed(2)),
           backgroundColor: [
-            "hsl(180,30%,50%)",
-            "rgba(54, 162, 235, 0.5)",
-            "rgba(255, 206, 86, 0.5)",
-            "rgba(75, 192, 192, 0.5)",
-          ],
-          borderColor: [
-            "hsl(180,30%,50%)",
-            "rgba(54, 162, 235, 0.5)",
-            "rgba(255, 206, 86, 0.5)",
-            "rgba(75, 192, 192, 0.5)",
+            "#003f5c",
+            "#ff7c43",
+            "#2f4b7c",
+            "#f95d6a",
+            "#665191",
+            "#d45087",
+            "#a05195",
           ],
           borderWidth: 3,
           cutout: "65%",
-          offset: 15,
         },
       ],
     };
@@ -286,17 +298,25 @@ export default function Home({
       )}
       <ButtonContainer>
         <StyledChartButtonCategory
+          clicked={isClicked}
           onClick={() => {
             setSelectedChart("Category");
             setActiveChartData(true);
+            setIsClicked(true);
+            setIsStandby(false);
+            setIsInUse(false);
           }}
         >
           CATEGORY
         </StyledChartButtonCategory>
         <StyledChartButtonLocation
+          clicked={isClicked}
           onClick={() => {
             setSelectedChart("Location");
             setActiveChartData(false);
+            setIsClicked(false);
+            setIsStandby(false);
+            setIsInUse(false);
           }}
         >
           LOCATION
@@ -304,12 +324,22 @@ export default function Home({
         {activeChartData ? (
           <>
             <StyledChartButtonInUse
-              onClick={() => setSelectedChart("CategoryActive")}
+              clicked={isInUse}
+              onClick={() => {
+                setSelectedChart("CategoryActive"),
+                  setIsStandby(true),
+                  setIsInUse(false);
+              }}
             >
               IN USE
             </StyledChartButtonInUse>
             <StyledChartButtonStandby
-              onClick={() => setSelectedChart("CategoryStandby")}
+              clicked={isStandby}
+              onClick={() => {
+                setSelectedChart("CategoryStandby"),
+                  setIsStandby(false),
+                  setIsInUse(true);
+              }}
             >
               STANDBY
             </StyledChartButtonStandby>
@@ -317,18 +347,29 @@ export default function Home({
         ) : (
           <>
             <StyledChartButtonInUse
-              onClick={() => setSelectedChart("LocationActive")}
+              clicked={isInUse}
+              onClick={() => {
+                setSelectedChart("LocationActive"),
+                  setIsStandby(true),
+                  setIsInUse(false);
+              }}
             >
               IN USE
             </StyledChartButtonInUse>
             <StyledChartButtonStandby
-              onClick={() => setSelectedChart("LocationStandby")}
+              clicked={isStandby}
+              onClick={() => {
+                setSelectedChart("LocationStandby"),
+                  setIsStandby(false),
+                  setIsInUse(true);
+              }}
             >
               STANDBY
             </StyledChartButtonStandby>
           </>
         )}
         <StyledChartButtonEuro
+          clicked={isEuroClicked}
           onClick={() => {
             setIsEuroClicked(true), euro(devices, price);
           }}
@@ -336,6 +377,7 @@ export default function Home({
           EURO
         </StyledChartButtonEuro>
         <StyledChartButtonKWH
+          clicked={isEuroClicked}
           onClick={() => {
             setIsEuroClicked(false), kWh(devices);
           }}
@@ -343,6 +385,7 @@ export default function Home({
           kWh
         </StyledChartButtonKWH>
         <StyledChartButtonPerDay
+          clicked={isPerDayClicked}
           onClick={() => {
             setIsPerDayClicked(true), perDay();
           }}
@@ -350,6 +393,7 @@ export default function Home({
           PER DAY
         </StyledChartButtonPerDay>
         <StyledChartButtonPerYear
+          clicked={isPerDayClicked}
           onClick={() => {
             setIsPerDayClicked(false), perYear();
           }}
@@ -376,35 +420,10 @@ export default function Home({
       >
         {toggleForm ? <MinusIcon /> : <PlusIcon />}
       </StyledFormButton>
-
-      {isFiltered ? (
-        <>
-          <SearchBar devices={devices} handleSearch={handleSearch} />
-          <StyledList>
-            {filteredBySearch.map((device) => (
-              <Wrapper key={device.id}>
-                <Card
-                  price={price}
-                  id={device.id}
-                  deviceCategory={device.device_category}
-                  name={device.device}
-                  location={device.location}
-                  model={device.model}
-                  powerConsumption={device.power_consumption}
-                  powerConsumptionStandby={device.power_consumption_standby}
-                  averageUsageTimeHour={device.average_usage_time_hour}
-                  averageUsageTimeMin={device.average_usage_time_min}
-                  handleDelete={handleDelete}
-                  setDevices={setDevices}
-                  devices={devices}
-                />
-              </Wrapper>
-            ))}
-          </StyledList>
-        </>
-      ) : (
+      <>
+        <SearchBar devices={devices} handleSearch={handleSearch} />
         <StyledList>
-          {filteredDevices.map((device) => (
+          {filteredBySearch.map((device) => (
             <Wrapper key={device.id}>
               <Card
                 price={price}
@@ -418,14 +437,13 @@ export default function Home({
                 averageUsageTimeHour={device.average_usage_time_hour}
                 averageUsageTimeMin={device.average_usage_time_min}
                 handleDelete={handleDelete}
-                handleSubmit={handleSubmit}
                 setDevices={setDevices}
                 devices={devices}
               />
             </Wrapper>
           ))}
         </StyledList>
-      )}
+      </>
     </StyledBackground>
   );
 }
@@ -548,7 +566,7 @@ const ButtonContainer = styled.div`
 
 const StyledChartButtonCategory = styled.button`
   grid-area: Category;
-  background-color: #e7f4ce;
+  background-color: ${(props) => (props.clicked ? "#dfefc0" : "#eef6df")};
   border: #737373 1px solid;
   border-right: none;
   cursor: pointer;
@@ -556,9 +574,10 @@ const StyledChartButtonCategory = styled.button`
   width: 100%;
   color: #737373;
 `;
+
 const StyledChartButtonLocation = styled.button`
   grid-area: Location;
-  background-color: #e7f4ce;
+  background-color: ${(props) => (props.clicked ? "#eef6df" : "#dfefc0")};
   border: #737373 1px solid;
   border-left: none;
   cursor: pointer;
@@ -566,9 +585,10 @@ const StyledChartButtonLocation = styled.button`
   width: 100%;
   color: #737373;
 `;
+
 const StyledChartButtonInUse = styled.button`
   grid-area: IN-USE;
-  background-color: #e7f4ce;
+  background-color: ${(props) => (props.clicked ? "#eef6df" : "#dfefc0")};
   border: #737373 1px solid;
   border-right: none;
   cursor: pointer;
@@ -577,9 +597,10 @@ const StyledChartButtonInUse = styled.button`
   white-space: nowrap;
   color: #737373;
 `;
+
 const StyledChartButtonStandby = styled.button`
   grid-area: STANDBY;
-  background-color: #e7f4ce;
+  background-color: ${(props) => (props.clicked ? "#eef6df" : "#dfefc0")};
   border: #737373 1px solid;
   border-left: none;
   cursor: pointer;
@@ -587,9 +608,10 @@ const StyledChartButtonStandby = styled.button`
   width: 100%;
   color: #737373;
 `;
+
 const StyledChartButtonEuro = styled.button`
   grid-area: EURO;
-  background-color: #e7f4ce;
+  background-color: ${(props) => (props.clicked ? "#dfefc0" : "#eef6df")};
   border: #737373 1px solid;
   border-right: none;
   cursor: pointer;
@@ -597,9 +619,10 @@ const StyledChartButtonEuro = styled.button`
   width: 100%;
   color: #737373;
 `;
+
 const StyledChartButtonKWH = styled.button`
   grid-area: kWh;
-  background-color: #e7f4ce;
+  background-color: ${(props) => (props.clicked ? "#eef6df" : "#dfefc0")};
   border: #737373 1px solid;
   border-left: none;
   cursor: pointer;
@@ -607,9 +630,10 @@ const StyledChartButtonKWH = styled.button`
   width: 100%;
   color: #737373;
 `;
+
 const StyledChartButtonPerDay = styled.button`
   grid-area: PER-DAY;
-  background-color: #e7f4ce;
+  background-color: ${(props) => (props.clicked ? "#dfefc0" : "#eef6df")};
   border: #737373 1px solid;
   border-right: none;
   cursor: pointer;
@@ -618,9 +642,10 @@ const StyledChartButtonPerDay = styled.button`
   white-space: nowrap;
   color: #737373;
 `;
+
 const StyledChartButtonPerYear = styled.button`
   grid-area: PER-YEAR;
-  background-color: #e7f4ce;
+  background-color: ${(props) => (props.clicked ? "#eef6df" : "#dfefc0")};
   white-space: nowrap;
   border: #737373 1px solid;
   border-left: none;
