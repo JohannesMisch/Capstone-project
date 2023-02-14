@@ -160,10 +160,12 @@ const StyledHeader = styled.h2`
 `;
 
 const StyledInput = styled.input`
+  height: 25px;
   border-radius: 50px;
 `;
 
 const StyledSelect = styled.select`
+  height: 25px;
   border-radius: 50px;
 `;
 
@@ -181,22 +183,20 @@ const StyledTime = styled.p`
 
 const StyledTimeInput = styled.input`
   border-radius: 50px;
+  height: 25px;
   width: 30%;
   text-align: center;
 `;
 const StyledButtom = styled.button`
   grid-area: Location;
   background-color: #737373;
-  position: relative;
-  outline: none;
   border-radius: 50px;
+  border: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   height: 25px;
   width: 100%;
-  opacity: 1;
-  text-decoration: none;
   color: white;
 `;

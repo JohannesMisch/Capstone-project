@@ -21,7 +21,7 @@ export default function Home({
   createDevice,
 }) {
   const [price, setPrice] = useLocalStorageState("Price", {
-    defaultValue: 1,
+    defaultValue: 45,
   });
   const [activeChartData, setActiveChartData] = useState(true);
   const [selectedChart, setSelectedChart] = useState(null);
@@ -177,6 +177,8 @@ export default function Home({
   const [sums, setSums] = useLocalStorageState("sums", {
     defaultValue: calculateSums(devices, price, 1),
   });
+
+  // const sums = calculateSums(devices, price, 1);
 
   function euro(devices, price) {
     if (isPerDayClicked) {
@@ -417,7 +419,7 @@ export default function Home({
       </ButtonContainer>
 
       <ChartContainer>
-        <Doughnut data={chartData} />
+        <Doughnut data={chartData} displaySum={displaySum} />
       </ChartContainer>
       <h2>
         Overall cost{" "}
@@ -505,6 +507,11 @@ const StyledPriceForm = styled.form`
 `;
 
 const Styledinput = styled.input`
+  :focus {
+    outline-color: black;
+  }
+  text-indent: 15px;
+  height: 25px;
   border-radius: 50px;
   text-align: 10px;
 `;
@@ -528,7 +535,7 @@ const StyledSavePriceButton = styled.button`
   background-color: #737373;
   border-radius: 50px;
   cursor: pointer;
-  height: 25px;
+  height: 28px;
   width: 100%;
   color: white;
 `;
@@ -550,7 +557,7 @@ const ChartContainer = styled.div`
   max-width: 500px;
 `;
 const Wrapper = styled.li`
-  background-color: white;
+  background-color: #ffffffcc;
   border: solid white 3px;
   border-radius: 20px;
   width: 90%;
@@ -570,7 +577,7 @@ const StyledList = styled.ul`
 const ButtonContainer = styled.div`
   display: grid;
   grid-template-columns: 0.1fr 1fr 1fr 0.1fr 1fr 1fr 0.1fr;
-  grid-template-rows: 2fr 0.5fr 0.2fr 0.5fr 1fr;
+  grid-template-rows: 2.3fr 0.5fr 0.2fr 0.5fr 1fr;
   grid-template-areas:
     ". . . . . . ."
     ". Category Location . IN-USE STANDBY ."
@@ -582,8 +589,8 @@ const ButtonContainer = styled.div`
 const StyledChartButtonCategory = styled.button`
   grid-area: Category;
   background-color: ${(props) => (props.clicked ? "#dfefc0" : "#eef6df")};
-  border: #737373 1px solid;
   border-right: none;
+  border: transparent;
   cursor: pointer;
   height: 25px;
   width: 100%;
@@ -593,8 +600,8 @@ const StyledChartButtonCategory = styled.button`
 const StyledChartButtonLocation = styled.button`
   grid-area: Location;
   background-color: ${(props) => (props.clicked ? "#eef6df" : "#dfefc0")};
-  border: #737373 1px solid;
   border-left: none;
+  border: transparent;
   cursor: pointer;
   height: 25px;
   width: 100%;
@@ -604,8 +611,8 @@ const StyledChartButtonLocation = styled.button`
 const StyledChartButtonInUse = styled.button`
   grid-area: IN-USE;
   background-color: ${(props) => (props.clicked ? "#eef6df" : "#dfefc0")};
-  border: #737373 1px solid;
   border-right: none;
+  border: transparent;
   cursor: pointer;
   height: 25px;
   width: 100%;
@@ -616,8 +623,8 @@ const StyledChartButtonInUse = styled.button`
 const StyledChartButtonStandby = styled.button`
   grid-area: STANDBY;
   background-color: ${(props) => (props.clicked ? "#eef6df" : "#dfefc0")};
-  border: #737373 1px solid;
   border-left: none;
+  border: transparent;
   cursor: pointer;
   height: 25px;
   width: 100%;
@@ -627,8 +634,8 @@ const StyledChartButtonStandby = styled.button`
 const StyledChartButtonEuro = styled.button`
   grid-area: EURO;
   background-color: ${(props) => (props.clicked ? "#dfefc0" : "#eef6df")};
-  border: #737373 1px solid;
   border-right: none;
+  border: transparent;
   cursor: pointer;
   height: 25px;
   width: 100%;
@@ -638,8 +645,8 @@ const StyledChartButtonEuro = styled.button`
 const StyledChartButtonKWH = styled.button`
   grid-area: kWh;
   background-color: ${(props) => (props.clicked ? "#eef6df" : "#dfefc0")};
-  border: #737373 1px solid;
   border-left: none;
+  border: transparent;
   cursor: pointer;
   height: 25px;
   width: 100%;
@@ -649,8 +656,8 @@ const StyledChartButtonKWH = styled.button`
 const StyledChartButtonPerDay = styled.button`
   grid-area: PER-DAY;
   background-color: ${(props) => (props.clicked ? "#dfefc0" : "#eef6df")};
-  border: #737373 1px solid;
   border-right: none;
+  border: transparent;
   cursor: pointer;
   height: 25px;
   width: 100%;
@@ -662,7 +669,7 @@ const StyledChartButtonPerYear = styled.button`
   grid-area: PER-YEAR;
   background-color: ${(props) => (props.clicked ? "#eef6df" : "#dfefc0")};
   white-space: nowrap;
-  border: #737373 1px solid;
+  border: transparent;
   border-left: none;
   cursor: pointer;
   height: 25px;

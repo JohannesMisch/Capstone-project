@@ -19,12 +19,15 @@ export default function SearchBar({ handleSearch }) {
   );
 }
 const StyledInput = styled.input`
-  border: 1px solid black;
+  border: solid #737373 1px;
   text-indent: 25px;
   border-radius: 50px;
   height: 28px;
   width: 85%;
   background-color: transparent;
+  :focus {
+    outline-color: black;
+  }
 `;
 const StyledSearchContainer = styled.div`
   position: relative;
@@ -32,6 +35,6 @@ const StyledSearchContainer = styled.div`
 `;
 const StyledIconContainer = styled.div`
   position: absolute;
-  left: 33px;
-  top: 4px;
+  left: 35px;
+  top: 6px;
 `;

@@ -61,108 +61,122 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
   return (
     <>
       <StyledForm onSubmit={handleSubmit}>
-        <StyledHeader>Edit Device</StyledHeader>
-        <label htmlFor="device">Device:</label>
-        <StyledInput
-          id="device"
-          name="device"
-          type="text"
-          pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖß.]{1,50}"
-          title="Max 50 characters"
-          defaultValue={devices.device}
-          required
-        />
-        <label htmlFor="location">Location:</label>
-        <StyledSelect
-          id="location"
-          name="location"
-          type="text"
-          defaultValue={devices.location}
-          required
-        >
-          <option value="">--Please choose an option--</option>
-          <option value="Livingroom">Livingroom</option>
-          <option value="Bathroom">Bathroom</option>
-          <option value="Bedroom">Bedroom</option>
-          <option value="Kitchen">Kitchen</option>
-        </StyledSelect>
-        <label htmlFor="category">Devices category:</label>
-        <StyledSelect
-          id="category"
-          name="device_category"
-          type="text"
-          defaultValue={devices.device_category}
-          required
-        >
-          <option value="">--Please choose an option--</option>
-          <option value="Entertainment">Entertainment</option>
-          <option value="Appliances">Appliances</option>
-          <option value="Work">Work</option>
-          <option value="Lighting">Lighting</option>
-        </StyledSelect>
-        <label htmlFor="model">Model:</label>
-        <StyledInput
-          id="model"
-          name="model"
-          type="text"
-          pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖß.]{1,50}"
-          title="Max 50 characters, a-zA-Z0-9-_ äüöÄÜÖß. "
-          defaultValue={devices.model}
-          required
-        />
-        <label htmlFor="consumption">Power consumption:</label>
-        <StyledInput
-          id="consumption"
-          name="power_consumption"
-          type="text"
-          pattern="^[0-9,.]{1,10}"
-          title="Max 10 characters and only Numbers"
-          defaultValue={devices.power_consumption}
-          required
-        />
-        <label htmlFor="standby">Power consumption Standby:</label>
-        <StyledInput
-          id="standby"
-          name="power_consumption_standby"
-          type="text"
-          title="Max 10 characters and only Numbers"
-          pattern="^[0-9,.]{1,10}"
-          defaultValue={devices.power_consumption_standby}
-          required
-        />
-        <label htmlFor="time">Average usage time:</label>
-        <StyledDiv>
-          <StyledTimeInput
-            id="time"
-            name="average_usage_time_hour"
-            type="number"
-            title="Hello there"
-            min={0}
-            max={24}
-            defaultValue={devices.average_usage_time_hour}
+        <StyledHeader>EDIT DEVICE</StyledHeader>
+        <div>
+          <label htmlFor="device">NAME</label>
+          <StyledInput
+            id="device"
+            name="device"
+            type="text"
+            pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖß.]{1,50}"
+            title="Max 50 characters"
+            defaultValue={currentDevice.device}
             required
           />
-          <StyledTime>h</StyledTime>
-          <StyledTimeInput
-            id="time"
-            name="average_usage_time_hour_min"
-            type="number"
-            title="Hello there"
-            min={0}
-            max={24}
-            defaultValue={devices.average_usage_time_min}
+        </div>
+        <div>
+          <label htmlFor="location">LOCATION</label>
+          <StyledSelect
+            id="location"
+            name="location"
+            type="text"
+            defaultValue={currentDevice.location}
+            required
+          >
+            <option value="">--Please choose an option--</option>
+            <option value="Livingroom">Livingroom</option>
+            <option value="Bathroom">Bathroom</option>
+            <option value="Bedroom">Bedroom</option>
+            <option value="Kitchen">Kitchen</option>
+          </StyledSelect>
+        </div>
+        <div>
+          <label htmlFor="category">DEVICE CATEGORY</label>
+          <StyledSelect
+            id="category"
+            name="device_category"
+            type="text"
+            defaultValue={currentDevice.device_category}
+            required
+          >
+            <option value="">--Please choose an option--</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Appliances">Appliances</option>
+            <option value="Work">Work</option>
+            <option value="Lighting">Lighting</option>
+          </StyledSelect>
+        </div>
+        <div>
+          <label htmlFor="model">MODEL</label>
+          <StyledInput
+            id="model"
+            name="model"
+            type="text"
+            pattern="^[a-zA-Z0-9äüöÄÜÖ][a-zA-Z0-9-_ äüöÄÜÖß.]{1,50}"
+            title="Max 50 characters, a-zA-Z0-9-_ äüöÄÜÖß. "
+            defaultValue={currentDevice.model}
             required
           />
-          <StyledTime>min</StyledTime>
-        </StyledDiv>
+        </div>
+        <div>
+          <label htmlFor="consumption">POWER CONSUMPTION</label>
+          <StyledInput
+            id="consumption"
+            name="power_consumption"
+            type="text"
+            pattern="^[0-9,.]{1,10}"
+            title="Max 10 characters and only Numbers"
+            defaultValue={currentDevice.power_consumption}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="standby">POWER CONSUMPTION STANDBY</label>
+          <StyledInput
+            id="standby"
+            name="power_consumption_standby"
+            type="text"
+            title="Max 10 characters and only Numbers"
+            pattern="^[0-9,.]{1,10}"
+            defaultValue={currentDevice.power_consumption_standby}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="time">AVERAGE USAGE TIME</label>
+          <StyledDiv>
+            <StyledTimeInput
+              id="time"
+              name="average_usage_time_hour"
+              type="number"
+              title="Hello there"
+              min={0}
+              max={24}
+              defaultValue={currentDevice.average_usage_time_hour}
+              required
+            />
+            <StyledTime>h</StyledTime>
+            <StyledTimeInput
+              id="time"
+              name="average_usage_time_hour_min"
+              type="number"
+              title="Hello there"
+              min={0}
+              max={59}
+              defaultValue={currentDevice.average_usage_time_min}
+              required
+            />
+            <StyledTime>min</StyledTime>
+          </StyledDiv>
+        </div>
         <StyledButtonContainer>
           <StyledButton type="button" onClick={() => setShowDeleteModal(true)}>
-            Delete
+            DELETE
           </StyledButton>
           <StyledLink href="/">
             <XIcon />
           </StyledLink>
-          <StyledButton type="Submit">Save</StyledButton>
+          <StyledButton type="Submit">SAVE</StyledButton>
         </StyledButtonContainer>
       </StyledForm>
       {showDeleteModal && (
@@ -178,7 +192,7 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
 }
 const StyledForm = styled.form`
   background-color: #eef6df;
-  padding: 50px 50px 80px 50px;
+  padding: 40px 50px 80px 50px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -190,11 +204,25 @@ const StyledHeader = styled.h2`
 `;
 
 const StyledInput = styled.input`
+  text-indent: 10px;
+  width: 100%;
+  height: 25px;
   border-radius: 50px;
+  border: solid #737373 1px;
+  :focus {
+    outline-color: black;
+  }
 `;
 
 const StyledSelect = styled.select`
+  text-indent: 10px;
+  width: 100%;
+  height: 25px;
   border-radius: 50px;
+  border: solid #737373 1px;
+  :focus {
+    outline-color: black;
+  }
 `;
 
 const StyledDiv = styled.div`
@@ -204,6 +232,7 @@ const StyledDiv = styled.div`
 `;
 
 const StyledTime = styled.p`
+  height: 25px;
   margin: 0;
   padding: 4px 10px 4px 0px;
   height: 25px;
@@ -213,6 +242,10 @@ const StyledTimeInput = styled.input`
   border-radius: 50px;
   width: 30%;
   text-align: center;
+  border: solid #737373 1px;
+  :focus {
+    outline-color: black;
+  }
 `;
 const StyledButtonContainer = styled.div`
   display: flex;
@@ -222,11 +255,12 @@ const StyledButton = styled.button`
   margin-top: 40px;
   background-color: #737373;
   border-radius: 50px;
+  border: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  height: 25px;
+  height: 28px;
   width: 48%;
   color: white;
 `;

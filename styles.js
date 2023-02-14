@@ -1,4 +1,7 @@
 import { createGlobalStyle } from "styled-components";
+import { Tenor_Sans } from "@next/font/google";
+
+const Tenor = Tenor_Sans({ subsets: ["latin"], weight: ["400"] });
 
 export default createGlobalStyle`
   *,
@@ -11,6 +14,6 @@ export default createGlobalStyle`
     margin: 0;
     padding:0;
     color: #4d4d4d;
-    font-family: Tenor Sans;
+    font-family: ${Tenor.style.fontFamily};
   }
 `;

@@ -14,9 +14,9 @@ export default function AddForm({ createDevice }) {
 
   return (
     <StyledForm onSubmit={handleSubmit}>
-      <StyledHeader>Create New Device</StyledHeader>
+      <StyledHeader>CREATE NEW DEVICE</StyledHeader>
       <div>
-        <StyledLable htmlFor="device">Name</StyledLable>
+        <StyledLable htmlFor="device">NAME</StyledLable>
         <Styledinput
           id="device"
           name="device"
@@ -27,7 +27,7 @@ export default function AddForm({ createDevice }) {
         />
       </div>
       <div>
-        <StyledLable htmlFor="category">Devices category</StyledLable>
+        <StyledLable htmlFor="category">DEVICE CATEGORY</StyledLable>
         <StyledSelect id="category" name="device_category" type="text" required>
           <option value="">--Please choose an option--</option>
           <option value="Appliances">Appliances</option>
@@ -39,7 +39,7 @@ export default function AddForm({ createDevice }) {
         </StyledSelect>
       </div>
       <div>
-        <StyledLable htmlFor="model">Model</StyledLable>
+        <StyledLable htmlFor="model">MODEL</StyledLable>
         <Styledinput
           id="model"
           name="model"
@@ -50,7 +50,7 @@ export default function AddForm({ createDevice }) {
         />
       </div>
       <div>
-        <StyledLable htmlFor="consumption">Power consumption</StyledLable>
+        <StyledLable htmlFor="consumption">POWER CONSUMPTION</StyledLable>
         <Styledinput
           id="consumption"
           name="power_consumption"
@@ -61,7 +61,7 @@ export default function AddForm({ createDevice }) {
         />
       </div>
       <div>
-        <StyledLable htmlFor="standby">Power consumption Standby</StyledLable>
+        <StyledLable htmlFor="standby">POWER CONSUMPTION STANDBY </StyledLable>
         <Styledinput
           id="standby"
           name="power_consumption_standby"
@@ -72,7 +72,7 @@ export default function AddForm({ createDevice }) {
         />
       </div>
       <div>
-        <StyledLable htmlFor="time">Average usage time per day</StyledLable>
+        <StyledLable htmlFor="time"> AVERAGE USAGE TIME PER DAY </StyledLable>
         <StyledDiv>
           <StyledTimeInput
             id="time"
@@ -99,7 +99,7 @@ export default function AddForm({ createDevice }) {
         </StyledDiv>
       </div>
       <div>
-        <StyledLable htmlFor="location">Location:</StyledLable>
+        <StyledLable htmlFor="location">LOCATION</StyledLable>
         <StyledSelect id="location" name="location" type="text" required>
           <option value="">--Please choose an option--</option>
           <option value="Bedroom">Bedroom</option>
@@ -111,7 +111,7 @@ export default function AddForm({ createDevice }) {
           <option value="Livingroom">Livingroom</option>
         </StyledSelect>
       </div>
-      <StyledAddDeviceButton type="submit">Create</StyledAddDeviceButton>
+      <StyledAddDeviceButton type="submit">CREATE</StyledAddDeviceButton>
     </StyledForm>
   );
 }
@@ -143,13 +143,23 @@ const StyledHeader = styled.h2`
 `;
 
 const Styledinput = styled.input`
+  text-indent: 10px;
+  height: 25px;
   border-radius: 50px;
   width: 100%;
+  :focus {
+    outline-color: black;
+  }
 `;
 
 const StyledSelect = styled.select`
+  text-indent: 10px;
+  height: 25px;
   border-radius: 50px;
   width: 100%;
+  :focus {
+    outline-color: black;
+  }
 `;
 
 const StyledDiv = styled.div`
@@ -166,8 +176,12 @@ const StyledTime = styled.p`
 
 const StyledTimeInput = styled.input`
   border-radius: 50px;
+  height: 20px;
   width: 30%;
   text-align: center;
+  :focus {
+    outline-color: black;
+  }
 `;
 const StyledAddDeviceButton = styled.button`
   grid-area: IN-USE;

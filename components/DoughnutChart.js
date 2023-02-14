@@ -3,7 +3,7 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-export default function DoughnutChart({ data }) {
+export default function DoughnutChart({ data, displaySum }) {
   const options = {
     maintainAspectRatio: true,
     plugins: {
@@ -22,10 +22,10 @@ export default function DoughnutChart({ data }) {
       const { ctx, data } = chart;
 
       ctx.save();
-      ctx.font = "bold 30px sans-serif";
-      ctx.fillStyle = "red";
+      ctx.font = "20px sans-serif";
+      ctx.fillStyle = "#737373";
       ctx.fillText(
-        "text",
+        displaySum,
         chart.getDatasetMeta(0).data[0].x,
         chart.getDatasetMeta(0).data[0].y
       );
