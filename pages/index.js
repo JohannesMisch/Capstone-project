@@ -243,6 +243,7 @@ export default function Home({
 
   function createChartDataForSelectedChart() {
     switch (selectedChart) {
+      //--------default Calc with kWh and 1 day ------
       case "Category":
         return [
           createChartData(sums.categoriesOverall),
@@ -273,6 +274,99 @@ export default function Home({
           createChartData(sums.locationStandby),
           handleDisplaySum(sums.locationStandby),
         ];
+      //----------Calc with Euro and 1 Day-----
+      case "CategoryEuroDay":
+        return [
+          createChartData(sums.categoriesOverall),
+          handleDisplaySum(sums.categoriesOverall),
+        ];
+      case "LocationEuroDay":
+        return [
+          createChartData(sums.locationOverall),
+          handleDisplaySum(sums.locationOverall),
+        ];
+      case "CategoryActiveEuroDay":
+        return [
+          createChartData(sums.categories),
+          handleDisplaySum(sums.categories),
+        ];
+      case "CategoryStandbyEuroDay":
+        return [
+          createChartData(sums.categoriesStandby),
+          handleDisplaySum(sums.categoriesStandby),
+        ];
+      case "LocationActiveEuroDay":
+        return [
+          createChartData(sums.location),
+          handleDisplaySum(sums.location),
+        ];
+      case "LocationStandbyEuroDay":
+        return [
+          createChartData(sums.locationStandby),
+          handleDisplaySum(sums.locationStandby),
+        ];
+      //------Calc with Euro and 365 Days(YEAR)----
+      case "CategoryEuroYear":
+        return [
+          createChartData(sums.categoriesOverall),
+          handleDisplaySum(sums.categoriesOverall),
+        ];
+      case "LocationEuroYear":
+        return [
+          createChartData(sums.locationOverall),
+          handleDisplaySum(sums.locationOverall),
+        ];
+      case "CategoryActiveEuroYear":
+        return [
+          createChartData(sums.categories),
+          handleDisplaySum(sums.categories),
+        ];
+      case "CategoryStandbyEuroYear":
+        return [
+          createChartData(sums.categoriesStandby),
+          handleDisplaySum(sums.categoriesStandby),
+        ];
+      case "LocationActiveEuroYear":
+        return [
+          createChartData(sums.location),
+          handleDisplaySum(sums.location),
+        ];
+      case "LocationStandbyEuroYear":
+        return [
+          createChartData(sums.locationStandby),
+          handleDisplaySum(sums.locationStandby),
+        ];
+      //--------Calc with kWh and 365 Days(YEAR)-----
+      case "CategorykWhYear":
+        return [
+          createChartData(sums.categoriesOverall),
+          handleDisplaySum(sums.categoriesOverall),
+        ];
+      case "LocationkWhYear":
+        return [
+          createChartData(sums.locationOverall),
+          handleDisplaySum(sums.locationOverall),
+        ];
+      case "CategoryActivekWhYear":
+        return [
+          createChartData(sums.categories),
+          handleDisplaySum(sums.categories),
+        ];
+      case "CategoryStandbykWhYear":
+        return [
+          createChartData(sums.categoriesStandby),
+          handleDisplaySum(sums.categoriesStandby),
+        ];
+      case "LocationActivekWhYear":
+        return [
+          createChartData(sums.location),
+          handleDisplaySum(sums.location),
+        ];
+      case "LocationStandbykWhYear":
+        return [
+          createChartData(sums.locationStandby),
+          handleDisplaySum(sums.locationStandby),
+        ];
       default:
         return [
           createChartData(sums.categories),
@@ -280,6 +374,7 @@ export default function Home({
         ];
     }
   }
+
   const [chartData, displaySum] = createChartDataForSelectedChart();
   return (
     <StyledBackground>
@@ -307,9 +402,7 @@ export default function Home({
           >
             <XIcon />
           </StyledCancelButtonPrice>
-          <StyledSavePriceButton type="Submit">
-            SAVE CHANGES
-          </StyledSavePriceButton>
+          <StyledSavePriceButton type="Submit">SAVE</StyledSavePriceButton>
         </StyledPriceForm>
       )}
       <ButtonContainer>
@@ -422,7 +515,7 @@ export default function Home({
         <Doughnut data={chartData} displaySum={displaySum} />
       </ChartContainer>
       <h2>
-        Overall cost{" "}
+        Overall{" "}
         {new Intl.NumberFormat("de-DE", {
           style: "currency",
           currency: "EUR",
@@ -478,7 +571,7 @@ const StyledOptionButton = styled.button`
   position: fixed;
   z-index: 10;
   right: 10px;
-  top: 8px;
+  top: 16px;
   background-color: transparent;
   border: transparent;
 `;
@@ -494,14 +587,14 @@ const StyledPriceForm = styled.form`
   border-radius: 10px;
   z-index: 2;
   position: fixed;
-  height: 35%;
+  height: 30%;
   width: 85%;
-  top: 40px;
+  top: 55px;
   left: 50%;
   transform: translate(-50%, 0);
   display: flex;
   flex-direction: column;
-  padding: 10px 50px;
+  padding: 5px 40px;
   gap: 10px;
   box-shadow: 10px 13px 13px 5px rgba(0, 0, 0, 0.55);
 `;
@@ -547,6 +640,7 @@ const StyledFormButton = styled.button`
   left: 20px;
   background-color: #737373;
   border-radius: 50px;
+  border: transparent;
   height: 40px;
   width: 40px;
 `;
@@ -577,7 +671,7 @@ const StyledList = styled.ul`
 const ButtonContainer = styled.div`
   display: grid;
   grid-template-columns: 0.1fr 1fr 1fr 0.1fr 1fr 1fr 0.1fr;
-  grid-template-rows: 2.3fr 0.5fr 0.2fr 0.5fr 1fr;
+  grid-template-rows: 2.8fr 0.5fr 0.2fr 0.5fr 1fr;
   grid-template-areas:
     ". . . . . . ."
     ". Category Location . IN-USE STANDBY ."
@@ -595,6 +689,7 @@ const StyledChartButtonCategory = styled.button`
   height: 25px;
   width: 100%;
   color: #737373;
+  font-size: 11px;
 `;
 
 const StyledChartButtonLocation = styled.button`
@@ -606,6 +701,7 @@ const StyledChartButtonLocation = styled.button`
   height: 25px;
   width: 100%;
   color: #737373;
+  font-size: 11px;
 `;
 
 const StyledChartButtonInUse = styled.button`
@@ -618,6 +714,7 @@ const StyledChartButtonInUse = styled.button`
   width: 100%;
   white-space: nowrap;
   color: #737373;
+  font-size: 11px;
 `;
 
 const StyledChartButtonStandby = styled.button`
@@ -629,6 +726,7 @@ const StyledChartButtonStandby = styled.button`
   height: 25px;
   width: 100%;
   color: #737373;
+  font-size: 11px;
 `;
 
 const StyledChartButtonEuro = styled.button`
@@ -640,6 +738,7 @@ const StyledChartButtonEuro = styled.button`
   height: 25px;
   width: 100%;
   color: #737373;
+  font-size: 11px;
 `;
 
 const StyledChartButtonKWH = styled.button`
@@ -651,6 +750,7 @@ const StyledChartButtonKWH = styled.button`
   height: 25px;
   width: 100%;
   color: #737373;
+  font-size: 11px;
 `;
 
 const StyledChartButtonPerDay = styled.button`
@@ -663,6 +763,7 @@ const StyledChartButtonPerDay = styled.button`
   width: 100%;
   white-space: nowrap;
   color: #737373;
+  font-size: 11px;
 `;
 
 const StyledChartButtonPerYear = styled.button`
@@ -675,4 +776,5 @@ const StyledChartButtonPerYear = styled.button`
   height: 25px;
   width: 100%;
   color: #737373;
+  font-size: 11px;
 `;

@@ -5,6 +5,7 @@ import {
   AppliancesIcon,
   WorkIcon,
   LightingIcon,
+  OthersIcon,
 } from "@/components/Icons";
 
 const CATEGORY_MAP = {
@@ -12,6 +13,7 @@ const CATEGORY_MAP = {
   Appliances: <AppliancesIcon />,
   Work: <WorkIcon />,
   Lighting: <LightingIcon />,
+  Other: <OthersIcon />,
 };
 
 export default function Card({
@@ -36,64 +38,65 @@ export default function Card({
       <StyledName>{name}</StyledName>
       <StyledSVG>{CATEGORY_MAP[deviceCategory]}</StyledSVG>
       <StyledTime>
-        Average usage time per day:{averageUsageTimeHour}h {averageUsageTimeMin}
+        TIME PER DAY {averageUsageTimeHour} h {averageUsageTimeMin}
         min
       </StyledTime>
       <StyledCost>
+        COST PER DAY{" "}
         {new Intl.NumberFormat("de-DE", {
           style: "currency",
           currency: "EUR",
         }).format(devicePowerConsumption)}
       </StyledCost>
-      <StyledLink href={`/device/${id}`}>Details</StyledLink>
+      <StyledCategory>{deviceCategory.toUpperCase()}</StyledCategory>
+      <StyledLink href={`/device/${id}`}>DETAILS</StyledLink>
     </CardContent>
   );
 }
+
 const CardContent = styled.section`
+  font-size: 13px;
   padding: 5%;
   display: grid;
-  grid-template-columns: 1.5fr 2fr;
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: 1.3fr 2fr;
+  grid-template-rows: repeat(12, 1fr);
 `;
 const StyledName = styled.p`
+  font-size: 15px;
   margin: 0;
-  grid-column-start: 1;
-  grid-column-end: 1;
-  grid-row-start: 1;
-  grid-row-end: 2;
-  text-align: center;
+  grid-column: 1;
+  grid-row: 1/5;
+  text-align: left;
+  padding-left: 5px;
 `;
 const StyledSVG = styled.p`
   margin: 0;
-  grid-column-start: 1;
-  grid-column-end: 1;
-  grid-row-start: 2;
-  grid-row-end: 4;
+  grid-column: 1;
+  grid-row: 6/13;
   justify-self: center;
 `;
 const StyledTime = styled.p`
   margin: 0;
-  grid-column-start: 2;
-  grid-column-end: 2;
-  grid-row-start: 1;
-  grid-row-end: 1;
+  grid-column: 2;
+  grid-row: 1/3;
   justify-self: center;
 `;
 const StyledCost = styled.p`
   margin: 0;
-  grid-column-start: 2;
-  grid-column-end: 2;
-  grid-row-start: 2;
-  grid-row-end: 2;
+  grid-column: 2;
+  grid-row: 4/6;
+  justify-self: center;
+`;
+const StyledCategory = styled.p`
+  margin: 0;
+  grid-column: 2;
+  grid-row: 7/9;
   justify-self: center;
 `;
 const StyledLink = styled(Link)`
-  grid-column-start: 2;
-  grid-column-end: 2;
-  grid-row-start: 3;
-  grid-row-end: 3;
+  grid-column: 2;
+  grid-row: 10/13;
   background-color: #737373;
-  border: 1px solid rgba(54, 54, 54, 0.6);
   position: relative;
   outline: none;
   border-radius: 50px;
@@ -103,7 +106,6 @@ const StyledLink = styled(Link)`
   cursor: pointer;
   height: 25px;
   width: 100%;
-  opacity: 1;
   text-decoration: none;
   color: white;
 `;

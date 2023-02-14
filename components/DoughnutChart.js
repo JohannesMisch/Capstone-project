@@ -24,6 +24,7 @@ export default function DoughnutChart({ data, displaySum }) {
       ctx.save();
       ctx.font = "20px sans-serif";
       ctx.fillStyle = "#737373";
+      ctx.textAlign = "center";
       ctx.fillText(
         displaySum,
         chart.getDatasetMeta(0).data[0].x,

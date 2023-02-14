@@ -46,8 +46,11 @@ export default function App({ Component, pageProps }) {
 const StyledHeadline = styled.h1`
   text-align: center;
   background-color: #e7f4ce;
+  padding: 10px;
+
   margin: 0;
-  height: 45px;
+  height: 60px;
+  font-size: 30px;
   position: fixed;
   width: 100%;
   z-index: 1;

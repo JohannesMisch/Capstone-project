@@ -22,7 +22,6 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
   const router = useRouter();
   const { id } = router.query;
   const currentDevice = devices.find((device) => device.id === id);
-  const [isEdit, setIsEdit] = useState(true);
 
   if (!currentDevice) {
     return (
@@ -32,7 +31,6 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
       </>
     );
   }
-  console.log(devices);
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -43,18 +41,18 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
           return {
             ...device,
             device: data.device,
-            device_category: data.device_category,
             model: data.model,
+            location: data.location,
+            device_category: data.device_category,
             power_consumption: data.power_consumption,
             power_consumption_standby: data.power_consumption_standby,
-            average_usage_time: data.average_usage_time,
-            location: data.location,
+            average_usage_time_hour: data.average_usage_time_hour,
+            average_usage_time_min: data.average_usage_time_min,
           };
         return device;
       })
     );
 
-    setIsEdit(!isEdit);
     event.target.reset();
   }
 
@@ -75,38 +73,6 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
           />
         </div>
         <div>
-          <label htmlFor="location">LOCATION</label>
-          <StyledSelect
-            id="location"
-            name="location"
-            type="text"
-            defaultValue={currentDevice.location}
-            required
-          >
-            <option value="">--Please choose an option--</option>
-            <option value="Livingroom">Livingroom</option>
-            <option value="Bathroom">Bathroom</option>
-            <option value="Bedroom">Bedroom</option>
-            <option value="Kitchen">Kitchen</option>
-          </StyledSelect>
-        </div>
-        <div>
-          <label htmlFor="category">DEVICE CATEGORY</label>
-          <StyledSelect
-            id="category"
-            name="device_category"
-            type="text"
-            defaultValue={currentDevice.device_category}
-            required
-          >
-            <option value="">--Please choose an option--</option>
-            <option value="Entertainment">Entertainment</option>
-            <option value="Appliances">Appliances</option>
-            <option value="Work">Work</option>
-            <option value="Lighting">Lighting</option>
-          </StyledSelect>
-        </div>
-        <div>
           <label htmlFor="model">MODEL</label>
           <StyledInput
             id="model"
@@ -118,6 +84,43 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
             required
           />
         </div>
+        <div>
+          <label htmlFor="location">LOCATION</label>
+          <StyledSelect
+            id="location"
+            name="location"
+            type="text"
+            defaultValue={currentDevice.location}
+            required
+          >
+            <option value="">--PLEASE CHOOSE AN OPTION--</option>
+            <option value="Bedroom">BEDROOM</option>
+            <option value="Bathroom">BATHROOM</option>
+            <option value="Basement">BASEMENT</option>
+            <option value="Childsroom">CHILDSROOM</option>
+            <option value="Home Office">HOME OFFICE</option>
+            <option value="Kitchen">KITCHEN</option>
+            <option value="Livingroom">LIVINGROOM</option>
+          </StyledSelect>
+        </div>
+        <div>
+          <label htmlFor="category">DEVICE CATEGORY</label>
+          <StyledSelect
+            id="category"
+            name="device_category"
+            type="text"
+            defaultValue={currentDevice.device_category}
+            required
+          >
+            <option value="">--PLEASE CHOOSE AN OPTION--</option>
+            <option value="Appliances">HOME APPLIANCES</option>
+            <option value="Entertainment">ENTERTAINMENT</option>
+            <option value="Lighting">LIGHTING</option>
+            <option value="Others">OTHERS</option>
+            <option value="Work">OFFICE AIDS </option>
+          </StyledSelect>
+        </div>
+
         <div>
           <label htmlFor="consumption">POWER CONSUMPTION</label>
           <StyledInput
@@ -143,7 +146,7 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
           />
         </div>
         <div>
-          <label htmlFor="time">AVERAGE USAGE TIME</label>
+          <label htmlFor="time">AVERAGE USAGE TIME PER DAY</label>
           <StyledDiv>
             <StyledTimeInput
               id="time"
@@ -158,7 +161,7 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
             <StyledTime>h</StyledTime>
             <StyledTimeInput
               id="time"
-              name="average_usage_time_hour_min"
+              name="average_usage_time_min"
               type="number"
               title="Hello there"
               min={0}
@@ -176,7 +179,7 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
           <StyledLink href="/">
             <XIcon />
           </StyledLink>
-          <StyledButton type="Submit">SAVE</StyledButton>
+          <StyledButton>SAVE</StyledButton>
         </StyledButtonContainer>
       </StyledForm>
       {showDeleteModal && (
@@ -192,10 +195,12 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
 }
 const StyledForm = styled.form`
   background-color: #eef6df;
-  padding: 40px 50px 80px 50px;
+  font-size: 13px;
+  padding: 55px 50px 85px 50px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 100%;
 `;
 
 const StyledHeader = styled.h2`
@@ -206,7 +211,7 @@ const StyledHeader = styled.h2`
 const StyledInput = styled.input`
   text-indent: 10px;
   width: 100%;
-  height: 25px;
+  height: 33px;
   border-radius: 50px;
   border: solid #737373 1px;
   :focus {
@@ -217,7 +222,7 @@ const StyledInput = styled.input`
 const StyledSelect = styled.select`
   text-indent: 10px;
   width: 100%;
-  height: 25px;
+  height: 33px;
   border-radius: 50px;
   border: solid #737373 1px;
   :focus {
@@ -240,6 +245,7 @@ const StyledTime = styled.p`
 
 const StyledTimeInput = styled.input`
   border-radius: 50px;
+  height: 33px;
   width: 30%;
   text-align: center;
   border: solid #737373 1px;
@@ -247,10 +253,12 @@ const StyledTimeInput = styled.input`
     outline-color: black;
   }
 `;
+
 const StyledButtonContainer = styled.div`
   display: flex;
   justify-content: space-around;
 `;
+
 const StyledButton = styled.button`
   margin-top: 40px;
   background-color: #737373;
@@ -260,16 +268,15 @@ const StyledButton = styled.button`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  height: 28px;
+  height: 35px;
   width: 48%;
   color: white;
 `;
 
 const StyledLink = styled(Link)`
   background-color: #737373;
-  border: 1px solid rgba(54, 54, 54, 0.6);
   position: absolute;
-  top: 55px;
+  top: 65px;
   right: 15px;
   border-radius: 50px;
   display: flex;
@@ -279,59 +286,3 @@ const StyledLink = styled(Link)`
   height: 25px;
   width: 25px;
 `;
-
-//   return (
-//     <>
-//       {isEdit ? (
-//         <>
-//           <section>
-//             {CATEGORY_MAP[currentDevice.device_category]}
-//             <p>Device:{currentDevice.device}</p>
-//             <ul>
-//               <StyledListItem>Model: {currentDevice.model}</StyledListItem>
-//               <StyledListItem>
-//                 Device category: {currentDevice.device_category}
-//               </StyledListItem>
-//               <StyledListItem>
-//                 Power consumption: {currentDevice.power_consumption} W/h
-//               </StyledListItem>
-//               <StyledListItem>
-//                 Power consumption Standby:{" "}
-//                 {currentDevice.power_consumption_standby}
-//                 W/h
-//               </StyledListItem>
-//               <StyledListItem>
-//                 Location: {currentDevice.location}
-//               </StyledListItem>
-//             </ul>
-//             <p>
-//               Average usage time per day:{" "}
-//               {currentDevice.average_usage_time_hour}h{" "}
-//               {currentDevice.average_usage_time_min}min
-//             </p>
-//             <button onClick={() => setShowDeleteModal(true)}>Delete</button>
-//             <button onClick={() => setIsEdit(!isEdit)}>Edit</button>
-//           </section>
-//
-//           <Link href="/">Back to the overview</Link>;
-//         </>
-//       ) : (
-//         <EditCard
-//           deviceCategory={currentDevice.device_category}
-//           name={currentDevice.device}
-//           location={currentDevice.location}
-//           model={currentDevice.model}
-//           powerConsumption={currentDevice.power_consumption}
-//           powerConsumptionStandby={currentDevice.power_consumption_standby}
-//           averageUsageTimeHour={currentDevice.average_usage_time_hour}
-//           averageUsageTimeMin={currentDevice.average_usage_time_min}
-//           id={id}
-//           setIsEdit={setIsEdit}
-//           isEdit={isEdit}
-//           setDevices={setDevices}
-//           devices={devices}
-//         />
-//       )}
-//     </>
-//   );
-// }

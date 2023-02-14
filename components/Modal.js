@@ -6,7 +6,7 @@ export default function Modal({ onClose, handleDelete, id, currentDevice }) {
     <Overlay>
       <ModalContainer>
         <StyledHeaderModal>
-          Are you sure you want to delete your {currentDevice.device}
+          ARE YOU SURE YOU WANT TO DELETE YOUR {currentDevice.device}
         </StyledHeaderModal>
         <StyledButtonContainer>
           <StyledButtonYES
@@ -51,7 +51,7 @@ const ModalContainer = styled.div`
 const StyledHeaderModal = styled.h2`
   font-size: 20px;
   font-style: none;
-  padding: 10px 15px 30px 15px;
+  padding: 10px 15px 10px 15px;
 `;
 const StyledButtonNO = styled.button`
   background-color: #b2da6e;

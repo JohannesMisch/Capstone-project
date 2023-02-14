@@ -13,7 +13,8 @@ export default createGlobalStyle`
   body {
     margin: 0;
     padding:0;
-    color: #4d4d4d;
+    color: #737373;
     font-family: ${Tenor.style.fontFamily};
+  
   }
 `;

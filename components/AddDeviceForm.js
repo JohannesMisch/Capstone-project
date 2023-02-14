@@ -27,18 +27,6 @@ export default function AddForm({ createDevice }) {
         />
       </div>
       <div>
-        <StyledLable htmlFor="category">DEVICE CATEGORY</StyledLable>
-        <StyledSelect id="category" name="device_category" type="text" required>
-          <option value="">--Please choose an option--</option>
-          <option value="Appliances">Appliances</option>
-          <option value="Entertainment">ENTERTAINMENT</option>
-          <option value="Domestic_appliances">HOME APPLIANCES</option>
-          <option value="Lighting">LIGHTING</option>
-          <option value="Others">OTHERS</option>
-          <option value="Work">OFFICE AIDS </option>
-        </StyledSelect>
-      </div>
-      <div>
         <StyledLable htmlFor="model">MODEL</StyledLable>
         <Styledinput
           id="model"
@@ -50,10 +38,36 @@ export default function AddForm({ createDevice }) {
         />
       </div>
       <div>
+        <StyledLable htmlFor="location">LOCATION</StyledLable>
+        <StyledSelect id="location" name="location" type="text" required>
+          <option value="">--PLEASE CHOOSE AN OPTION--</option>
+          <option value="Bedroom">BEDROOM</option>
+          <option value="Bathroom">BATHROOM</option>
+          <option value="Basement">BASEMENT</option>
+          <option value="Childsroom">CHILDSROOM</option>
+          <option value="Home Office">HOME OFFICE</option>
+          <option value="Kitchen">KITCHEN</option>
+          <option value="Livingroom">LIVINGROOM</option>
+        </StyledSelect>
+      </div>
+      <div>
+        <StyledLable htmlFor="category">DEVICE CATEGORY</StyledLable>
+        <StyledSelect id="category" name="device_category" type="text" required>
+          <option value="">--PLEASE CHOOSE AN OPTION--</option>
+          <option value="Appliances">HOME APPLIANCES</option>
+          <option value="Entertainment">ENTERTAINMENT</option>
+          <option value="Lighting">LIGHTING</option>
+          <option value="Others">OTHERS</option>
+          <option value="Work">OFFICE AIDS </option>
+        </StyledSelect>
+      </div>
+
+      <div>
         <StyledLable htmlFor="consumption">POWER CONSUMPTION</StyledLable>
         <Styledinput
           id="consumption"
           name="power_consumption"
+          placeholder="in W/h"
           type="text"
           pattern="^[0-9,.]{1,10}"
           title="Max 10 characters and only Numbers"
@@ -66,6 +80,7 @@ export default function AddForm({ createDevice }) {
           id="standby"
           name="power_consumption_standby"
           type="text"
+          placeholder="in W/h"
           title="Max 10 characters and only Numbers"
           pattern="^[0-9,.]{1,10}"
           required
@@ -98,19 +113,7 @@ export default function AddForm({ createDevice }) {
           <StyledTime>min</StyledTime>
         </StyledDiv>
       </div>
-      <div>
-        <StyledLable htmlFor="location">LOCATION</StyledLable>
-        <StyledSelect id="location" name="location" type="text" required>
-          <option value="">--Please choose an option--</option>
-          <option value="Bedroom">Bedroom</option>
-          <option value="Bathroom">Bathroom</option>
-          <option value="Basement">Basement</option>
-          <option value="Childsroom">Childsroom</option>
-          <option value="Home Office">Home Office</option>
-          <option value="Kitchen">Kitchen</option>
-          <option value="Livingroom">Livingroom</option>
-        </StyledSelect>
-      </div>
+
       <StyledAddDeviceButton type="submit">CREATE</StyledAddDeviceButton>
     </StyledForm>
   );
@@ -118,6 +121,7 @@ export default function AddForm({ createDevice }) {
 
 const StyledForm = styled.form`
   background-color: white;
+  font-size: 12px;
   border-radius: 10px;
   z-index: 2;
   position: fixed;
@@ -140,11 +144,13 @@ const StyledLable = styled.label`
 const StyledHeader = styled.h2`
   text-align: center;
   font-size: 20px;
+  padding: 5px;
+  margin: 0;
 `;
 
 const Styledinput = styled.input`
   text-indent: 10px;
-  height: 25px;
+  height: 33px;
   border-radius: 50px;
   width: 100%;
   :focus {
@@ -154,7 +160,8 @@ const Styledinput = styled.input`
 
 const StyledSelect = styled.select`
   text-indent: 10px;
-  height: 25px;
+  font-size: 11px;
+  height: 33px;
   border-radius: 50px;
   width: 100%;
   :focus {
@@ -166,17 +173,19 @@ const StyledDiv = styled.div`
   display: flex;
   gap: 5px;
   height: 22px;
+  padding-bottom: 35px;
 `;
 
 const StyledTime = styled.p`
   margin: 0;
+  font-size: 15px;
   padding: 4px 10px 4px 0px;
   height: 25px;
 `;
 
 const StyledTimeInput = styled.input`
   border-radius: 50px;
-  height: 20px;
+  height: 33px;
   width: 30%;
   text-align: center;
   :focus {
@@ -186,16 +195,12 @@ const StyledTimeInput = styled.input`
 const StyledAddDeviceButton = styled.button`
   grid-area: IN-USE;
   background-color: #737373;
-  position: relative;
-  outline: none;
   border-radius: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  height: 25px;
+  height: 35px;
   width: 100%;
-  opacity: 1;
-  text-decoration: none;
   color: white;
 `;

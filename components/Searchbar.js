@@ -20,9 +20,9 @@ export default function SearchBar({ handleSearch }) {
 }
 const StyledInput = styled.input`
   border: solid #737373 1px;
-  text-indent: 25px;
+  text-indent: 30px;
   border-radius: 50px;
-  height: 28px;
+  height: 35px;
   width: 85%;
   background-color: transparent;
   :focus {
@@ -35,6 +35,6 @@ const StyledSearchContainer = styled.div`
 `;
 const StyledIconContainer = styled.div`
   position: absolute;
-  left: 35px;
-  top: 6px;
+  left: 40px;
+  top: 10px;
 `;
