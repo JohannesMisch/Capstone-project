@@ -18,7 +18,7 @@ export default function DoughnutChart({ data }) {
   };
   const textCenter = {
     id: "textCenter",
-    beforeDatasetDarw(chart, args, pluginOptions) {
+    beforeDatasetDraw(chart, args, pluginOptions) {
       const { ctx, data } = chart;
 
       ctx.save();

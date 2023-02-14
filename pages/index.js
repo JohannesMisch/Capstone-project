@@ -177,7 +177,7 @@ export default function Home({
   const [sums, setSums] = useLocalStorageState("sums", {
     defaultValue: calculateSums(devices, price, 1),
   });
-  console.log(sums);
+
   function euro(devices, price) {
     if (isPerDayClicked) {
       setSums(calculateSums(devices, price, 1));
@@ -233,38 +233,52 @@ export default function Home({
     };
   }
 
-  // function handleDisplaySum(SumsPlus) {
-  //   return SumsPlus.reduce(
-  //     (accumulator, object) => {
-  //       accumulator.sum[object];
-  //       return accumulator;
-  //     },
-  //     {
-  //       sum: {},
-  //     }
-  //   );
-  // }
-  // const displaySum = handleDisplaySum(sums.categoriesOverall);
-  console.log(sums.categoriesOverall);
+  function handleDisplaySum(object) {
+    return Object.values(object).reduce((accumulator, value) => {
+      return accumulator + value;
+    }, 0);
+  }
+
   function createChartDataForSelectedChart() {
     switch (selectedChart) {
       case "Category":
-        return createChartData(sums.categoriesOverall);
+        return [
+          createChartData(sums.categoriesOverall),
+          handleDisplaySum(sums.categoriesOverall),
+        ];
       case "Location":
-        return createChartData(sums.locationOverall);
+        return [
+          createChartData(sums.locationOverall),
+          handleDisplaySum(sums.locationOverall),
+        ];
       case "CategoryActive":
-        return createChartData(sums.categories);
+        return [
+          createChartData(sums.categories),
+          handleDisplaySum(sums.categories),
+        ];
       case "CategoryStandby":
-        return createChartData(sums.categoriesStandby);
+        return [
+          createChartData(sums.categoriesStandby),
+          handleDisplaySum(sums.categoriesStandby),
+        ];
       case "LocationActive":
-        return createChartData(sums.location);
+        return [
+          createChartData(sums.location),
+          handleDisplaySum(sums.location),
+        ];
       case "LocationStandby":
-        return createChartData(sums.locationStandby);
+        return [
+          createChartData(sums.locationStandby),
+          handleDisplaySum(sums.locationStandby),
+        ];
       default:
-        return createChartData(sums.categories);
+        return [
+          createChartData(sums.categories),
+          handleDisplaySum(sums.categories),
+        ];
     }
   }
-
+  const [chartData, displaySum] = createChartDataForSelectedChart();
   return (
     <StyledBackground>
       <StyledOptionButton onClick={() => setIsOptionClicked(!isOptionClicked)}>
@@ -403,14 +417,14 @@ export default function Home({
       </ButtonContainer>
 
       <ChartContainer>
-        <Doughnut data={createChartDataForSelectedChart()} />
+        <Doughnut data={chartData} />
       </ChartContainer>
       <h2>
         Overall cost{" "}
         {new Intl.NumberFormat("de-DE", {
           style: "currency",
           currency: "EUR",
-        }).format(sumUpDevices)}
+        }).format(displaySum)}
       </h2>
       {toggleForm && <AddForm createDevice={createDevice} />}
       <StyledFormButton
