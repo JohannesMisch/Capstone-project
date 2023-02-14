@@ -31,11 +31,11 @@ export default function AddForm({ createDevice }) {
         <StyledSelect id="category" name="device_category" type="text" required>
           <option value="">--Please choose an option--</option>
           <option value="Appliances">Appliances</option>
-          <option value="Entertainment">Entertainment</option>
-          <option value="Domestic_appliances">Home appliances</option>
-          <option value="Lighting">Lighting</option>
-          <option value="Others">Others</option>
-          <option value="Work">Work</option>
+          <option value="Entertainment">ENTERTAINMENT</option>
+          <option value="Domestic_appliances">HOME APPLIANCES</option>
+          <option value="Lighting">LIGHTING</option>
+          <option value="Others">OTHERS</option>
+          <option value="Work">OFFICE AIDS </option>
         </StyledSelect>
       </div>
       <div>
