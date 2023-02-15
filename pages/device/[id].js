@@ -44,15 +44,15 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
             model: data.model,
             location: data.location,
             device_category: data.device_category,
-            power_consumption: data.power_consumption,
-            power_consumption_standby: data.power_consumption_standby,
-            average_usage_time_hour: data.average_usage_time_hour,
-            average_usage_time_min: data.average_usage_time_min,
+            power_consumption: Number(data.power_consumption),
+            power_consumption_standby: Number(data.power_consumption_standby),
+            average_usage_time_hour: Number(data.average_usage_time_hour),
+            average_usage_time_min: Number(data.average_usage_time_min),
           };
         return device;
       })
     );
-
+    router.back();
     event.target.reset();
   }
 
@@ -113,7 +113,7 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
             required
           >
             <option value="">--PLEASE CHOOSE AN OPTION--</option>
-            <option value="Appliances">HOME APPLIANCES</option>
+            <option value="Appliances">APPLIANCES</option>
             <option value="Entertainment">ENTERTAINMENT</option>
             <option value="Lighting">LIGHTING</option>
             <option value="Others">OTHERS</option>
@@ -195,11 +195,11 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
 }
 const StyledForm = styled.form`
   background-color: #eef6df;
-  font-size: 13px;
+  font-size: 11px;
   padding: 55px 50px 85px 50px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   height: 100%;
 `;
 
@@ -210,6 +210,7 @@ const StyledHeader = styled.h2`
 
 const StyledInput = styled.input`
   text-indent: 10px;
+  background-color: #ffffffcc;
   width: 100%;
   height: 33px;
   border-radius: 50px;
@@ -220,6 +221,7 @@ const StyledInput = styled.input`
 `;
 
 const StyledSelect = styled.select`
+  background-color: #ffffffcc;
   text-indent: 10px;
   width: 100%;
   height: 33px;
@@ -244,6 +246,7 @@ const StyledTime = styled.p`
 `;
 
 const StyledTimeInput = styled.input`
+  background-color: #ffffffcc;
   border-radius: 50px;
   height: 33px;
   width: 30%;

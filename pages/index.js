@@ -143,14 +143,15 @@ export default function Home({
                   device.average_usage_time_min / 60))) /
             1000;
 
-        console.log({
-          lo: Object.values(accumulator.locationOverall).reduce(sum, 0),
-          co: Object.values(accumulator.categoriesOverall).reduce(sum, 0),
-          same:
-            Object.values(accumulator.locationOverall).reduce(sum, 0) ===
-            Object.values(accumulator.categoriesOverall).reduce(sum, 0),
-          device,
-        });
+        // console.log({
+        //   lo: Object.values(accumulator.locationOverall).reduce(sum, 0),
+        //   co: Object.values(accumulator.categoriesOverall).reduce(sum, 0),
+        //   same:
+        //     Object.values(accumulator.locationOverall).reduce(sum, 0) ===
+        //     Object.values(accumulator.categoriesOverall).reduce(sum, 0),
+        //   device,
+        // });
+
         return accumulator;
       },
       {
@@ -174,7 +175,8 @@ export default function Home({
           backgroundColor: [
             "#003f5c",
             "#ff7c43",
-            "#2f4b7c",
+            "#008000",
+            // "#2f4b7c",
             "#f95d6a",
             "#665191",
             "#d45087",
@@ -245,7 +247,7 @@ export default function Home({
       case "Category--Euro-Day":
         return prepareDisplayData(sums.categoriesOverall, price, 1);
       case "Location--Euro-Day":
-        return prepareDisplayData(sums.categoriesOverall, price, 1);
+        return prepareDisplayData(sums.locationOverall, price, 1);
       case "Category-Active-Euro-Day":
         return prepareDisplayData(sums.categories, price, 1);
       case "Category-Standby-Euro-Day":
@@ -418,20 +420,19 @@ export default function Home({
       <ChartContainer>
         <Doughnut
           data={chartData}
-          displaySum={new Intl.NumberFormat("de-DE", {
-            style: "currency",
-            currency: "EUR",
-          }).format(displaySum)}
+          displaySum={
+            isEuroClicked
+              ? new Intl.NumberFormat("de-DE", {
+                  style: "currency",
+                  currency: "EUR",
+                }).format(displaySum)
+              : displaySum.toFixed(2) + " kWh"
+          }
         />
       </ChartContainer>
-      <h2>
-        Overall{" "}
-        {new Intl.NumberFormat("de-DE", {
-          style: "currency",
-          currency: "EUR",
-        }).format(displaySum)}
-      </h2>
-      {toggleForm && <AddForm createDevice={createDevice} />}
+      {toggleForm && (
+        <AddForm createDevice={createDevice} setToggleForm={setToggleForm} />
+      )}
       <StyledFormButton
         onClick={() => {
           setToggleForm(!toggleForm);
@@ -559,6 +560,7 @@ const ChartContainer = styled.div`
   height: 80%;
   width: 80%;
   max-width: 500px;
+  padding-bottom: 10px;
 `;
 const Wrapper = styled.li`
   background-color: #ffffffcc;

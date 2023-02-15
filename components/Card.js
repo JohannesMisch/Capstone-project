@@ -58,7 +58,7 @@ const CardContent = styled.section`
   font-size: 13px;
   padding: 5%;
   display: grid;
-  grid-template-columns: 1.3fr 2fr;
+  grid-template-columns: 1.2fr 2fr;
   grid-template-rows: repeat(12, 1fr);
 `;
 const StyledName = styled.p`
@@ -73,25 +73,25 @@ const StyledSVG = styled.p`
   margin: 0;
   grid-column: 1;
   grid-row: 6/13;
-  justify-self: center;
+  justify-self: left;
 `;
 const StyledTime = styled.p`
   margin: 0;
   grid-column: 2;
   grid-row: 1/3;
-  justify-self: center;
+  justify-self: left;
 `;
 const StyledCost = styled.p`
   margin: 0;
   grid-column: 2;
   grid-row: 4/6;
-  justify-self: center;
+  justify-self: left;
 `;
 const StyledCategory = styled.p`
   margin: 0;
   grid-column: 2;
   grid-row: 7/9;
-  justify-self: center;
+  justify-self: left;
 `;
 const StyledLink = styled(Link)`
   grid-column: 2;

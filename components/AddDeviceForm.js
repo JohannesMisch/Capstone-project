@@ -1,14 +1,19 @@
 import styled from "styled-components";
 import { useState } from "react";
 
-export default function AddForm({ createDevice }) {
-  const [toggleForm, setToggleForm] = useState(false);
-
+export default function AddForm({ createDevice, setToggleForm }) {
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    createDevice(data);
+    createDevice({
+      ...data,
+      power_consumption: Number(data.power_consumption),
+      power_consumption_standby: Number(data.power_consumption_standby),
+      average_usage_time_hour: Number(data.average_usage_time_hour),
+      average_usage_time_min: Number(data.average_usage_time_min),
+    });
+    setToggleForm(false);
     event.target.reset();
   }
 
@@ -54,7 +59,7 @@ export default function AddForm({ createDevice }) {
         <StyledLable htmlFor="category">DEVICE CATEGORY</StyledLable>
         <StyledSelect id="category" name="device_category" type="text" required>
           <option value="">--PLEASE CHOOSE AN OPTION--</option>
-          <option value="Appliances">HOME APPLIANCES</option>
+          <option value="Appliances">APPLIANCES</option>
           <option value="Entertainment">ENTERTAINMENT</option>
           <option value="Lighting">LIGHTING</option>
           <option value="Others">OTHERS</option>
@@ -121,7 +126,7 @@ export default function AddForm({ createDevice }) {
 
 const StyledForm = styled.form`
   background-color: white;
-  font-size: 12px;
+  font-size: 10px;
   border-radius: 10px;
   z-index: 2;
   position: fixed;
@@ -149,6 +154,8 @@ const StyledHeader = styled.h2`
 `;
 
 const Styledinput = styled.input`
+  background-color: transparent;
+  border: solid #737373 1px;
   text-indent: 10px;
   height: 33px;
   border-radius: 50px;
@@ -159,6 +166,8 @@ const Styledinput = styled.input`
 `;
 
 const StyledSelect = styled.select`
+  background-color: transparent;
+  border: solid #737373 1px;
   text-indent: 10px;
   font-size: 11px;
   height: 33px;
@@ -184,6 +193,8 @@ const StyledTime = styled.p`
 `;
 
 const StyledTimeInput = styled.input`
+  background-color: transparent;
+  border: solid #737373 1px;
   border-radius: 50px;
   height: 33px;
   width: 30%;

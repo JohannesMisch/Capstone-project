@@ -16,6 +16,7 @@ export default function DoughnutChart({ data, displaySum }) {
     plugins: {
       legend: {
         display: true,
+        position: "bottom",
       },
       datalabels: {
         display: true,
@@ -26,7 +27,7 @@ export default function DoughnutChart({ data, displaySum }) {
   const textCenter = {
     id: "textCenter",
     beforeDatasetDraw(chart, args, pluginOptions) {
-      const { ctx, data, canvas } = chart;
+      const { ctx, data } = chart;
       ctx.save();
       ctx.font = "20px sans-serif";
       ctx.fillStyle = "#737373";
