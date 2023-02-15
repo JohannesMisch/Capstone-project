@@ -40,7 +40,7 @@ const ModalContainer = styled.div`
   position: fixed;
   max-width: 90%;
   width: 80%;
-  height: 25%;
+  height: 28%;
   border-radius: 20px;
   background-color: rgba(255, 255, 255);
   top: 30%;
@@ -61,8 +61,8 @@ const StyledButtonNO = styled.button`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  height: 25px;
-  width: 100px;
+  height: 33px;
+  width: 140px;
 `;
 const StyledButtonYES = styled.button`
   background-color: #defec0;
@@ -72,8 +72,8 @@ const StyledButtonYES = styled.button`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  height: 25px;
-  width: 100px;
+  height: 33px;
+  width: 140px;
 `;
 const StyledButtonContainer = styled.div`
   display: flex;

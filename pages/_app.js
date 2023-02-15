@@ -47,7 +47,6 @@ const StyledHeadline = styled.h1`
   text-align: center;
   background-color: #e7f4ce;
   padding: 10px;
-
   margin: 0;
   height: 60px;
   font-size: 30px;

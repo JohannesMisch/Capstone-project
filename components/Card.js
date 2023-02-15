@@ -13,7 +13,7 @@ const CATEGORY_MAP = {
   Appliances: <AppliancesIcon />,
   Work: <WorkIcon />,
   Lighting: <LightingIcon />,
-  Other: <OthersIcon />,
+  Others: <OthersIcon />,
 };
 
 export default function Card({

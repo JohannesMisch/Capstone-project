@@ -117,7 +117,7 @@ export default function DetailsCard({ setDevices, devices, handleDelete }) {
             <option value="Entertainment">ENTERTAINMENT</option>
             <option value="Lighting">LIGHTING</option>
             <option value="Others">OTHERS</option>
-            <option value="Work">OFFICE AIDS </option>
+            <option value="Work">WORK </option>
           </StyledSelect>
         </div>
 

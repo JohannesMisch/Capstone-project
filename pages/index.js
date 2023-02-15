@@ -564,6 +564,7 @@ const ChartContainer = styled.div`
 `;
 const Wrapper = styled.li`
   background-color: #ffffffcc;
+  border: transparent;
   border: solid white 3px;
   border-radius: 20px;
   width: 90%;
