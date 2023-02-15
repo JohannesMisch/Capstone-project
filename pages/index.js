@@ -21,10 +21,10 @@ export default function Home({
   createDevice,
 }) {
   const [price, setPrice] = useLocalStorageState("Price", {
-    defaultValue: 45,
+    defaultValue: 0.45,
   });
   const [activeChartData, setActiveChartData] = useState(true);
-  const [selectedChart, setSelectedChart] = useState(null);
+  // const [selectedChart, setSelectedChart] = useState(null);
   const [toggleForm, setToggleForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -44,10 +44,10 @@ export default function Home({
     defaultValue: true,
   });
   const [isInUse, setIsInUse] = useLocalStorageState("isInUse", {
-    defaultValue: "",
+    defaultValue: false,
   });
   const [isStandby, setIsStandby] = useLocalStorageState("isStandby", {
-    defaultValue: "",
+    defaultValue: false,
   });
   const [isOptionClicked, setIsOptionClicked] = useState(false);
 
@@ -86,82 +86,71 @@ export default function Home({
     .map(calculateDailyPowerConsumption)
     .reduce(sum, 0);
 
-  function calculateSums(devices, priceInput, days) {
-    let priceCalc = 1;
-    let daysCalc = 1;
-    if (priceInput !== 1) {
-      priceCalc = priceInput;
-    }
-    if (days !== undefined) {
-      daysCalc = days;
-    }
-
+  function calculateSums(devices) {
     return devices.reduce(
       (accumulator, device) => {
         //--------------------------------------------------------------categories
         accumulator.categories[device.device_category] =
           (accumulator.categories[device.device_category] ?? 0) +
-          ((device.power_consumption *
+          (device.power_consumption *
             (device.average_usage_time_hour +
               device.average_usage_time_min / 60)) /
-            1000) *
-            priceCalc *
-            daysCalc;
+            1000;
         //--------------------------------------------------------------categoriesStandby
         accumulator.categoriesStandby[device.device_category] =
           (accumulator.categoriesStandby[device.device_category] ?? 0) +
-          ((device.power_consumption_standby *
+          (device.power_consumption_standby *
             (24 -
               (device.average_usage_time_hour +
                 device.average_usage_time_min / 60))) /
-            1000) *
-            priceCalc *
-            daysCalc;
+            1000;
+
         //--------------------------------------------------------------categoriesOverall
         accumulator.categoriesOverall[device.device_category] =
           (accumulator.categoriesOverall[device.device_category] ?? 0) +
-          ((device.power_consumption *
+          (device.power_consumption *
             (device.average_usage_time_hour +
               device.average_usage_time_min / 60) +
             device.power_consumption_standby *
               (24 -
                 (device.average_usage_time_hour +
                   device.average_usage_time_min / 60))) /
-            1000) *
-            priceCalc *
-            daysCalc;
+            1000;
         //--------------------------------------------------------------location
         accumulator.location[device.location] =
           (accumulator.location[device.location] ?? 0) +
-          ((device.power_consumption *
+          (device.power_consumption *
             (device.average_usage_time_hour +
               device.average_usage_time_min / 60)) /
-            1000) *
-            priceCalc *
-            daysCalc;
+            1000;
         //---------------------------------------------------------------locationStandby
         accumulator.locationStandby[device.location] =
           (accumulator.locationStandby[device.location] ?? 0) +
-          ((device.power_consumption_standby *
+          (device.power_consumption_standby *
             (24 -
               (device.average_usage_time_hour +
                 device.average_usage_time_min / 60))) /
-            1000) *
-            priceCalc *
-            daysCalc;
+            1000;
         //--------------------------------------------------------------locationOverall
         accumulator.locationOverall[device.location] =
           (accumulator.locationOverall[device.location] ?? 0) +
-          ((device.power_consumption *
+          (device.power_consumption *
             (device.average_usage_time_hour +
               device.average_usage_time_min / 60) +
             device.power_consumption_standby *
               (24 -
                 (device.average_usage_time_hour +
                   device.average_usage_time_min / 60))) /
-            1000) *
-            priceCalc *
-            daysCalc;
+            1000;
+
+        console.log({
+          lo: Object.values(accumulator.locationOverall).reduce(sum, 0),
+          co: Object.values(accumulator.categoriesOverall).reduce(sum, 0),
+          same:
+            Object.values(accumulator.locationOverall).reduce(sum, 0) ===
+            Object.values(accumulator.categoriesOverall).reduce(sum, 0),
+          device,
+        });
         return accumulator;
       },
       {
@@ -173,43 +162,6 @@ export default function Home({
         locationOverall: {},
       }
     );
-  }
-  const [sums, setSums] = useLocalStorageState("sums", {
-    defaultValue: calculateSums(devices, price, 1),
-  });
-
-  // const sums = calculateSums(devices, price, 1);
-
-  function euro(devices, price) {
-    if (isPerDayClicked) {
-      setSums(calculateSums(devices, price, 1));
-    } else {
-      setSums(calculateSums(devices, price, 365));
-    }
-  }
-
-  function kWh(devices) {
-    if (isPerDayClicked) {
-      setSums(calculateSums(devices, 1, 1));
-    } else {
-      setSums(calculateSums(devices, 1, 365));
-    }
-  }
-
-  function perDay() {
-    if (isEuroClicked) {
-      setSums(calculateSums(devices, price, 1));
-    } else {
-      setSums(calculateSums(devices, 1, 1));
-    }
-  }
-
-  function perYear() {
-    if (isEuroClicked) {
-      setSums(calculateSums(devices, price, 365));
-    } else {
-      setSums(calculateSums(devices, 1, 365));
-    }
   }
 
   function createChartData(object) {
@@ -241,141 +193,99 @@ export default function Home({
     }, 0);
   }
 
-  function createChartDataForSelectedChart() {
-    switch (selectedChart) {
+  function prepareDisplayData(object, unit = 1, days = 1) {
+    const copy = structuredClone(object);
+    for (const key of Object.keys(copy)) {
+      copy[key] = copy[key] * unit * days;
+    }
+
+    return [createChartData(copy), handleDisplaySum(copy)];
+  }
+
+  function generateStateString() {
+    const categoryOrLocation = isClicked ? "Category" : "Location";
+    function poweredState(isInUse, isStandby) {
+      if (isInUse && isStandby) {
+        throw new Error("illegal state");
+      }
+
+      if (!isInUse && !isStandby) {
+        return "";
+      } else if (isInUse) {
+        return "Standby";
+      } else {
+        return "Active";
+      }
+    }
+    const powered = poweredState(isInUse, isStandby);
+    const unit = isEuroClicked ? "Euro" : "kWh";
+    const timeRange = isPerDayClicked ? "Day" : "Year";
+    return `${categoryOrLocation}-${powered}-${unit}-${timeRange}`;
+  }
+
+  function createDisplayData() {
+    const sums = calculateSums(devices);
+
+    const stateString = generateStateString();
+    switch (stateString) {
       //--------default Calc with kWh and 1 day ------
-      case "Category":
-        return [
-          createChartData(sums.categoriesOverall),
-          handleDisplaySum(sums.categoriesOverall),
-        ];
-      case "Location":
-        return [
-          createChartData(sums.locationOverall),
-          handleDisplaySum(sums.locationOverall),
-        ];
-      case "CategoryActive":
-        return [
-          createChartData(sums.categories),
-          handleDisplaySum(sums.categories),
-        ];
-      case "CategoryStandby":
-        return [
-          createChartData(sums.categoriesStandby),
-          handleDisplaySum(sums.categoriesStandby),
-        ];
-      case "LocationActive":
-        return [
-          createChartData(sums.location),
-          handleDisplaySum(sums.location),
-        ];
-      case "LocationStandby":
-        return [
-          createChartData(sums.locationStandby),
-          handleDisplaySum(sums.locationStandby),
-        ];
+      case "Category--kWh-Day":
+        return prepareDisplayData(sums.categoriesOverall, 1, 1);
+      case "Location--kWh-Day":
+        return prepareDisplayData(sums.locationOverall, 1, 1);
+      case "Category-Active-kWh-Day":
+        return prepareDisplayData(sums.categories, 1, 1);
+      case "Category-Standby-kWh-Day":
+        return prepareDisplayData(sums.categoriesStandby, 1, 1);
+      case "Location-Active-kWh-Day":
+        return prepareDisplayData(sums.location, 1, 1);
+      case "Location-Standby-kWh-Day":
+        return prepareDisplayData(sums.locationStandby, 1, 1);
       //----------Calc with Euro and 1 Day-----
-      case "CategoryEuroDay":
-        return [
-          createChartData(sums.categoriesOverall),
-          handleDisplaySum(sums.categoriesOverall),
-        ];
-      case "LocationEuroDay":
-        return [
-          createChartData(sums.locationOverall),
-          handleDisplaySum(sums.locationOverall),
-        ];
-      case "CategoryActiveEuroDay":
-        return [
-          createChartData(sums.categories),
-          handleDisplaySum(sums.categories),
-        ];
-      case "CategoryStandbyEuroDay":
-        return [
-          createChartData(sums.categoriesStandby),
-          handleDisplaySum(sums.categoriesStandby),
-        ];
-      case "LocationActiveEuroDay":
-        return [
-          createChartData(sums.location),
-          handleDisplaySum(sums.location),
-        ];
-      case "LocationStandbyEuroDay":
-        return [
-          createChartData(sums.locationStandby),
-          handleDisplaySum(sums.locationStandby),
-        ];
+      case "Category--Euro-Day":
+        return prepareDisplayData(sums.categoriesOverall, price, 1);
+      case "Location--Euro-Day":
+        return prepareDisplayData(sums.categoriesOverall, price, 1);
+      case "Category-Active-Euro-Day":
+        return prepareDisplayData(sums.categories, price, 1);
+      case "Category-Standby-Euro-Day":
+        return prepareDisplayData(sums.categoriesStandby, price, 1);
+      case "Location-Active-Euro-Day":
+        return prepareDisplayData(sums.location, price, 1);
+      case "Location-Standby-Euro-Day":
+        return prepareDisplayData(sums.locationStandby, price, 1);
       //------Calc with Euro and 365 Days(YEAR)----
-      case "CategoryEuroYear":
-        return [
-          createChartData(sums.categoriesOverall),
-          handleDisplaySum(sums.categoriesOverall),
-        ];
-      case "LocationEuroYear":
-        return [
-          createChartData(sums.locationOverall),
-          handleDisplaySum(sums.locationOverall),
-        ];
-      case "CategoryActiveEuroYear":
-        return [
-          createChartData(sums.categories),
-          handleDisplaySum(sums.categories),
-        ];
-      case "CategoryStandbyEuroYear":
-        return [
-          createChartData(sums.categoriesStandby),
-          handleDisplaySum(sums.categoriesStandby),
-        ];
-      case "LocationActiveEuroYear":
-        return [
-          createChartData(sums.location),
-          handleDisplaySum(sums.location),
-        ];
-      case "LocationStandbyEuroYear":
-        return [
-          createChartData(sums.locationStandby),
-          handleDisplaySum(sums.locationStandby),
-        ];
+      case "Category--Euro-Year":
+        return prepareDisplayData(sums.categoriesOverall, price, 365);
+      case "Location--Euro-Year":
+        return prepareDisplayData(sums.locationOverall, price, 365);
+      case "Category-Active-Euro-Year":
+        return prepareDisplayData(sums.categories, price, 365);
+      case "Category-Standby-Euro-Year":
+        return prepareDisplayData(sums.categoriesStandby, price, 365);
+      case "Location-Active-Euro-Year":
+        return prepareDisplayData(sums.location, price, 365);
+      case "Location-Standby-Euro-Year":
+        return prepareDisplayData(sums.locationStandby, price, 365);
       //--------Calc with kWh and 365 Days(YEAR)-----
-      case "CategorykWhYear":
-        return [
-          createChartData(sums.categoriesOverall),
-          handleDisplaySum(sums.categoriesOverall),
-        ];
-      case "LocationkWhYear":
-        return [
-          createChartData(sums.locationOverall),
-          handleDisplaySum(sums.locationOverall),
-        ];
-      case "CategoryActivekWhYear":
-        return [
-          createChartData(sums.categories),
-          handleDisplaySum(sums.categories),
-        ];
-      case "CategoryStandbykWhYear":
-        return [
-          createChartData(sums.categoriesStandby),
-          handleDisplaySum(sums.categoriesStandby),
-        ];
-      case "LocationActivekWhYear":
-        return [
-          createChartData(sums.location),
-          handleDisplaySum(sums.location),
-        ];
-      case "LocationStandbykWhYear":
-        return [
-          createChartData(sums.locationStandby),
-          handleDisplaySum(sums.locationStandby),
-        ];
+      case "Category--kWh-Year":
+        return prepareDisplayData(sums.categoriesOverall, 1, 365);
+      case "Location--kWh-Year":
+        return prepareDisplayData(sums.locationOverall, 1, 365);
+      case "Category-Active-kWh-Year":
+        return prepareDisplayData(sums.categories, 1, 365);
+      case "Category-Standby-kWh-Year":
+        return prepareDisplayData(sums.categoriesStandby, 1, 365);
+      case "Location-Active-kWh-Year":
+        return prepareDisplayData(sums.location, 1, 365);
+      case "Location-Standby-kWh-Year":
+        return prepareDisplayData(sums.locationStandby, 1, 365);
       default:
-        return [
-          createChartData(sums.categories),
-          handleDisplaySum(sums.categories),
-        ];
+        return prepareDisplayData(sums.categories, 1, 1);
     }
   }
 
-  const [chartData, displaySum] = createChartDataForSelectedChart();
+  const [chartData, displaySum] = createDisplayData();
   return (
     <StyledBackground>
       <StyledOptionButton onClick={() => setIsOptionClicked(!isOptionClicked)}>
@@ -409,7 +319,6 @@ export default function Home({
         <StyledChartButtonCategory
           clicked={isClicked}
           onClick={() => {
-            setSelectedChart("Category");
             setActiveChartData(true);
             setIsClicked(true);
             setIsStandby(false);
@@ -421,7 +330,6 @@ export default function Home({
         <StyledChartButtonLocation
           clicked={isClicked}
           onClick={() => {
-            setSelectedChart("Location");
             setActiveChartData(false);
             setIsClicked(false);
             setIsStandby(false);
@@ -435,9 +343,8 @@ export default function Home({
             <StyledChartButtonInUse
               clicked={isInUse}
               onClick={() => {
-                setSelectedChart("CategoryActive"),
-                  setIsStandby(true),
-                  setIsInUse(false);
+                setIsStandby(true);
+                setIsInUse(false);
               }}
             >
               IN USE
@@ -445,9 +352,8 @@ export default function Home({
             <StyledChartButtonStandby
               clicked={isStandby}
               onClick={() => {
-                setSelectedChart("CategoryStandby"),
-                  setIsStandby(false),
-                  setIsInUse(true);
+                setIsStandby(false);
+                setIsInUse(true);
               }}
             >
               STANDBY
@@ -458,9 +364,8 @@ export default function Home({
             <StyledChartButtonInUse
               clicked={isInUse}
               onClick={() => {
-                setSelectedChart("LocationActive"),
-                  setIsStandby(true),
-                  setIsInUse(false);
+                setIsStandby(true);
+                setIsInUse(false);
               }}
             >
               IN USE
@@ -468,9 +373,8 @@ export default function Home({
             <StyledChartButtonStandby
               clicked={isStandby}
               onClick={() => {
-                setSelectedChart("LocationStandby"),
-                  setIsStandby(false),
-                  setIsInUse(true);
+                setIsStandby(false);
+                setIsInUse(true);
               }}
             >
               STANDBY
@@ -480,7 +384,7 @@ export default function Home({
         <StyledChartButtonEuro
           clicked={isEuroClicked}
           onClick={() => {
-            setIsEuroClicked(true), euro(devices, price);
+            setIsEuroClicked(true);
           }}
         >
           EURO
@@ -488,7 +392,7 @@ export default function Home({
         <StyledChartButtonKWH
           clicked={isEuroClicked}
           onClick={() => {
-            setIsEuroClicked(false), kWh(devices);
+            setIsEuroClicked(false);
           }}
         >
           kWh
@@ -496,7 +400,7 @@ export default function Home({
         <StyledChartButtonPerDay
           clicked={isPerDayClicked}
           onClick={() => {
-            setIsPerDayClicked(true), perDay();
+            setIsPerDayClicked(true);
           }}
         >
           PER DAY
@@ -504,7 +408,7 @@ export default function Home({
         <StyledChartButtonPerYear
           clicked={isPerDayClicked}
           onClick={() => {
-            setIsPerDayClicked(false), perYear();
+            setIsPerDayClicked(false);
           }}
         >
           PER YEAR
@@ -512,7 +416,13 @@ export default function Home({
       </ButtonContainer>
 
       <ChartContainer>
-        <Doughnut data={chartData} displaySum={displaySum} />
+        <Doughnut
+          data={chartData}
+          displaySum={new Intl.NumberFormat("de-DE", {
+            style: "currency",
+            currency: "EUR",
+          }).format(displaySum)}
+        />
       </ChartContainer>
       <h2>
         Overall{" "}
