@@ -3,6 +3,7 @@ import Head from "next/head";
 import useLocalStorageState from "use-local-storage-state";
 import userDevices from "../db.json";
 import { v4 as uuidv4 } from "uuid";
+import styled from "styled-components";
 
 export default function App({ Component, pageProps }) {
   const [devices, setDevices] = useLocalStorageState("devices", {
@@ -31,6 +32,7 @@ export default function App({ Component, pageProps }) {
       <Head>
         <title>Capstone Project</title>
       </Head>
+      <StyledHeadline>PowerSum</StyledHeadline>
       <Component
         {...pageProps}
         devices={devices}
@@ -41,3 +43,14 @@ export default function App({ Component, pageProps }) {
     </>
   );
 }
+const StyledHeadline = styled.h1`
+  text-align: center;
+  background-color: #e7f4ce;
+  padding: 10px;
+  margin: 0;
+  height: 60px;
+  font-size: 30px;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+`;

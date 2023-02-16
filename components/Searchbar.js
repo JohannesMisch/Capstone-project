@@ -1,14 +1,40 @@
+import styled from "styled-components";
+import { SearchIcon } from "./Icons";
+
 export default function SearchBar({ handleSearch }) {
   return (
-    <div>
-      <label htmlFor="search">Search</label>
-      <input
+    <StyledSearchContainer>
+      <StyledIconContainer>
+        <SearchIcon />
+      </StyledIconContainer>
+      <StyledInput
         onChange={handleSearch}
+        aria-label="Searchbar"
         type="text"
         name="search"
         id="search"
         maxLength={60}
       />
-    </div>
+    </StyledSearchContainer>
   );
 }
+const StyledInput = styled.input`
+  border: solid #737373 1px;
+  text-indent: 30px;
+  border-radius: 50px;
+  height: 35px;
+  width: 85%;
+  background-color: transparent;
+  :focus {
+    outline-color: black;
+  }
+`;
+const StyledSearchContainer = styled.div`
+  position: relative;
+  text-align: center;
+`;
+const StyledIconContainer = styled.div`
+  position: absolute;
+  left: 40px;
+  top: 10px;
+`;

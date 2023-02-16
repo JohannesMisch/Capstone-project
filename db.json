@@ -5,7 +5,8 @@
     "model": "LG 55NANO796PC LED TV",
     "power_consumption": 95,
     "power_consumption_standby": 0.5,
-    "average_usage_time": 4,
+    "average_usage_time_hour": 4,
+    "average_usage_time_min": 0,
     "location": "Livingroom",
     "id": "0"
   },
@@ -15,7 +16,8 @@
     "model": "WTW84433",
     "power_consumption": 1420,
     "power_consumption_standby": 0.5,
-    "average_usage_time": 0.5,
+    "average_usage_time_hour": 0,
+    "average_usage_time_min": 30,
     "location": "Bathroom",
     "id": "1"
   },
@@ -25,7 +27,8 @@
     "model": "Mac14",
     "power_consumption": 50,
     "power_consumption_standby": 7,
-    "average_usage_time": 9,
+    "average_usage_time_hour": 9,
+    "average_usage_time_min": 0,
     "location": "Livingroom",
     "id": "2"
   },
@@ -35,7 +38,8 @@
     "model": "LG 55NANO796PC LED TV",
     "power_consumption": 66,
     "power_consumption_standby": 6.5,
-    "average_usage_time": 4,
+    "average_usage_time_hour": 4,
+    "average_usage_time_min": 0,
     "location": "Livingroom",
     "id": "3"
   },
@@ -45,7 +49,8 @@
     "model": "WTW84433",
     "power_consumption": 1420,
     "power_consumption_standby": 0.5,
-    "average_usage_time": 0.5,
+    "average_usage_time_hour": 0,
+    "average_usage_time_min": 30,
     "location": "Bathroom",
     "id": "4"
   },
@@ -55,7 +60,8 @@
     "model": "Mac14",
     "power_consumption": 60,
     "power_consumption_standby": 7,
-    "average_usage_time": 9,
+    "average_usage_time_hour": 9,
+    "average_usage_time_min": 0,
     "location": "Livingroom",
     "id": "5"
   }

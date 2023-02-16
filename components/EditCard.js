@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import dynamic from "next/dynamic";
 
 export default function EditCard({
   deviceCategory,
@@ -8,7 +7,8 @@ export default function EditCard({
   model,
   powerConsumption,
   powerConsumptionStandby,
-  averageUsageTime,
+  averageUsageTimeHour,
+  averageUsageTimeMin,
   setIsEdit,
   isEdit,
   setDevices,
@@ -43,8 +43,9 @@ export default function EditCard({
   return (
     <>
       <StyledForm onSubmit={handleSubmit}>
+        <StyledHeader>Edit Device</StyledHeader>
         <label htmlFor="device">Device:</label>
-        <input
+        <StyledInput
           id="device"
           name="device"
           type="text"
@@ -54,7 +55,7 @@ export default function EditCard({
           required
         />
         <label htmlFor="location">Location:</label>
-        <select
+        <StyledSelect
           id="location"
           name="location"
           type="text"
@@ -66,9 +67,9 @@ export default function EditCard({
           <option value="Bathroom">Bathroom</option>
           <option value="Bedroom">Bedroom</option>
           <option value="Kitchen">Kitchen</option>
-        </select>
+        </StyledSelect>
         <label htmlFor="category">Devices category:</label>
-        <select
+        <StyledSelect
           id="category"
           name="device_category"
           type="text"
@@ -80,9 +81,9 @@ export default function EditCard({
           <option value="Appliances">Appliances</option>
           <option value="Work">Work</option>
           <option value="Lighting">Lighting</option>
-        </select>
+        </StyledSelect>
         <label htmlFor="model">Model:</label>
-        <input
+        <StyledInput
           id="model"
           name="model"
           type="text"
@@ -92,7 +93,7 @@ export default function EditCard({
           required
         />
         <label htmlFor="consumption">Power consumption:</label>
-        <input
+        <StyledInput
           id="consumption"
           name="power_consumption"
           type="text"
@@ -102,7 +103,7 @@ export default function EditCard({
           required
         />
         <label htmlFor="standby">Power consumption Standby:</label>
-        <input
+        <StyledInput
           id="standby"
           name="power_consumption_standby"
           type="text"
@@ -112,28 +113,90 @@ export default function EditCard({
           required
         />
         <label htmlFor="time">Average usage time:</label>
-        <input
-          id="time"
-          name="average_usage_time"
-          type="number"
-          title="Hello there"
-          min={0}
-          max={24}
-          defaultValue={averageUsageTime}
-          required
-        />
-        <button type="button" onClick={() => setIsEdit(!isEdit)}>
+        <StyledDiv>
+          <StyledTimeInput
+            id="time"
+            name="average_usage_time_hour"
+            type="number"
+            title="Hello there"
+            min={0}
+            max={24}
+            defaultValue={averageUsageTimeHour}
+            required
+          />
+          <StyledTime>h</StyledTime>
+          <StyledTimeInput
+            id="time"
+            name="average_usage_time_hour_min"
+            type="number"
+            title="Hello there"
+            min={0}
+            max={24}
+            defaultValue={averageUsageTimeMin}
+            required
+          />
+          <StyledTime>min</StyledTime>
+        </StyledDiv>
+        <StyledButtom type="button" onClick={() => setIsEdit(!isEdit)}>
           Cancel
-        </button>
+        </StyledButtom>
 
-        <button>Save</button>
+        <StyledButtom>Save</StyledButtom>
       </StyledForm>
     </>
   );
 }
 const StyledForm = styled.form`
+  background-color: #eef6df;
+  padding: 50px 50px 80px 50px;
   display: flex;
   flex-direction: column;
-  padding: 10px 50px;
   gap: 10px;
+`;
+
+const StyledHeader = styled.h2`
+  text-align: center;
+  font-size: 20px;
+`;
+
+const StyledInput = styled.input`
+  height: 25px;
+  border-radius: 50px;
+`;
+
+const StyledSelect = styled.select`
+  height: 25px;
+  border-radius: 50px;
+`;
+
+const StyledDiv = styled.div`
+  display: flex;
+  gap: 5px;
+  height: 22px;
+`;
+
+const StyledTime = styled.p`
+  margin: 0;
+  padding: 4px 10px 4px 0px;
+  height: 25px;
+`;
+
+const StyledTimeInput = styled.input`
+  border-radius: 50px;
+  height: 25px;
+  width: 30%;
+  text-align: center;
+`;
+const StyledButtom = styled.button`
+  grid-area: Location;
+  background-color: #737373;
+  border-radius: 50px;
+  border: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  height: 25px;
+  width: 100%;
+  color: white;
 `;
