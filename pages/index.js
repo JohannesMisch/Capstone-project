@@ -71,20 +71,20 @@ export default function Home({
       filterDevice.location.toLowerCase().includes(searchTerm)
   );
 
-  const calculateDailyPowerConsumption = (device) =>
-    ((device.power_consumption_standby *
-      (24 -
-        (device.average_usage_time_hour + device.average_usage_time_min / 60)) +
-      device.power_consumption *
-        (device.average_usage_time_hour + device.average_usage_time_min / 60)) *
-      price) /
-    1000;
+  // const calculateDailyPowerConsumption = (device) =>
+  //   ((device.power_consumption_standby *
+  //     (24 -
+  //       (device.average_usage_time_hour + device.average_usage_time_min / 60)) +
+  //     device.power_consumption *
+  //       (device.average_usage_time_hour + device.average_usage_time_min / 60)) *
+  //     price) /
+  //   1000;
 
-  const sum = (accumulator, currentValue) => accumulator + currentValue;
+  // const sum = (accumulator, currentValue) => accumulator + currentValue;
 
-  const sumUpDevices = devices
-    .map(calculateDailyPowerConsumption)
-    .reduce(sum, 0);
+  // const sumUpDevices = devices
+  //   .map(calculateDailyPowerConsumption)
+  //   .reduce(sum, 0);
 
   function calculateSums(devices) {
     return devices.reduce(

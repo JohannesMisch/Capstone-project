@@ -62,7 +62,7 @@ const StyledButtonNO = styled.button`
   align-items: center;
   cursor: pointer;
   height: 33px;
-  width: 140px;
+  width: 130px;
 `;
 const StyledButtonYES = styled.button`
   background-color: #defec0;
@@ -73,7 +73,7 @@ const StyledButtonYES = styled.button`
   align-items: center;
   cursor: pointer;
   height: 33px;
-  width: 140px;
+  width: 130px;
 `;
 const StyledButtonContainer = styled.div`
   display: flex;
